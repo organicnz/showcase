@@ -17,14 +17,15 @@
 
 | Layer | Technology |
 |---|---|
-| iOS / iPadOS | Swift 6.3, SwiftUI, strict concurrency |
+| iOS / iPadOS | Swift 6.3, SwiftUI, @Observable, strict concurrency |
 | UI Design Language | Liquid Glass (iOS/iPadOS 26) |
-| Android | SKIP transpilation (Swift → Kotlin / Jetpack Compose) |
+| Android | SKIP 1.0+ (Swift → Kotlin / Jetpack Compose) |
 | Backend | Supabase (shared instance) |
 | Database backups | GitHub Actions CI/CD (scheduled) |
 | Deployment iOS | TestFlight → install |
 | Deployment Android | APK sideload (no store) |
 | Screen mirroring | Wireless (AirPlay / Cast from tablet to TV) |
+| Testing | Simultaneous macOS/iPadOS + Android Emulator |
 
 ---
 
@@ -108,6 +109,29 @@ Scenarios (5 base)
 - **Access:** Admin only (no custom UI needed at this stage)
 - **Operations:** Upload video, assign scenario, set order, toggle active
 - **Update frequency:** Rare (content mostly static post-launch)
+
+---
+
+---
+
+## Skip Bleeding Edge Implementation
+
+### 1. Modular Architecture (Swift Package based)
+- **ShowcaseCore**: Shared logic, models, and Supabase client.
+- **ShowcaseUI**: Shared SwiftUI components mapped to Compose via SkipUI.
+- **ShowcaseApp**: The main entry point for iOS and Android.
+
+### 2. State Management
+- Use the **Observation framework (`@Observable`)** for modern, reactive UI state.
+- Adapt for Skip's transpilation to ensure efficient recomposition in Jetpack Compose.
+
+### 3. Concurrency
+- **Swift 6 Strict Concurrency**: All network calls and database interactions must be isolated to Actors or use `Sendable` types to prevent data races.
+- **Async/Await**: Preferred over callbacks for all asynchronous operations.
+
+### 4. Supabase Integration
+- Use the official **Supabase-Swift** library (or a Skip-compatible wrapper if needed).
+- Direct DB interactions via PostgREST and Storage for high-speed video streaming.
 
 ---
 
