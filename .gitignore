@@ -5,3 +5,22 @@ node_modules/
 .DS_Store
 dist/
 build/
+
+# Skip / Android / iOS specific
+local.properties
+.gradle/
+.android/
+.kotlin/
+Android/app/keystore.jks
+Android/app/keystore.properties
+.swiftpm
+.build/
+DerivedData/
+xcuserdata/
+xcodebuild*.log
+.idea/
+*.ipa
+*.dSYM
+Package.resolved
+**/fastlane/apikey.json
+**/fastlane/report.xml
