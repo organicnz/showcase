@@ -1,0 +1,37 @@
+name: Supabase Backup
+on:
+  schedule:
+    - cron: '0 2 * * *'  # daily at 02:00 UTC
+  workflow_dispatch:      # manual trigger
+
+jobs:
+  backup:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      
+      - name: Install PostgreSQL client
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y postgresql-client
+          
+      - name: Dump Supabase DB
+        env:
+          PGPASSWORD: ${{ secrets.SUPABASE_DB_PASSWORD }}
+          DB_HOST: db.smyfjmdjzfwdehynwfep.supabase.co
+          DB_USER: postgres
+        run: |
+          mkdir -p backups
+          pg_dump -h $DB_HOST -U $DB_USER -d postgres -F p > backups/backup_$(date +%Y%m%d).sql
+          
+      - name: Commit backup
+        run: |
+          git config user.email "ci@bot"
+          git config user.name "CI Bot"
+          git add backups/
+          if git diff --staged --quiet; then
+            echo "No changes to commit"
+          else
+            git commit -m "backup: $(date +%Y-%m-%d)"
+            git push
+          fi
