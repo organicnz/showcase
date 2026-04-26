@@ -1,43 +1,43 @@
-# agent.md — Meshchersky Park Showcase App
+# agent.md — Showcase Приложение Мещерского парка
 
-## Project Overview
+## Обзор проекта
 
-**Product:** Sales office presentation player for a premium residential complex in Meshchersky Park, Moscow.
+**Продукт:** Плеер презентаций для офиса продаж премиального жилого комплекса в Мещерском парке, Москва.
 
-**Purpose:** A tablet-controlled app that plays curated video scenarios on a large display screen during client meetings. The sales manager selects a life scenario profile on the tablet — the screen responds with the matching content. No sales pressure, quiet luxury, privacy-first.
+**Цель:** Управляемое с планшета приложение, которое воспроизводит подобранные видеосценарии на большом экране во время встреч с клиентами. Менеджер по продажам выбирает профиль жизненного сценария на планшете — экран откликается соответствующим контентом. Никакого давления при продажах, тихая роскошь, приоритет приватности.
 
-**Client:** ООО «СПК-М» (Логинов Артём Михайлович)
-**Developer:** Тарлан Исаев (Swift / iOS lead)
-**Design:** Женя Миловидов (UI/UX)
+**Клиент:** ООО «СПК-М» (Логинов Артём Михайлович)
+**Разработчик:** Тарлан Исаев (Swift / iOS lead)
+**Дизайн:** Женя Миловидов (UI/UX)
 **PM:** Женя Южакова
 
 ---
 
-## Tech Stack
+## Технологический стек
 
-| Layer | Technology |
+| Слой | Технология |
 |---|---|
-| iOS / iPadOS | Swift 6.3, SwiftUI, @Observable, strict concurrency |
-| UI Design Language | Liquid Glass (iOS/iPadOS 26) |
+| iOS / iPadOS | Swift 6.3, SwiftUI, @Observable, строгая конкурентность (strict concurrency) |
+| Язык дизайна UI | Liquid Glass (iOS/iPadOS 26) |
 | Android | SKIP 1.0+ (Swift → Kotlin / Jetpack Compose) |
-| Backend | Supabase (shared instance) |
-| Database backups | GitHub Actions CI/CD (scheduled) |
-| Deployment iOS | TestFlight → install |
-| Deployment Android | APK sideload (no store) |
-| Screen mirroring | Wireless (AirPlay / Cast from tablet to TV) |
-| Testing | Simultaneous macOS/iPadOS + Android Emulator |
+| Бэкенд | Supabase (общий инстанс) |
+| Бэкапы БД | GitHub Actions CI/CD (по расписанию) |
+| Развертывание iOS | TestFlight → установка |
+| Развертывание Android | Загрузка APK (без магазина) |
+| Трансляция экрана | Беспроводная (AirPlay / Cast с планшета на ТВ) |
+| Тестирование | Одновременно macOS/iPadOS + Android Emulator |
 
 ---
 
-## Architecture
+## Архитектура
 
 ```
 ┌─────────────────────────────────────────────────┐
-│                 SUPABASE BACKEND                 │
-│  DB: scenarios, videos, categories, metadata    │
-│  Storage: video files (CDN)                     │
-│  Auth: admin only (CMS access)                  │
-│  CI/CD: GitHub Actions → scheduled backups      │
+│                 БЭКЕНД SUPABASE                 │
+│  БД: scenarios, videos, categories, metadata    │
+│  Storage: видеофайлы (CDN)                      │
+│  Авторизация: только админ (доступ к CMS)       │
+│  CI/CD: GitHub Actions → бэкапы по расписанию   │
 └────────────────┬────────────────────────────────┘
                  │
      ┌───────────┴───────────┐
@@ -50,95 +50,93 @@
 └────┬──────┘          └──────┬─────┘
      │                        │
      └───────────┬────────────┘
-                 │ Wireless mirror
+                 │ Беспроводная трансляция
           ┌──────▼──────┐
-          │  TV Screen  │
-          │ Office wall │
+          │   Экран ТВ  │
+          │ Стена офиса │
           └─────────────┘
 ```
 
 ---
 
-## App Structure (Screens)
+## Структура приложения (Экраны)
 
-### 1. Main Screen (`/`)
-- Grid of life scenario cards
-- Tap scenario → plays video on mirrored screen
-- Manager-facing UI (tablet)
+### 1. Главный экран (`/`)
+- Сетка карточек жизненных сценариев
+- Нажатие на сценарий → воспроизведение видео на транслируемом экране
+- Пользовательский интерфейс для менеджера (планшет)
 
-### 2. Library (`/library`)
-- Full catalog of videos grouped by scenario
-- Filter by category
-- Tap to play on external display
+### 2. Библиотека (`/library`)
+- Полный каталог видео, сгруппированный по сценариям
+- Фильтрация по категории
+- Нажатие для воспроизведения на внешнем экране
 
-### 3. Video Player (`/player`)
-- Fullscreen on external display
-- Controls remain on tablet only
-- Autoplay next in scenario queue
+### 3. Видеоплеер (`/player`)
+- Полноэкранный режим на внешнем дисплее
+- Элементы управления остаются только на планшете
+- Автовоспроизведение следующего видео в очереди сценария
 
-### 4. Service States
-- Loading / offline / no content
-- Empty state with placeholder
+### 4. Служебные состояния
+- Загрузка / офлайн / нет контента
+- Пустое состояние с заглушкой
 
 ---
 
-## Content Structure
+## Структура контента
 
 ```
-Scenarios (5 base)
-└── Videos (4–5 per scenario = 20–25 total)
-    ├── Duration: max 30 seconds each
-    ├── Hosted: Supabase Storage
-    └── Categories: family, wellness, privacy, investment, architecture
+Сценарии (5 базовых)
+└── Видео (4–5 на сценарий = 20–25 всего)
+    ├── Длительность: макс. 30 секунд каждое
+    ├── Хостинг: Supabase Storage
+    └── Категории: family, wellness, privacy, investment, architecture
 ```
 
-### Life Scenarios
-| ID | Scenario | Target |
+### Жизненные сценарии
+| ID | Сценарий | Целевая аудитория |
 |---|---|---|
-| 01 | Family with children | School, playground, safety, community |
-| 02 | Wellness & silence | Spa, forest walks, no city noise |
-| 03 | Guests & hotel | Hotel room booking instead of guest suite |
-| 04 | Investor | Liquidity, limited supply, unique location |
-| 05 | Architecture & space | Materials, light, panoramic glazing |
+| 01 | Семья с детьми | Школа, детская площадка, безопасность, комьюнити |
+| 02 | Велнес и тишина | Спа, лесные прогулки, отсутствие городского шума |
+| 03 | Гости и отель | Бронирование гостиничного номера вместо гостевой комнаты |
+| 04 | Инвестор | Ликвидность, ограниченное предложение, уникальная локация |
+| 05 | Архитектура и пространство | Материалы, свет, панорамное остекление |
 
 ---
 
-## CMS (Admin)
+## CMS (Админка)
 
-- **Platform:** Supabase Dashboard
-- **Access:** Admin only (no custom UI needed at this stage)
-- **Operations:** Upload video, assign scenario, set order, toggle active
-- **Update frequency:** Rare (content mostly static post-launch)
-
----
+- **Платформа:** Supabase Dashboard
+- **Доступ:** Только для админа (на данном этапе кастомный UI не нужен)
+- **Операции:** Загрузка видео, назначение сценария, установка порядка, переключение активности
+- **Частота обновлений:** Редкая (контент в основном статичен после запуска)
 
 ---
 
-## Skip Bleeding Edge Implementation
+## Передовая реализация Skip (Bleeding Edge)
 
-### 1. Modular Architecture (Swift Package based)
-- **ShowcaseCore**: Shared logic, models, and Supabase client.
-- **ShowcaseUI**: Shared SwiftUI components mapped to Compose via SkipUI.
-- **ShowcaseApp**: The main entry point for iOS and Android.
+### 1. Модульная архитектура (на базе Swift Package)
+- **ShowcaseCore**: Общая логика, модели и клиент Supabase.
+- **ShowcaseUI**: Общие компоненты SwiftUI, проецируемые на Compose через SkipUI.
+- **ShowcaseApp**: Главная точка входа для iOS и Android.
 
-### 2. State Management
-- Use the **Observation framework (`@Observable`)** for modern, reactive UI state.
-- Adapt for Skip's transpilation to ensure efficient recomposition in Jetpack Compose.
+### 2. Управление состоянием
+- Использование фреймворка **Observation (`@Observable`)** для современного реактивного состояния UI.
+- Адаптация под трансляцию Skip для обеспечения эффективной рекомпозиции в Jetpack Compose.
 
-### 3. Concurrency
-- **Swift 6 Strict Concurrency**: All network calls and database interactions must be isolated to Actors or use `Sendable` types to prevent data races.
-- **Async/Await**: Preferred over callbacks for all asynchronous operations.
+### 3. Конкурентность (Concurrency)
+- **Строгая конкурентность Swift 6 (Strict Concurrency)**: Все сетевые вызовы и взаимодействия с БД должны быть изолированы в Actors или использовать типы `Sendable` для предотвращения состояния гонки (data races).
+- **Async/Await**: Предпочтительнее коллбэков для всех асинхронных операций.
 
-### 4. Supabase Integration
-- Use the official **Supabase-Swift** library (or a Skip-compatible wrapper if needed).
-- Direct DB interactions via PostgREST and Storage for high-speed video streaming.
+### 4. Интеграция с Supabase
+- Использование официальной библиотеки **Supabase-Swift** (или совместимой со Skip обертки при необходимости).
+- Прямые взаимодействия с БД через PostgREST и Storage для высокоскоростного стриминга видео.
 
 ---
 
-## Supabase Schema (draft)
+## Схема Supabase (черновик)
 
 ```sql
--- Scenarios
+-- Сценарии
 create table scenarios (
   id uuid primary key default gen_random_uuid(),
   title text not null,
@@ -147,12 +145,12 @@ create table scenarios (
   active boolean default true
 );
 
--- Videos
+-- Видео
 create table videos (
   id uuid primary key default gen_random_uuid(),
   scenario_id uuid references scenarios(id),
   title text,
-  storage_path text not null,  -- Supabase Storage path
+  storage_path text not null,  -- путь в Supabase Storage
   duration_sec int,
   order_index int default 0,
   active boolean default true,
@@ -162,14 +160,14 @@ create table videos (
 
 ---
 
-## GitHub CI/CD — Backup Pipeline
+## CI/CD GitHub — Пайплайн бэкапов
 
 ```yaml
 # .github/workflows/backup.yml
 name: Supabase Backup
 on:
   schedule:
-    - cron: '0 2 * * *'  # daily at 02:00 UTC
+    - cron: '0 2 * * *'  # ежедневно в 02:00 UTC
 jobs:
   backup:
     runs-on: ubuntu-latest
@@ -191,50 +189,50 @@ jobs:
 
 ---
 
-## Milestones
+## Этапы (Milestones)
 
-| # | Deliverable | Month | Status |
+| # | Результирующий продукт (Deliverable) | Месяц | Статус |
 |---|---|---|---|
-| 1 | Architecture + Supabase backend | Month 1 | 🔄 In progress |
-| 2 | SwiftUI screens (4–5) + SKIP setup | Month 1 | 🔄 In progress |
-| 3 | CI/CD backups | Month 1 | ⏳ Planned |
-| 4 | Content library + Supabase integration | Month 2 | ⏳ Planned |
-| 5 | CMS setup | Month 2 | ⏳ Planned |
-| 6 | QA on iOS + Android | Month 2 | ⏳ Planned |
-| 7 | Deploy + onboarding in Moscow | Month 2 | ⏳ Planned |
-| 8 | 1-month warranty support | Month 3 | Free |
+| 1 | Архитектура + Бэкенд Supabase | Месяц 1 | ✅ Выполнено |
+| 2 | Экраны SwiftUI (4–5) + Настройка SKIP | Месяц 1 | ✅ Выполнено |
+| 3 | CI/CD бэкапы | Месяц 1 | ✅ Выполнено |
+| 4 | Библиотека контента + Интеграция Supabase | Месяц 2 | ✅ Выполнено |
+| 5 | Настройка CMS | Месяц 2 | ✅ Выполнено |
+| 6 | QA на iOS + Android | Месяц 2 | 🔄 В процессе |
+| 7 | Развертывание + внедрение в Москве | Месяц 2 | ⏳ Планируется |
+| 8 | 1-месячная гарантийная поддержка | Месяц 3 | Бесплатно |
 
 ---
 
-## Budget
+## Бюджет
 
-| Phase | Amount |
+| Этап | Сумма |
 |---|---|
-| Invoice #1 (iteration 1 + onboarding visit) | 175 000 ₽ |
-| Invoice #2 (iteration 2) | 125 000 ₽ |
-| **Total** | **300 000 ₽** |
-| Design (separate) | 300 000 ₽ |
-| **Project total** | **600 000 ₽** |
+| Инвойс №1 (итерация 1 + визит для внедрения) | 175 000 ₽ |
+| Инвойс №2 (итерация 2) | 125 000 ₽ |
+| **Итого** | **300 000 ₽** |
+| Дизайн (отдельно) | 300 000 ₽ |
+| **Итого по проекту** | **600 000 ₽** |
 
 ---
 
-## Key Constraints
+## Ключевые ограничения
 
-- **Deadline:** End of May 2026 (sales office opening)
-- **Offline:** Not required — office has stable internet
-- **Screen connection:** Wireless only (no HDMI)
-- **Apple review:** TestFlight bypasses App Store review — use for launch
-- **Android deploy:** APK sideload, no Google Play needed
-- **No auth for end users** — app is always-on in sales office
-- **Content updates:** Rare, handled by admin via Supabase Dashboard
+- **Дедлайн:** Конец мая 2026 (открытие офиса продаж)
+- **Офлайн:** Не требуется — в офисе стабильный интернет
+- **Подключение экрана:** Только беспроводное (без HDMI)
+- **Проверка Apple:** TestFlight обходит проверку App Store — использовать для запуска
+- **Развертывание Android:** Загрузка APK, Google Play не требуется
+- **Отсутствие авторизации для конечных пользователей** — приложение постоянно работает в офисе продаж
+- **Обновления контента:** Редкие, выполняются админом через Supabase Dashboard
 
 ---
 
-## Contacts
+## Контакты
 
-| Role | Name | Notes |
+| Роль | Имя | Примечания |
 |---|---|---|
-| Client | Логинов Артём Михайлович (Тема) | ИП, ИНН 112104547785 |
-| PM | Женя Южакова | Main contact |
+| Клиент | Логинов Артём Михайлович (Тема) | ИП, ИНН 112104547785 |
+| PM | Женя Южакова | Главный контакт |
 | iOS Dev | Тарлан Исаев | ИНН 761900751270, ТБанк |
-| Design | Женя Миловидов | UI/UX, effects |
+| Дизайн | Женя Миловидов | UI/UX, эффекты |

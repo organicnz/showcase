@@ -5,133 +5,93 @@ struct ScenarioCard: View {
     let action: () -> Void
     @Environment(ViewModel.self) var viewModel: ViewModel
     @State internal var isPressed = false
-    
+
     var videoCount: Int {
         viewModel.videosForScenario(scenario).count
     }
-    
-    var scenarioIcon: String {
-        switch scenario.slug {
-        case "family": return "figure.2.and.child.holdinghands"
-        case "wellness": return "leaf.fill"
-        case "guests": return "building.2.fill"
-        case "investor": return "chart.line.uptrend.xyaxis"
-        case "architecture": return "building.columns.fill"
-        default: return "sparkles"
-        }
-    }
-    
-    var scenarioGradient: LinearGradient {
-        switch scenario.slug {
-        case "family":
-            return LinearGradient(colors: [.blue, .cyan], startPoint: .topLeading, endPoint: .bottomTrailing)
-        case "wellness":
-            return LinearGradient(colors: [.green, .mint], startPoint: .topLeading, endPoint: .bottomTrailing)
-        case "guests":
-            return LinearGradient(colors: [.purple, .pink], startPoint: .topLeading, endPoint: .bottomTrailing)
-        case "investor":
-            return LinearGradient(colors: [.orange, .yellow], startPoint: .topLeading, endPoint: .bottomTrailing)
-        case "architecture":
-            return LinearGradient(colors: [.indigo, .blue], startPoint: .topLeading, endPoint: .bottomTrailing)
-        default:
-            return LinearGradient(colors: [.gray, .gray.opacity(0.5)], startPoint: .topLeading, endPoint: .bottomTrailing)
-        }
-    }
-    
+
     var body: some View {
         Button(action: action) {
             VStack(alignment: .leading, spacing: 12) {
-                // Card Image Area with Liquid Glass Effect
+                // Card Image Area
                 ZStack {
-                    // Background gradient
-                    RoundedRectangle(cornerRadius: 20)
-                        .fill(scenarioGradient)
+                    // Background gradient — warm brand palette
+                    RoundedRectangle(cornerRadius: CornerRadius.card)
+                        .fill(
+                            LinearGradient(
+                                colors: viewModel.gradientColors(for: scenario.slug),
+                                startPoint: .topLeading,
+                                endPoint: .bottomTrailing
+                            )
+                        )
                         .frame(height: 180)
-                    
-                    // Glass overlay
-                    RoundedRectangle(cornerRadius: 20)
+
+                    // Glass overlay for depth
+                    RoundedRectangle(cornerRadius: CornerRadius.card)
                         .fill(.ultraThinMaterial)
                         .frame(height: 180)
-                    
-                    // Icon
-                    VStack {
-                        Image(systemName: scenarioIcon)
-                            .font(.system(size: 50))
-                            .foregroundStyle(.white)
-                            .shadow(color: .black.opacity(0.3), radius: 10)
-                        
+
+                    // Icon and video count
+                    VStack(spacing: 16) {
+                        Image(systemName: viewModel.iconName(for: scenario.slug))
+                            .font(.system(size: 50, weight: .light))
+                            .foregroundStyle(.ink.opacity(0.8))
+
                         if videoCount > 0 {
                             HStack(spacing: 4) {
                                 Image(systemName: "play.circle.fill")
                                     .font(.caption)
-                                Text("\(videoCount) videos")
-                                    .font(.caption)
-                                    .fontWeight(.medium)
+                                Text("\(videoCount) видео")
+                                    .font(.labelCaps)
+                                    .tracking(1.2)
+                                    .textCase(.uppercase)
                             }
-                            .foregroundStyle(.white.opacity(0.9))
+                            .foregroundStyle(.ink.opacity(0.7))
                             .padding(.horizontal, 12)
                             .padding(.vertical, 6)
                             .background(.ultraThinMaterial)
                             .clipShape(Capsule())
-                            .shadow(radius: 4)
                         }
                     }
-                    
-                    // Shimmer effect on press
+
+                    // Shimmer on press
                     if isPressed {
-                        RoundedRectangle(cornerRadius: 20)
-                            .fill(.white.opacity(0.2))
+                        RoundedRectangle(cornerRadius: CornerRadius.card)
+                            .fill(Color.terracotta.opacity(0.08))
                             .frame(height: 180)
+                            .transition(.opacity)
                     }
                 }
-                
+
                 // Title and description
                 VStack(alignment: .leading, spacing: 4) {
                     Text(scenario.title)
-                        .font(.title3)
-                        .fontWeight(.semibold)
-                        .foregroundStyle(.primary)
+                        .font(.displaySmall)
+                        .foregroundStyle(.ink)
                         .lineLimit(2)
-                    
-                    Text(scenarioDescription)
-                        .font(.caption)
-                        .foregroundStyle(.secondary)
+
+                    Text(viewModel.scenarioDescription(for: scenario))
+                        .font(.bodySmall2)
+                        .foregroundStyle(.mid)
                         .lineLimit(2)
                 }
                 .padding(.horizontal, 4)
             }
             .padding(8)
             .background(
-                RoundedRectangle(cornerRadius: 24)
+                RoundedRectangle(cornerRadius: 16)
                     .fill(.background)
-                    .shadow(color: .black.opacity(0.1), radius: 10, x: 0, y: 4)
             )
-            .scaleEffect(isPressed ? 0.95 : 1.0)
+            .overlay(
+                RoundedRectangle(cornerRadius: 16)
+                    .stroke(isPressed ? Color.terracotta.opacity(0.5) : Color.glassStroke, lineWidth: isPressed ? 1.5 : 0.5)
+            )
+            .scaleEffect(isPressed ? 0.97 : 1.0)
+            .animation(.spring(response: 0.3, dampingFraction: 0.7), value: isPressed)
         }
         .buttonStyle(.plain)
-        .simultaneousGesture(
-            DragGesture(minimumDistance: 0)
-                .onChanged { _ in
-                    withAnimation(.easeInOut(duration: 0.1)) {
-                        isPressed = true
-                    }
-                }
-                .onEnded { _ in
-                    withAnimation(.easeInOut(duration: 0.1)) {
-                        isPressed = false
-                    }
-                }
-        )
-    }
-    
-    var scenarioDescription: String {
-        switch scenario.slug {
-        case "family": return "School, playground, safety, community"
-        case "wellness": return "Spa, forest walks, no city noise"
-        case "guests": return "Hotel room booking instead of guest suite"
-        case "investor": return "Liquidity, limited supply, unique location"
-        case "architecture": return "Materials, light, panoramic glazing"
-        default: return scenario.slug
-        }
+        .onLongPressGesture(minimumDuration: .infinity, pressing: { pressing in
+            isPressed = pressing
+        }, perform: {})
     }
 }

@@ -1,562 +1,197 @@
 {
-  "sourceLanguage" : "en",
+  "sourceLanguage" : "ru",
   "strings" : {
-    "%lld Items" : {
-      "comment" : "Header title for a list that contains the number of items",
-      "localizations" : {
-        "es" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "%lld elementos"
-          }
-        },
-        "fr" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "%lld éléments"
-          }
-        },
-        "ja" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "アイテム数 %lld"
-          }
-        },
-        "zh-Hans" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "%lld 个条目"
-          }
-        }
-      }
+    "Сценарии" : {
+      "comment" : "Заголовок вкладки с сетком сценариев"
     },
-    "Add" : {
-      "comment" : "Button in items list that will cause a new item to be added",
-      "localizations" : {
-        "es" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Añadir"
-          }
-        },
-        "fr" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Ajouter"
-          }
-        },
-        "ja" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "追加"
-          }
-        },
-        "zh-Hans" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "添加"
-          }
-        }
-      }
+    "Библиотека" : {
+      "comment" : "Заголовок вкладки с библиотекой видео"
     },
-    "Appearance" : {
-      "comment" : "Settings select label for the interface style of the controls (light, dark, or default)",
-      "localizations" : {
-        "es" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Apariencia"
-          }
-        },
-        "fr" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Apparence"
-          }
-        },
-        "ja" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "外観"
-          }
-        },
-        "zh-Hans" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "外观"
-          }
-        }
-      }
+    "Настройки" : {
+      "comment" : "Заголовок вкладки настроек"
     },
-    "Cancel" : {
-      "comment" : "Button title indicating that the operation should be cancelled",
-      "localizations" : {
-        "es" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Cancelar"
-          }
-        },
-        "fr" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Annuler"
-          }
-        },
-        "ja" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "キャンセル"
-          }
-        },
-        "zh-Hans" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "取消"
-          }
-        }
-      }
+    "Мещерский парк" : {
+      "comment" : "Название жилого комплекса"
     },
-    "Dark" : {
-      "comment" : "Menu item indicating that the appearance should be in dark mode",
-      "localizations" : {
-        "es" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Oscuro"
-          }
-        },
-        "fr" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Sombre"
-          }
-        },
-        "ja" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "ダーク"
-          }
-        },
-        "zh-Hans" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "深色"
-          }
-        }
-      }
+    "Выберите сценарий образа жизни" : {
+      "comment" : "Подзаголовок на главном экране"
     },
-    "Date" : {
-      "comment" : "Item editor form label for the Date field",
-      "localizations" : {
-        "es" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Fecha"
-          }
-        },
-        "fr" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Date"
-          }
-        },
-        "ja" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "日付"
-          }
-        },
-        "zh-Hans" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "日期"
-          }
-        }
-      }
+    "Нет доступных сценариев" : {
+      "comment" : "Пустое состояние — нет сценариев"
     },
-    "Favorite" : {
-      "comment" : "Item editor title label for marking the item as a favorite",
-      "localizations" : {
-        "es" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Favorito"
-          }
-        },
-        "fr" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Favori"
-          }
-        },
-        "ja" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "お気に入り"
-          }
-        },
-        "zh-Hans" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "收藏"
-          }
-        }
-      }
+    "Сценарии появятся здесь после добавления" : {
+      "comment" : "Описание пустого состояния — сценарии"
     },
-    "Hello [%@](https://skip.dev)!" : {
-      "comment" : "Welcome tab contents",
-      "localizations" : {
-        "es" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "¡Hola [%@](https://skip.dev)!"
-          }
-        },
-        "fr" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Bonjour [%@](https://skip.dev)!"
-          }
-        },
-        "ja" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "こんにちは [%@](https://skip.dev)"
-          }
-        },
-        "zh-Hans" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "你好 [%@](https://skip.dev)"
-          }
-        }
-      }
+    "Нет видео" : {
+      "comment" : "Пустое состояние — нет видео в библиотеке"
     },
-    "Home" : {
-      "comment" : "Tab bar item title for the Home tab",
-      "localizations" : {
-        "es" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Inicio"
-          }
-        },
-        "fr" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Accueil"
-          }
-        },
-        "ja" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "ホーム"
-          }
-        },
-        "zh-Hans" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "首页"
-          }
-        }
-      }
+    "Видео появятся здесь после загрузки в библиотеку" : {
+      "comment" : "Описание пустого состояния — видео"
     },
-    "Light" : {
-      "comment" : "Menu item indicating that the appearance should be in light mode",
-      "localizations" : {
-        "es" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Claro"
-          }
-        },
-        "fr" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Clair"
-          }
-        },
-        "ja" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "明るい"
-          }
-        },
-        "zh-Hans" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "浅色"
-          }
-        }
-      }
+    "Нет доступных видео" : {
+      "comment" : "Пустое состояние видео в категории"
     },
-    "Name" : {
-      "comment" : "Placeholder title for the Name field in a form",
-      "localizations" : {
-        "es" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Nombre"
-          }
-        },
-        "fr" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Nom"
-          }
-        },
-        "ja" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "名前"
-          }
-        },
-        "zh-Hans" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "姓名"
-          }
-        }
-      }
+    "Поиск сценариев" : {
+      "comment" : "Подсказка в поле поиска"
     },
-    "Notes" : {
-      "comment" : "Item editor form label for the Notes field",
-      "localizations" : {
-        "es" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Notas"
-          }
-        },
-        "fr" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Notes"
-          }
-        },
-        "ja" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "ノート"
-          }
-        },
-        "zh-Hans" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "笔记"
-          }
-        }
-      }
+    "Видео не выбрано" : {
+      "comment" : "Пустое состояние плеера"
     },
-    "Powered by [Skip](https://skip.dev)" : {
-      "comment" : "Link markdown text for the Powered by… label",
-      "localizations" : {
-        "es" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Impulsado por [Skip](https://skip.dev)"
-          }
-        },
-        "fr" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Fonctionnalités offertes par [Skip](https://skip.dev)"
-          }
-        },
-        "ja" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "[Skip](https://skip.dev) を使って動かしています"
-          }
-        },
-        "zh-Hans" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "由[Skip](https://skip.dev)提供支持"
-          }
-        }
-      }
+    "Выберите сценарий для воспроизведения видео" : {
+      "comment" : "Описание пустого состояния плеера"
     },
-    "Save" : {
-      "comment" : "Button title indicating that the current contents should be saved",
-      "localizations" : {
-        "es" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Guardar"
-          }
-        },
-        "fr" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Enregistrer"
-          }
-        },
-        "ja" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "保存"
-          }
-        },
-        "zh-Hans" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "保存"
-          }
-        }
-      }
+    "Видео" : {
+      "comment" : "Заголовок видео по умолчанию"
     },
-    "Settings" : {
-      "comment" : "Tab bar item title for the Settings tab",
-      "localizations" : {
-        "es" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Configuración"
-          }
-        },
-        "fr" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Paramètres"
-          }
-        },
-        "ja" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "設定"
-          }
-        },
-        "zh-Hans" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "设置"
-          }
-        }
-      }
+    "Видеоплеер" : {
+      "comment" : "Заголовок плеера на macOS"
     },
-    "System" : {
-      "comment" : "Menu item indicating that the appearance should be in the default system mode",
-      "localizations" : {
-        "es" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Sistema"
-          }
-        },
-        "fr" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Système"
-          }
-        },
-        "ja" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "システム"
-          }
-        },
-        "zh-Hans" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "系统"
-          }
-        }
-      }
+    "Без названия" : {
+      "comment" : "Название видео по умолчанию"
     },
-    "Title" : {
-      "comment" : "Label for the item editor form indicating the title of the item",
-      "localizations" : {
-        "es" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Título"
-          }
-        },
-        "fr" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Titre"
-          }
-        },
-        "ja" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "タイトル"
-          }
-        },
-        "zh-Hans" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "标题"
-          }
-        }
-      }
+    "Воспроизведение доступно на iOS/iPadOS и Android" : {
+      "comment" : "Подсказка на macOS"
     },
-    "Version %@ (%@)" : {
-      "comment" : "Settings label showing the current version of the app",
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "new",
-            "value" : "Version %1$@ (%2$@)"
-          }
-        },
-        "es" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Versión %1$@ (%2$@)"
-          }
-        },
-        "fr" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Version %1$@ (%2$@)"
-          }
-        },
-        "ja" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "バージョン %1$@ (%2$@)"
-          }
-        },
-        "zh-Hans" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "版本 %1$@ (%2$@)"
-          }
-        }
-      }
+    "Видеоплеер (macOS)" : {
+      "comment" : "Заголовок заглушки плеера на macOS"
     },
-    "Welcome" : {
-      "comment" : "Tab bar item title for the Welcome tab",
-      "localizations" : {
-        "es" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Bienvenido"
-          }
-        },
-        "fr" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Bienvenue"
-          }
-        },
-        "ja" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "ようこそ"
-          }
-        },
-        "zh-Hans" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "欢迎"
-          }
-        }
-      }
+    "Видео недоступно" : {
+      "comment" : "Заголовок ошибки видео"
+    },
+    "Подробности" : {
+      "comment" : "Секция деталей видео"
+    },
+    "Название" : {
+      "comment" : "Название видео в форме"
+    },
+    "Длительность" : {
+      "comment" : "Метка длительности видео"
+    },
+    "%lld сек." : {
+      "comment" : "Длительность в секундах"
+    },
+    "Порядок" : {
+      "comment" : "Порядковый номер видео"
+    },
+    "Статус" : {
+      "comment" : "Статус активности видео"
+    },
+    "Активно" : {
+      "comment" : "Статус активного видео"
+    },
+    "Неактивно" : {
+      "comment" : "Статус неактивного видео"
+    },
+    "Ошибка соединения" : {
+      "comment" : "Заголовок ошибки подключения"
+    },
+    "Проверьте подключение к интернету и попробуйте снова." : {
+      "comment" : "Описание ошибки соединения"
+    },
+    "Повторить" : {
+      "comment" : "Кнопка повтора при ошибке"
+    },
+    "Загрузка витрины..." : {
+      "comment" : "Текст загрузки"
+    },
+    "%lld видео" : {
+      "comment" : "Количество видео в сценарии"
+    },
+    "Без названия видео" : {
+      "comment" : "Название видео по умолчанию в списке"
+    },
+    "О приложении" : {
+      "comment" : "Секция информации о приложении"
+    },
+    "Имя" : {
+      "comment" : "Метка имени приложения"
+    },
+    "Showcase Мещерский парк" : {
+      "comment" : "Название приложения"
+    },
+    "Версия" : {
+      "comment" : "Метка версии"
+    },
+    "Сборка" : {
+      "comment" : "Метка сборки"
+    },
+    "Платформа" : {
+      "comment" : "Метка платформы"
+    },
+    "Статистика контента" : {
+      "comment" : "Секция статистики"
+    },
+    "Всего видео" : {
+      "comment" : "Общее количество видео"
+    },
+    "Подключение" : {
+      "comment" : "Секция подключения"
+    },
+    "Внешний дисплей" : {
+      "comment" : "AirPlay подключение"
+    },
+    "Готов" : {
+      "comment" : "Статус готовности"
+    },
+    "Подключен" : {
+      "comment" : "Статус подключения Supabase"
+    },
+    "Не в сети" : {
+      "comment" : "Статус отключения"
+    },
+    "Последняя синхр." : {
+      "comment" : "Последняя синхронизация"
+    },
+    "Управление данными" : {
+      "comment" : "Секция управления данными"
+    },
+    "Перезагрузить контент" : {
+      "comment" : "Кнопка перезагрузки контента"
+    },
+    "Синхронизация с сервером" : {
+      "comment" : "Кнопка синхронизации"
+    },
+    "Поддержка" : {
+      "comment" : "Секция поддержки"
+    },
+    "Панель управления Supabase" : {
+      "comment" : "Ссылка на дашборд Supabase"
+    },
+    "Разработчик" : {
+      "comment" : "Метка разработчика"
+    },
+    "Клиент" : {
+      "comment" : "Метка клиента"
+    },
+    "О проекте" : {
+      "comment" : "Секция о проекте"
+    },
+    "Премиальный плеер для отдела продаж жилого комплекса Мещерский парк в Москве." : {
+      "comment" : "Описание приложения"
+    },
+    "Это перезагрузит все сценарии и видео с сервера." : {
+      "comment" : "Сообщение подтверждения перезагрузки"
+    },
+    "Отмена" : {
+      "comment" : "Кнопка отмены"
+    },
+    "Перезагрузить" : {
+      "comment" : "Кнопка подтверждения перезагрузки"
+    },
+    "Школа, площадка, безопасность, комьюнити" : {
+      "comment" : "Описание сценария Семья"
+    },
+    "Спа, лесные прогулки, тишина" : {
+      "comment" : "Описание сценария Тишина и здоровье"
+    },
+    "Гостиничный номер вместо гостевой комнаты" : {
+      "comment" : "Описание сценария Гости"
+    },
+    "Ликвидность, ограниченное предложение, уникальная локация" : {
+      "comment" : "Описание сценария Инвестор"
+    },
+    "Материалы, свет, панорамное остекление" : {
+      "comment" : "Описание сценария Архитектура"
     }
   },
   "version" : "1.0"

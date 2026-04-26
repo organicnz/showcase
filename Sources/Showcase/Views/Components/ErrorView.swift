@@ -3,46 +3,60 @@ import SwiftUI
 struct ErrorView: View {
     let error: Error
     let retryAction: () -> Void
-    
+    @State internal var isAnimating = false
+
     var body: some View {
-        ContentUnavailableView {
-            Label {
-                Text("Connection Error")
-                    .font(.title2)
-                    .fontWeight(.semibold)
-            } icon: {
+        VStack(spacing: 32) {
+            VStack(spacing: 20) {
                 ZStack {
                     Circle()
-                        .fill(.red.opacity(0.1))
+                        .fill(Color.terracotta.opacity(0.1))
                         .frame(width: 80, height: 80)
-                    
+                        .scaleEffect(isAnimating ? 1.1 : 1.0)
+                        .animation(.easeInOut(duration: 1.5).repeatForever(autoreverses: true), value: isAnimating)
+
                     Image(systemName: "wifi.exclamationmark")
-                        .font(.system(size: 40))
-                        .foregroundStyle(.red)
+                        .font(.system(size: 40, weight: .light))
+                        .foregroundStyle(.terracotta)
                 }
+
+                Text("Ошибка соединения")
+                    .font(.displaySmall)
+                    .foregroundStyle(.ink)
             }
-        } description: {
+
             VStack(spacing: 16) {
                 Text(error.localizedDescription)
-                    .font(.body)
-                    .foregroundStyle(.secondary)
+                    .font(.bodyLarge)
+                    .foregroundStyle(.mid)
                     .multilineTextAlignment(.center)
                     .padding(.horizontal)
-                
-                Text("Please check your internet connection and try again.")
-                    .font(.caption)
-                    .foregroundStyle(.tertiary)
+
+                Text("Проверьте подключение к интернету и попробуйте снова.")
+                    .font(.bodySmall2)
+                    .foregroundStyle(.mid.opacity(0.6))
             }
-        } actions: {
+
             Button(action: retryAction) {
-                HStack {
+                HStack(spacing: 8) {
                     Image(systemName: "arrow.clockwise")
-                    Text("Retry")
+                    Text("Повторить")
                 }
-                .font(.headline)
+                .font(.bodyLarge)
+                .fontWeight(.medium)
+                .foregroundStyle(.white)
+                .padding(.horizontal, 32)
+                .padding(.vertical, 12)
+                .background(Color.terracotta)
+                .clipShape(RoundedRectangle(cornerRadius: CornerRadius.button))
             }
-            .buttonStyle(.borderedProminent)
-            .controlSize(.large)
+            .buttonStyle(.plain)
+        }
+        .padding()
+        .frame(maxWidth: .infinity, maxHeight: .infinity)
+        .background(Color.soft.ignoresSafeArea())
+        .onAppear {
+            isAnimating = true
         }
     }
 }

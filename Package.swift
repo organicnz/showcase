@@ -4,7 +4,7 @@ import PackageDescription
 
 let package = Package(
     name: "showcase-app",
-    defaultLocalization: "en",
+    defaultLocalization: "ru",
     platforms: [.iOS(.v17), .macOS(.v14)],
     products: [
         .library(name: "Showcase", type: .dynamic, targets: ["Showcase"]),

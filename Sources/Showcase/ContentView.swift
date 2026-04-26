@@ -3,62 +3,102 @@ import SkipFuse
 
 struct ContentView: View {
     @State var viewModel = ViewModel()
-    @State var selectedTab: Int = 0
+    @State var showLibrary = false
+    @State var showSettings = false
 
     var body: some View {
         Group {
-            if viewModel.isLoading {
+            switch viewModel.loadState {
+            case .idle, .loading:
                 LoadingView()
-            } else if let error = viewModel.error {
+
+            case .failed(let error):
                 ErrorView(error: error, retryAction: {
                     Task { await viewModel.loadData() }
                 })
-            } else {
-                TabView(selection: $selectedTab) {
-                    NavigationStack {
-                        ScenarioGridView()
-                            .navigationTitle("Scenarios")
-                            #if !os(macOS)
-                            .navigationBarTitleDisplayMode(.inline)
-                            #endif
-                    }
-                    .tabItem {
-                        Label("Scenarios", systemImage: "square.grid.2x2.fill")
-                    }
-                    .tag(0)
 
+            case .loaded:
+                NavigationStack {
+                    ScenarioGridView()
+                        #if !os(macOS)
+                        .navigationBarTitleDisplayMode(.inline)
+                        #endif
+                        .toolbar {
+                            ToolbarItem(placement: .principal) {
+                                LogoView(size: 32)
+                            }
+
+                            #if !os(macOS)
+                            ToolbarItem(placement: .topBarTrailing) {
+                                HStack(spacing: 16) {
+                                    Button(action: { showLibrary = true }) {
+                                        Image(systemName: "play.rectangle.on.rectangle")
+                                            .foregroundStyle(.ink)
+                                    }
+
+                                    Button(action: { showSettings = true }) {
+                                        Image(systemName: "gearshape")
+                                            .foregroundStyle(.mid)
+                                    }
+                                }
+                            }
+                            #else
+                            ToolbarItem(placement: .automatic) {
+                                HStack(spacing: 16) {
+                                    Button(action: { showLibrary = true }) {
+                                        Image(systemName: "play.rectangle.on.rectangle")
+                                    }
+
+                                    Button(action: { showSettings = true }) {
+                                        Image(systemName: "gearshape")
+                                    }
+                                }
+                            }
+                            #endif
+                        }
+                        #if !os(macOS)
+                        .toolbarBackground(.ultraThinMaterial, for: .navigationBar)
+                        #endif
+                }
+                .tint(.terracotta)
+                .sheet(isPresented: $showLibrary) {
                     NavigationStack {
                         LibraryView()
-                            .navigationTitle("Library")
+                            .navigationTitle("Библиотека")
                             #if !os(macOS)
                             .navigationBarTitleDisplayMode(.inline)
+                            .toolbarBackground(.ultraThinMaterial, for: .navigationBar)
                             #endif
+                            .toolbar {
+                                ToolbarItem(placement: .cancellationAction) {
+                                    Button("Готово") { showLibrary = false }
+                                }
+                            }
                     }
-                    .tabItem {
-                        Label("Library", systemImage: "play.rectangle.on.rectangle.fill")
-                    }
-                    .tag(1)
-
+                    .environment(viewModel)
+                    .tint(.terracotta)
+                }
+                .sheet(isPresented: $showSettings) {
                     NavigationStack {
                         SettingsView()
-                            .navigationTitle("Settings")
+                            .navigationTitle("Настройки")
                             #if !os(macOS)
                             .navigationBarTitleDisplayMode(.inline)
+                            .toolbarBackground(.ultraThinMaterial, for: .navigationBar)
                             #endif
+                            .toolbar {
+                                ToolbarItem(placement: .cancellationAction) {
+                                    Button("Готово") { showSettings = false }
+                                }
+                            }
                     }
-                    .tabItem {
-                        Label("Settings", systemImage: "gearshape.fill")
-                    }
-                    .tag(2)
+                    .environment(viewModel)
+                    .tint(.terracotta)
                 }
-                .accentColor(Color.accentColor)
             }
         }
         .environment(viewModel)
         .task {
-            await viewModel.loadData()
-        }
-        .refreshable {
             await viewModel.loadData()
         }
     }

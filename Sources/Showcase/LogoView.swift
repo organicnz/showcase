@@ -1,50 +1,67 @@
 import SwiftUI
 
 public struct LogoView: View {
-    public init() {}
-    
+    let size: CGFloat
+
+    public init(size: CGFloat = 100) {
+        self.size = size
+    }
+
+    private var playOuterSize: CGSize {
+        CGSize(width: size * 0.44, height: size * 0.50)
+    }
+
+    private var playInnerSize: CGSize {
+        CGSize(width: size * 0.20, height: size * 0.24)
+    }
+
     public var body: some View {
         ZStack {
             // Glass Backdrop
             Circle()
                 .fill(.thinMaterial)
-                .shadow(color: .black.opacity(0.1), radius: 10, x: 0, y: 5)
                 .overlay(
                     Circle()
-                        .stroke(.white.opacity(0.2), lineWidth: 0.5)
+                        .stroke(Color.glassStroke, lineWidth: 0.5)
                 )
-            
-            // Premium Golden Banana Shape
-            ZStack {
-                BananaShape()
-                    .fill(LinearGradient(colors: [.yellow, .orange], startPoint: .topLeading, endPoint: .bottomTrailing))
-                    .frame(width: 50, height: 50)
-                    .rotationEffect(.degrees(-15))
-            }
-            .opacity(0.9)
-            
-            // Play Icon (Showcase Indicator)
-            Image(systemName: "play.fill")
-                .font(.system(size: 16, weight: .bold))
-                .foregroundStyle(.white)
-                .shadow(radius: 2)
-                .offset(x: 2, y: 2)
+
+            // Outer Architectural Play Button
+            PlayShape()
+                .stroke(
+                    LinearGradient(
+                        colors: [.ochre, .terracotta],
+                        startPoint: .topLeading,
+                        endPoint: .bottomTrailing
+                    ),
+                    style: StrokeStyle(lineWidth: size > 50 ? 2.5 : 1.5, lineJoin: .round)
+                )
+                .frame(width: playOuterSize.width, height: playOuterSize.height)
+                .offset(x: size * 0.04)
+
+            // Inner Solid Play Button
+            PlayShape()
+                .fill(
+                    LinearGradient(
+                        colors: [.ochre, .terracotta],
+                        startPoint: .topLeading,
+                        endPoint: .bottomTrailing
+                    )
+                )
+                .frame(width: playInnerSize.width, height: playInnerSize.height)
+                .offset(x: size * 0.04)
         }
-        .frame(width: 100, height: 100)
+        .frame(width: size, height: size)
     }
 }
 
-private struct BananaShape: Shape {
+private struct PlayShape: Shape {
     func path(in rect: CGRect) -> Path {
         var path = Path()
-        // A simple curved banana-like shape
-        path.move(to: CGPoint(x: rect.minX + 10, y: rect.minY + 10))
-        path.addCurve(to: CGPoint(x: rect.maxX - 10, y: rect.maxY - 10),
-                      control1: CGPoint(x: rect.maxX, y: rect.minY),
-                      control2: CGPoint(x: rect.maxX, y: rect.midY))
-        path.addCurve(to: CGPoint(x: rect.minX + 10, y: rect.minY + 10),
-                      control1: CGPoint(x: rect.midX, y: rect.maxY),
-                      control2: CGPoint(x: rect.minX, y: rect.midY))
+        path.move(to: CGPoint(x: rect.minX, y: rect.minY))
+        path.addLine(to: CGPoint(x: rect.maxX, y: rect.midY))
+        path.addLine(to: CGPoint(x: rect.minX, y: rect.maxY))
+        path.closeSubpath()
         return path
     }
 }
+

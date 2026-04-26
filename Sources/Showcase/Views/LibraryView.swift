@@ -4,7 +4,7 @@ struct LibraryView: View {
     @Environment(ViewModel.self) var viewModel: ViewModel
     @State internal var showVideoPlayer = false
     @State internal var searchText = ""
-    
+
     var filteredScenarios: [Scenario] {
         if searchText.isEmpty {
             return viewModel.scenarios
@@ -14,7 +14,7 @@ struct LibraryView: View {
             scenario.slug.localizedCaseInsensitiveContains(searchText)
         }
     }
-    
+
     var body: some View {
         Group {
             if viewModel.hasVideos {
@@ -25,9 +25,9 @@ struct LibraryView: View {
                             if videos.isEmpty {
                                 HStack {
                                     Image(systemName: "video.slash")
-                                        .foregroundStyle(.secondary)
-                                    Text("No videos available")
-                                        .foregroundStyle(.secondary)
+                                        .foregroundStyle(.mid)
+                                    Text("Нет доступных видео")
+                                        .foregroundStyle(.mid)
                                 }
                                 .padding(.vertical, 8)
                             } else {
@@ -40,23 +40,23 @@ struct LibraryView: View {
                             }
                         } header: {
                             HStack {
-                                Image(systemName: scenarioIcon(for: scenario.slug))
-                                    .foregroundStyle(Color.accentColor)
+                                Image(systemName: viewModel.iconName(for: scenario.slug))
+                                    .foregroundStyle(.terracotta)
                                 Text(scenario.title)
                                 Spacer()
                                 Text("\(viewModel.videosForScenario(scenario).count)")
                                     .font(.caption)
-                                    .foregroundStyle(.secondary)
+                                    .foregroundStyle(.mid)
                             }
                         }
                     }
                 }
-                .searchable(text: $searchText, prompt: "Search scenarios")
+                .searchable(text: $searchText, prompt: "Поиск сценариев")
             } else {
-                ContentUnavailableView(
-                    "No Videos Yet",
+                EmptyStateView(
+                    "Нет видео",
                     systemImage: "play.rectangle.on.rectangle",
-                    description: Text("Videos will appear here once they are uploaded to the library")
+                    description: "Видео появятся здесь после загрузки в библиотеку"
                 )
             }
         }
@@ -71,16 +71,5 @@ struct LibraryView: View {
                 .environment(viewModel)
         }
         #endif
-    }
-    
-    private func scenarioIcon(for slug: String) -> String {
-        switch slug {
-        case "family": return "figure.2.and.child.holdinghands"
-        case "wellness": return "leaf.fill"
-        case "guests": return "building.2.fill"
-        case "investor": return "chart.line.uptrend.xyaxis"
-        case "architecture": return "building.columns.fill"
-        default: return "sparkles"
-        }
     }
 }

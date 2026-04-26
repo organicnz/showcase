@@ -4,49 +4,62 @@ struct VideoRow: View {
     let video: Video
     let action: () -> Void
     @Environment(ViewModel.self) var viewModel: ViewModel
-    
+
     var body: some View {
         Button(action: action) {
             HStack(spacing: 12) {
                 // Thumbnail placeholder
                 ZStack {
-                    RoundedRectangle(cornerRadius: 8)
-                        .fill(Color.accentColor.opacity(0.2))
+                    RoundedRectangle(cornerRadius: CornerRadius.small)
+                        .fill(
+                            LinearGradient(
+                                colors: [Color.ochre.opacity(0.15), Color.terracotta.opacity(0.05)],
+                                startPoint: .topLeading,
+                                endPoint: .bottomTrailing
+                            )
+                        )
                         .frame(width: 80, height: 60)
-                    
+
                     Image(systemName: "play.circle.fill")
                         .font(.title2)
-                        .foregroundStyle(Color.accentColor)
+                        .foregroundStyle(Color.terracotta.opacity(0.7))
                 }
-                
+
                 // Video info
                 VStack(alignment: .leading, spacing: 4) {
-                    Text(video.title ?? "Untitled Video")
-                        .font(.body)
-                        .fontWeight(.medium)
-                        .foregroundStyle(.primary)
-                    
+                    Text(video.title ?? "Без названия")
+                        .font(.bodyLarge)
+                        .foregroundStyle(.ink)
+                        .lineLimit(1)
+
                     HStack(spacing: 12) {
                         if let duration = video.durationSec {
-                            Label("\(duration)s", systemImage: "clock")
-                                .font(.caption)
-                                .foregroundStyle(.secondary)
+                            Label(formatDuration(duration), systemImage: "clock")
+                                .font(.bodySmall2)
+                                .foregroundStyle(.mid)
                         }
-                        
-                        Label("Order \(video.orderIndex)", systemImage: "number")
-                            .font(.caption)
-                            .foregroundStyle(.secondary)
+
+                        Label("#\(video.orderIndex)", systemImage: "number")
+                            .font(.bodySmall2)
+                            .foregroundStyle(.mid)
                     }
                 }
-                
+
                 Spacer()
-                
+
                 Image(systemName: "chevron.right")
                     .font(.caption)
-                    .foregroundStyle(.tertiary)
+                    .foregroundStyle(.mid.opacity(0.5))
             }
             .padding(.vertical, 4)
         }
         .buttonStyle(.plain)
+    }
+
+    /// Formats seconds into a human-readable string (e.g., "0:28").
+    private func formatDuration(_ seconds: Int) -> String {
+        let mins = seconds / 60
+        let secs = seconds % 60
+        return "\(mins):\(String(format: "%02d", secs))"
     }
 }
