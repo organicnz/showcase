@@ -18,28 +18,47 @@ struct ContentView: View {
                     NavigationStack {
                         ScenarioGridView()
                             .navigationTitle("Scenarios")
+                            #if !os(macOS)
+                            .navigationBarTitleDisplayMode(.inline)
+                            #endif
                     }
-                    .tabItem { Label("Scenarios", systemImage: "square.grid.2x2.fill") }
+                    .tabItem {
+                        Label("Scenarios", systemImage: "square.grid.2x2.fill")
+                    }
                     .tag(0)
 
                     NavigationStack {
                         LibraryView()
                             .navigationTitle("Library")
+                            #if !os(macOS)
+                            .navigationBarTitleDisplayMode(.inline)
+                            #endif
                     }
-                    .tabItem { Label("Library", systemImage: "play.rectangle.on.rectangle.fill") }
+                    .tabItem {
+                        Label("Library", systemImage: "play.rectangle.on.rectangle.fill")
+                    }
                     .tag(1)
 
                     NavigationStack {
                         SettingsView()
                             .navigationTitle("Settings")
+                            #if !os(macOS)
+                            .navigationBarTitleDisplayMode(.inline)
+                            #endif
                     }
-                    .tabItem { Label("Settings", systemImage: "gearshape.fill") }
+                    .tabItem {
+                        Label("Settings", systemImage: "gearshape.fill")
+                    }
                     .tag(2)
                 }
+                .accentColor(Color.accentColor)
             }
         }
         .environment(viewModel)
         .task {
+            await viewModel.loadData()
+        }
+        .refreshable {
             await viewModel.loadData()
         }
     }

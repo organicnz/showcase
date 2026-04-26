@@ -1,0 +1,54 @@
+{
+  "mcpServers": {
+    "supabase-showcase": {
+      "command": "npx",
+      "args": [
+        "-y",
+        "@supabase/mcp-server-supabase"
+      ],
+      "env": {
+        "SUPABASE_PROJECT_REF": "smyfjmdjzfwdehynwfep",
+        "SUPABASE_ACCESS_TOKEN": "sbp_v0_f43d5c23af163590474b28e2d22d9710b4e8d757"
+      },
+      "autoApprove": [
+        "list_tables",
+        "get_advisors",
+        "apply_migration",
+        "list_migrations",
+        "execute_sql",
+        "search_docs",
+        "get_project_url",
+        "list_edge_functions",
+        "deploy_edge_function",
+        "get_logs",
+        "get_edge_function",
+        "get_publishable_keys",
+        "list_extensions",
+        "list_extensions",
+        "generate_typescript_types",
+        "list_auth_users",
+        "list_buckets",
+        "list_files",
+        "upload_file",
+        "delete_file",
+        "list_all_objects",
+        "get_object",
+        "upload_object",
+        "delete_object",
+        "list_branches",
+        "create_branch",
+        "delete_branch",
+        "reset_branch",
+        "get_branch_status",
+        "get_branch_diff",
+        "apply_branch_diff",
+        "get_branch_info",
+        "execute_sql",
+        "deploy_edge_function",
+        "get_logs",
+        "list_projects"
+      ],
+      "disabled": false
+    }
+  }
+}
