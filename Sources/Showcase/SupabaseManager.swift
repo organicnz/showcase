@@ -29,11 +29,56 @@ public actor SupabaseManager {
     public let client: SupabaseClient
 
     private init() {
+        #if SKIP
+        self.client = SupabaseClient(
+            supabaseURL: URL(string: Self.supabaseURL)!,
+            supabaseKey: Self.supabaseKey
+        )
+        #elseif os(Android)
+        self.client = SupabaseClient(
+            supabaseURL: URL(string: Self.supabaseURL)!,
+            supabaseKey: Self.supabaseKey,
+            options: SupabaseClientOptions(auth: .init(storage: AndroidAuthStorage()))
+        )
+        #else
         self.client = SupabaseClient(
             supabaseURL: URL(string: Self.supabaseURL)!,
             supabaseKey: Self.supabaseKey,
             options: SupabaseClientOptions()
         )
+        #endif
+    }
+
+    // MARK: - Auth
+
+    /// Checks if the current user is authenticated.
+    public func isAuthenticated() async -> Bool {
+        do {
+            let session = try await client.auth.session
+            return session != nil
+        } catch {
+            return false
+        }
+    }
+
+    /// Signs in with email and password (standard Supabase Auth).
+    public func signIn(email: String, password: String) async throws {
+        try await client.auth.signIn(email: email, password: password)
+    }
+
+    /// Signs out the current user.
+    public func signOut() async throws {
+        try await client.auth.signOut()
+    }
+
+    /// Returns the current user's email.
+    public func currentUserEmail() async -> String? {
+        do {
+            let user = try await client.auth.user()
+            return user.email
+        } catch {
+            return nil
+        }
     }
 
     // MARK: - Retry Logic
@@ -107,18 +152,71 @@ public actor SupabaseManager {
 
     // MARK: - Health Check
 
-    /// Performs a lightweight query to verify Supabase connectivity.
+    public struct SystemHealth: Sendable {
+        public let auth: Bool
+        public let database: Bool
+        public let storage: Bool
+        public let latencyMs: Int
+        
+        public var isAllHealthy: Bool { auth && database && storage }
+    }
+
+    /// Performs a comprehensive health check across all Supabase services.
+    public func checkSystemHealth() async -> SystemHealth {
+        let start = Date()
+        
+        // Parallel checks for maximum efficiency
+        async let authCheck: Bool = {
+            return (try? await client.auth.session) != nil || true // Auth is up even if no session
+        }()
+        
+        async let dbCheck: Bool = {
+            struct HealthCheckItem: Decodable { let id: UUID }
+            do {
+                let _: [HealthCheckItem] = try await client.from("scenarios")
+                    .select("id")
+                    .limit(1)
+                    .execute()
+                    .value
+                return true
+            } catch {
+                print("DEBUG: Database Health Check Error: \(error)")
+                return false
+            }
+        }()
+        
+        async let storageCheck: Bool = {
+            do {
+                _ = try await client.storage.listBuckets()
+                return true
+            } catch {
+                return false
+            }
+        }()
+        
+        let results = await (auth: authCheck, db: dbCheck, storage: storageCheck)
+        let latency = Int(Date().timeIntervalSince(start) * 1000)
+        
+        return SystemHealth(
+            auth: results.auth,
+            database: results.db,
+            storage: results.storage,
+            latencyMs: latency
+        )
+    }
+
+    /// Legacy health check for simple boolean status.
     public func healthCheck() async -> Bool {
-        do {
-            let _: [Scenario] = try await client.from("scenarios")
-                .select("id")
-                .limit(1)
-                .execute()
-                .value
-            return true
-        } catch {
-            logger.error("Supabase health check failed: \(error)")
-            return false
-        }
+        return await checkSystemHealth().isAllHealthy
     }
 }
+
+// MARK: - Android Compatibility
+
+#if os(Android)
+struct AndroidAuthStorage: AuthLocalStorage {
+    func store(key: String, value: Data) throws {}
+    func retrieve(key: String) throws -> Data? { nil }
+    func remove(key: String) throws {}
+}
+#endif

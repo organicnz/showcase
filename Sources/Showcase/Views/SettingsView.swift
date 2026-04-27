@@ -5,6 +5,7 @@ struct SettingsView: View {
     @AppStorage("appTheme") internal var appTheme: AppTheme = .system
     @State internal var showingReloadAlert = false
     @State internal var isConnected: Bool? = nil
+    @State internal var systemHealth: SupabaseManager.SystemHealth? = nil
     @State internal var isSyncing = false
 
     var totalVideos: Int {
@@ -54,27 +55,40 @@ struct SettingsView: View {
                 }
             }
 
-            // MARK: - Connection Status
-            Section("Подключение") {
+            // MARK: - External Display
+            Section("Внешний экран") {
                 HStack {
                     Image(systemName: "airplayvideo")
                         .foregroundStyle(.blue)
-                    Text("Внешний дисплей")
+                    Text("Статус AirPlay")
                     Spacer()
                     Text("Готов")
                         .foregroundStyle(.secondary)
                 }
+            }
 
-                HStack {
-                    Image(systemName: connectionIcon)
-                        .foregroundStyle(connectionColor)
-                    Text("Supabase")
-                    Spacer()
-                    if let connected = isConnected {
-                        Text(connected ? "Подключен" : "Не в сети")
-                            .foregroundStyle(connected ? .green : .red)
-                    } else {
+            // MARK: - System Health Dashboard
+            Section("Здоровье системы") {
+                if let health = systemHealth {
+                    healthRow(title: "База данных", status: health.database, icon: "externaldrive")
+                    healthRow(title: "Авторизация", status: health.auth, icon: "lock.shield")
+                    healthRow(title: "Хранилище", status: health.storage, icon: "cloud")
+                    
+                    HStack {
+                        Image(systemName: "timer")
+                            .foregroundStyle(.secondary)
+                        Text("Задержка")
+                        Spacer()
+                        Text("\(health.latencyMs) ms")
+                            .foregroundStyle(health.latencyMs < 200 ? .green : (health.latencyMs < 500 ? .orange : .red))
+                            .monospacedDigit()
+                    }
+                } else {
+                    HStack {
                         ProgressView()
+                        Text("Проверка систем...")
+                            .padding(.leading, 8)
+                            .foregroundStyle(.secondary)
                     }
                 }
 
@@ -133,6 +147,22 @@ struct SettingsView: View {
                 LabeledRow(title: "Клиент", value: "ООО «СПК-М»")
             }
 
+            // MARK: - Account
+            Section("Аккаунт") {
+                if let email = viewModel.userEmail {
+                    LabeledRow(title: "Email", value: email)
+                }
+
+                Button(role: .destructive, action: {
+                    Task { await viewModel.logout() }
+                }) {
+                    HStack {
+                        Image(systemName: "rectangle.portrait.and.arrow.right")
+                        Text("Выйти из системы")
+                    }
+                }
+            }
+
             // MARK: - About
             Section("О проекте") {
                 Text("Премиальный плеер для отдела продаж жилого комплекса Мещерский парк в Москве.")
@@ -157,16 +187,17 @@ struct SettingsView: View {
         }
     }
 
-    // MARK: - Helpers
-
-    private var connectionIcon: String {
-        guard let connected = isConnected else { return "wifi" }
-        return connected ? "wifi" : "wifi.exclamationmark"
-    }
-
-    private var connectionColor: Color {
-        guard let connected = isConnected else { return .secondary }
-        return connected ? .green : .red
+    private func healthRow(title: String, status: Bool, icon: String) -> some View {
+        HStack {
+            Image(systemName: icon)
+                .foregroundStyle(status ? .green : .red)
+                .frame(width: 24)
+            Text(title)
+            Spacer()
+            Text(status ? "В норме" : "Ошибка")
+                .foregroundStyle(status ? .green : .red)
+                .font(.subheadline)
+        }
     }
 
     private var platformName: String {
@@ -180,7 +211,8 @@ struct SettingsView: View {
     }
 
     private func checkConnection() async {
-        isConnected = await SupabaseManager.shared.healthCheck()
+        systemHealth = await SupabaseManager.shared.checkSystemHealth()
+        isConnected = systemHealth?.isAllHealthy
     }
 
     private func syncFromServer() {

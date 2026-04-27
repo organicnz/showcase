@@ -20,6 +20,15 @@ import SkipFuse
     public var videoQueue: [Video] = []
     public var currentVideoIndex: Int = 0
     public var lastSyncDate: Date?
+    public var isAuthenticated: Bool = false
+    public var userEmail: String?
+    
+    public var currentThemeColors: [Color] {
+        if let slug = selectedScenario?.slug {
+            return ScenarioGradient.colors(for: slug)
+        }
+        return [Color.ink, Color.terracotta, Color.ochre]
+    }
 
     // MARK: - Computed Properties
 
@@ -102,6 +111,25 @@ import SkipFuse
             }
             logger.error("Failed to load scenarios: \(error)")
         }
+    }
+
+    // MARK: - Auth Actions
+
+    public func checkAuth() async {
+        isAuthenticated = await SupabaseManager.shared.isAuthenticated()
+        userEmail = await SupabaseManager.shared.currentUserEmail()
+    }
+
+    public func login(email: String, password: String) async throws {
+        try await SupabaseManager.shared.signIn(email: email, password: password)
+        await checkAuth()
+        await loadData()
+    }
+
+    public func logout() async {
+        try? await SupabaseManager.shared.signOut()
+        isAuthenticated = false
+        userEmail = nil
     }
 
     // MARK: - Caching
@@ -233,6 +261,18 @@ import SkipFuse
         case "investor": return "chart.line.uptrend.xyaxis"
         case "architecture": return "building.columns.fill"
         default: return "sparkles"
+        }
+    }
+
+    /// Returns the asset image name for a scenario slug.
+    public func imageName(for slug: String) -> String? {
+        switch slug {
+        case "family": return "ScenarioFamily"
+        case "wellness": return "ScenarioWellness"
+        case "guests": return "ScenarioGuests"
+        case "investor": return "ScenarioInvestor"
+        case "architecture": return "ScenarioArchitecture"
+        default: return nil
         }
     }
 

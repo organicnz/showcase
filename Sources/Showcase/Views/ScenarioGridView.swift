@@ -84,7 +84,10 @@ struct ScenarioGridView: View {
             .padding(.bottom, 40)
             .frame(maxWidth: .infinity)
         }
-        .background(backgroundGradient)
+        .background(AmbientBackgroundView())
+        #if !os(macOS)
+        .scrollContentBackground(.hidden)
+        #endif
         .refreshable {
             await viewModel.loadData()
         }
@@ -124,6 +127,7 @@ struct ScenarioGridView: View {
         LazyVGrid(columns: columns, spacing: 16) {
             ForEach(viewModel.scenarios) { scenario in
                 ScenarioCard(scenario: scenario) {
+                    HapticManager.shared.impact(style: .medium)
                     viewModel.selectScenario(scenario)
                     showVideoPlayer = true
                 }
@@ -144,6 +148,7 @@ struct ScenarioGridView: View {
             HStack(spacing: 20) {
                 ForEach(topRow) { scenario in
                     ScenarioCard(scenario: scenario) {
+                        HapticManager.shared.impact(style: .medium)
                         viewModel.selectScenario(scenario)
                         showVideoPlayer = true
                     }
@@ -156,6 +161,7 @@ struct ScenarioGridView: View {
                 HStack(spacing: 20) {
                     ForEach(bottomRow) { scenario in
                         ScenarioCard(scenario: scenario) {
+                            HapticManager.shared.impact(style: .medium)
                             viewModel.selectScenario(scenario)
                             showVideoPlayer = true
                         }
@@ -174,6 +180,7 @@ struct ScenarioGridView: View {
         VStack(spacing: isCompact ? 16 : 24) {
             ForEach(viewModel.scenarios) { scenario in
                 ScenarioCard(scenario: scenario) {
+                    HapticManager.shared.impact(style: .medium)
                     viewModel.selectScenario(scenario)
                     showVideoPlayer = true
                 }
@@ -211,6 +218,7 @@ struct ScenarioGridView: View {
                 VStack(spacing: spacing) {
                     ForEach(cols[colIndex]) { scenario in
                         ScenarioCard(scenario: scenario) {
+                            HapticManager.shared.impact(style: .medium)
                             viewModel.selectScenario(scenario)
                             showVideoPlayer = true
                         }
@@ -231,31 +239,5 @@ struct ScenarioGridView: View {
         return .infinity
     }
 
-    // MARK: - Ambient Background
-
-    private var backgroundGradient: some View {
-        ZStack {
-            Color.soft.ignoresSafeArea()
-
-            // Subtle animated orbs — scale down on iPhone
-            Circle()
-                .fill(Color.terracotta.opacity(0.04))
-                .blur(radius: isCompact ? 50 : 80)
-                .frame(width: isCompact ? 280 : 500, height: isCompact ? 280 : 500)
-                .offset(x: isAnimating ? 150 : -100, y: isAnimating ? -150 : 50)
-
-            Circle()
-                .fill(Color.ochre.opacity(0.05))
-                .blur(radius: isCompact ? 60 : 100)
-                .frame(width: isCompact ? 320 : 600, height: isCompact ? 320 : 600)
-                .offset(x: isAnimating ? -200 : 250, y: isAnimating ? 250 : -50)
-        }
-        .ignoresSafeArea()
-        .onAppear {
-            withAnimation(.easeInOut(duration: 12).repeatForever(autoreverses: true)) {
-                isAnimating = true
-            }
-        }
-    }
 }
 

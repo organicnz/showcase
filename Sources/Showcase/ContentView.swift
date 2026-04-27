@@ -8,98 +8,107 @@ struct ContentView: View {
 
     var body: some View {
         Group {
-            switch viewModel.loadState {
-            case .idle, .loading:
-                LoadingView()
+            if !viewModel.isAuthenticated {
+                LoginView()
+                    .transition(.move(edge: .bottom).combined(with: .opacity))
+            } else {
+                switch viewModel.loadState {
+                case .idle, .loading:
+                    LoadingView()
 
-            case .failed(let error):
-                ErrorView(error: error, retryAction: {
-                    Task { await viewModel.loadData() }
-                })
+                case .failed(let error):
+                    ErrorView(error: error, retryAction: {
+                        Task { await viewModel.loadData() }
+                    })
 
-            case .loaded:
-                NavigationStack {
-                    ScenarioGridView()
-                        #if !os(macOS)
-                        .navigationBarTitleDisplayMode(.inline)
-                        #endif
-                        .toolbar {
-                            ToolbarItem(placement: .principal) {
-                                LogoView(size: 32)
-                            }
-
+                case .loaded:
+                    NavigationStack {
+                        ScenarioGridView()
                             #if !os(macOS)
-                            ToolbarItem(placement: .topBarTrailing) {
-                                HStack(spacing: 16) {
-                                    Button(action: { showLibrary = true }) {
-                                        Image(systemName: "play.rectangle.on.rectangle")
-                                            .foregroundStyle(.ink)
-                                    }
-
-                                    Button(action: { showSettings = true }) {
-                                        Image(systemName: "gearshape")
-                                            .foregroundStyle(.mid)
-                                    }
-                                }
-                            }
-                            #else
-                            ToolbarItem(placement: .automatic) {
-                                HStack(spacing: 16) {
-                                    Button(action: { showLibrary = true }) {
-                                        Image(systemName: "play.rectangle.on.rectangle")
-                                    }
-
-                                    Button(action: { showSettings = true }) {
-                                        Image(systemName: "gearshape")
-                                    }
-                                }
-                            }
+                            .navigationBarTitleDisplayMode(.inline)
                             #endif
+                            .toolbar {
+                                ToolbarItem(placement: .principal) {
+                                    LogoView(size: 32)
+                                }
+
+                                #if !os(macOS)
+                                ToolbarItem(placement: .topBarTrailing) {
+                                    HStack(spacing: 16) {
+                                        Button(action: { showLibrary = true }) {
+                                            Image(systemName: "play.rectangle.on.rectangle")
+                                                .foregroundStyle(.ink)
+                                        }
+
+                                        Button(action: { showSettings = true }) {
+                                            Image(systemName: "gearshape")
+                                                .foregroundStyle(.mid)
+                                        }
+                                    }
+                                }
+                                #else
+                                ToolbarItem(placement: .automatic) {
+                                    HStack(spacing: 16) {
+                                        Button(action: { showLibrary = true }) {
+                                            Image(systemName: "play.rectangle.on.rectangle")
+                                        }
+
+                                        Button(action: { showSettings = true }) {
+                                            Image(systemName: "gearshape")
+                                        }
+                                    }
+                                }
+                                #endif
+                            }
+                            #if !os(macOS)
+                            .toolbarBackground(.ultraThinMaterial, for: .navigationBar)
+                            #endif
+                    }
+                    .tint(.terracotta)
+                    .sheet(isPresented: $showLibrary) {
+                        NavigationStack {
+                            LibraryView()
+                                .navigationTitle("Библиотека")
+                                #if !os(macOS)
+                                .navigationBarTitleDisplayMode(.inline)
+                                .toolbarBackground(.ultraThinMaterial, for: .navigationBar)
+                                #endif
+                                .toolbar {
+                                    ToolbarItem(placement: .cancellationAction) {
+                                        Button("Готово") { showLibrary = false }
+                                    }
+                                }
                         }
-                        #if !os(macOS)
-                        .toolbarBackground(.ultraThinMaterial, for: .navigationBar)
-                        #endif
-                }
-                .tint(.terracotta)
-                .sheet(isPresented: $showLibrary) {
-                    NavigationStack {
-                        LibraryView()
-                            .navigationTitle("Библиотека")
-                            #if !os(macOS)
-                            .navigationBarTitleDisplayMode(.inline)
-                            .toolbarBackground(.ultraThinMaterial, for: .navigationBar)
-                            #endif
-                            .toolbar {
-                                ToolbarItem(placement: .cancellationAction) {
-                                    Button("Готово") { showLibrary = false }
-                                }
-                            }
+                        .environment(viewModel)
+                        .tint(.terracotta)
                     }
-                    .environment(viewModel)
-                    .tint(.terracotta)
-                }
-                .sheet(isPresented: $showSettings) {
-                    NavigationStack {
-                        SettingsView()
-                            .navigationTitle("Настройки")
-                            #if !os(macOS)
-                            .navigationBarTitleDisplayMode(.inline)
-                            .toolbarBackground(.ultraThinMaterial, for: .navigationBar)
-                            #endif
-                            .toolbar {
-                                ToolbarItem(placement: .cancellationAction) {
-                                    Button("Готово") { showSettings = false }
+                    .sheet(isPresented: $showSettings) {
+                        NavigationStack {
+                            SettingsView()
+                                .navigationTitle("Настройки")
+                                #if !os(macOS)
+                                .navigationBarTitleDisplayMode(.inline)
+                                .toolbarBackground(.ultraThinMaterial, for: .navigationBar)
+                                #endif
+                                .toolbar {
+                                    ToolbarItem(placement: .cancellationAction) {
+                                        Button("Готово") { showSettings = false }
+                                    }
                                 }
-                            }
+                        }
+                        .environment(viewModel)
+                        .tint(.terracotta)
                     }
-                    .environment(viewModel)
-                    .tint(.terracotta)
                 }
             }
         }
         .environment(viewModel)
+        .animation(.spring(), value: viewModel.isAuthenticated)
         .task {
-            await viewModel.loadData()
+            await viewModel.checkAuth()
+            if viewModel.isAuthenticated {
+                await viewModel.loadData()
+            }
         }
     }
 }

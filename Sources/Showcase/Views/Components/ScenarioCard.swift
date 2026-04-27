@@ -29,92 +29,143 @@ struct ScenarioCard: View {
 
     var body: some View {
         Button(action: action) {
-            VStack(alignment: .leading, spacing: isCompact ? 8 : 12) {
-                // Card Image Area
-                ZStack {
-                    // Background gradient — warm brand palette
-                    RoundedRectangle(cornerRadius: CornerRadius.card)
-                        .fill(
-                            LinearGradient(
-                                colors: viewModel.gradientColors(for: scenario.slug),
-                                startPoint: .topLeading,
-                                endPoint: .bottomTrailing
-                            )
-                        )
-                        .frame(height: imageHeight)
-
-                    // Glass overlay for depth
-                    RoundedRectangle(cornerRadius: CornerRadius.card)
-                        .fill(.ultraThinMaterial)
-                        .frame(height: imageHeight)
-
-                    // Icon and video count
-                    VStack(spacing: isCompact ? 10 : 16) {
-                        Image(systemName: viewModel.iconName(for: scenario.slug))
-                            .font(.system(size: isCompact ? 36 : 50, weight: .light))
-                            .foregroundStyle(.ink.opacity(0.8))
-                            .shadow(color: .ink.opacity(0.15), radius: 8, y: 4)
-
-                        if videoCount > 0 {
-                            HStack(spacing: 4) {
-                                Image(systemName: "play.circle.fill")
-                                    .font(.caption2)
-                                Text("\(videoCount) видео")
-                                    .font(.labelCaps)
-                                    .tracking(1.2)
-                                    .textCase(.uppercase)
+            Group {
+                if isCompact {
+                    VStack(alignment: .leading, spacing: 12) {
+                        imageAreaWithBackground
+                        textSection
+                            .padding(.horizontal, 4)
+                    }
+                    .padding(12)
+                } else {
+                    HStack(spacing: 24) {
+                        imageAreaWithBackground
+                            .frame(width: 280)
+                        
+                        VStack(alignment: .leading, spacing: 8) {
+                            textSection
+                            
+                            Spacer()
+                            
+                            HStack {
+                                Spacer()
+                                Image(systemName: "arrow.right.circle.fill")
+                                    .font(.system(size: 24, weight: .light))
+                                    .foregroundStyle(ScenarioGradient.primaryColor(for: scenario.slug).opacity(0.8))
                             }
-                            .foregroundStyle(.ink.opacity(0.7))
-                            .padding(.horizontal, isCompact ? 8 : 12)
-                            .padding(.vertical, isCompact ? 4 : 6)
-                            .background(.ultraThinMaterial)
-                            .clipShape(Capsule())
                         }
+                        .padding(.vertical, 16)
+                        .padding(.trailing, 16)
                     }
-
-                    // Shimmer on press
-                    if isPressed {
-                        RoundedRectangle(cornerRadius: CornerRadius.card)
-                            .fill(Color.terracotta.opacity(0.08))
-                            .frame(height: imageHeight)
-                            .transition(.opacity)
-                    }
+                    .padding(16)
                 }
-
-                // Title and description
-                VStack(alignment: .leading, spacing: 4) {
-                    Text(viewModel.scenarioTitle(for: scenario))
-                        .font(isCompact ? .body : .displaySmall)
-                        .foregroundStyle(.ink)
-                        .lineLimit(2)
-
-                    Text(viewModel.scenarioDescription(for: scenario))
-                        .font(.bodySmall2)
-                        .foregroundStyle(.mid)
-                        .lineLimit(isCompact ? 1 : 2)
-                }
-                .padding(.horizontal, 4)
-                .padding(.bottom, 4)
             }
-            .padding(isCompact ? 6 : 10)
             .background(
-                RoundedRectangle(cornerRadius: isCompact ? 14 : 18)
-                    .fill(Color.cardSurface)
-                    .shadow(color: .ink.opacity(isPressed ? 0.02 : 0.06), radius: isPressed ? 8 : 16, y: isPressed ? 4 : 8)
+                RoundedRectangle(cornerRadius: CornerRadius.modal)
+                    .fill(Color.cardSurface.opacity(0.4))
+                    .shadow(color: .ink.opacity(0.04), radius: 30, y: 15)
             )
             .overlay(
-                RoundedRectangle(cornerRadius: isCompact ? 14 : 18)
-                    .stroke(isPressed ? Color.terracotta.opacity(0.5) : Color.cardBorder, lineWidth: 1.5)
-                    .blendMode(.overlay)
+                RoundedRectangle(cornerRadius: CornerRadius.modal)
+                    .stroke(Color.cardBorder.opacity(0.5), lineWidth: 1)
             )
-            .scaleEffect(isPressed ? 0.96 : 1.0)
-            .rotation3DEffect(.degrees(isPressed ? 2 : 0), axis: (x: 1, y: 0, z: 0))
-            .animation(.spring(response: 0.4, dampingFraction: 0.6), value: isPressed)
+            .scaleEffect(isPressed ? 0.98 : 1.0)
+            .animation(.spring(response: 0.3, dampingFraction: 0.7), value: isPressed)
         }
         .buttonStyle(.plain)
+        #if !os(macOS)
+        .hoverEffect(.highlight)
+        #endif
         .onLongPressGesture(minimumDuration: .infinity, pressing: { pressing in
             isPressed = pressing
         }, perform: {})
+    }
+
+    private var imageAreaWithBackground: some View {
+        imageArea
+            .background(
+                RoundedRectangle(cornerRadius: CornerRadius.card + 4)
+                    .fill(Color.cardSurface)
+                    .shadow(color: .ink.opacity(isPressed ? 0.02 : 0.08), radius: isPressed ? 8 : 20, y: isPressed ? 4 : 12)
+            )
+            .overlay(
+                RoundedRectangle(cornerRadius: CornerRadius.card + 4)
+                    .stroke(isPressed ? Color.terracotta.opacity(0.5) : Color.cardBorder, lineWidth: 1.5)
+                    .blendMode(.overlay)
+            )
+    }
+
+    // MARK: - Components
+
+    private var imageArea: some View {
+        ZStack {
+            if let imageName = viewModel.imageName(for: scenario.slug) {
+                Image(imageName, bundle: .module)
+                    .resizable()
+                    .aspectRatio(contentMode: .fill)
+                    .frame(height: imageHeight)
+                    .clipShape(RoundedRectangle(cornerRadius: CornerRadius.card))
+            } else {
+                // Background gradient — warm brand palette
+                RoundedRectangle(cornerRadius: CornerRadius.card)
+                    .fill(
+                        LinearGradient(
+                            colors: viewModel.gradientColors(for: scenario.slug),
+                            startPoint: .topLeading,
+                            endPoint: .bottomTrailing
+                        )
+                    )
+                    .frame(height: imageHeight)
+            }
+
+            // Glass overlay for depth (more subtle when image exists)
+            RoundedRectangle(cornerRadius: CornerRadius.card)
+                .fill(.ultraThinMaterial.opacity(viewModel.imageName(for: scenario.slug) != nil ? 0.3 : 0.8))
+                .frame(height: imageHeight)
+        }
+        .overlay(alignment: .topTrailing) {
+            // Corner Icon
+            Image(systemName: viewModel.iconName(for: scenario.slug))
+                .font(.system(size: isCompact ? 16 : 22, weight: .light))
+                .foregroundStyle(ScenarioGradient.primaryColor(for: scenario.slug))
+                .padding(isCompact ? 8 : 12)
+                .background(.ultraThinMaterial)
+                .clipShape(Circle())
+                .padding(8)
+        }
+        .overlay(alignment: .bottomTrailing) {
+            // Video count pill
+            if videoCount > 0 {
+                HStack(spacing: 4) {
+                    Image(systemName: "play.circle.fill")
+                        .font(.caption2)
+                    Text("\(videoCount) видео")
+                        .font(.labelCaps)
+                        .tracking(1.2)
+                        .textCase(.uppercase)
+                }
+                .foregroundStyle(.ink.opacity(0.8))
+                .padding(.horizontal, isCompact ? 8 : 12)
+                .padding(.vertical, isCompact ? 4 : 6)
+                .background(.ultraThinMaterial)
+                .clipShape(Capsule())
+                .padding(8)
+            }
+        }
+    }
+
+    private var textSection: some View {
+        VStack(alignment: .leading, spacing: 6) {
+            Text(viewModel.scenarioTitle(for: scenario))
+                .font(isCompact ? .body : .displaySmall)
+                .foregroundStyle(.ink)
+                .lineLimit(2)
+
+            Text(viewModel.scenarioDescription(for: scenario))
+                .font(isCompact ? .bodySmall2 : .bodyLarge)
+                .foregroundStyle(.ink.opacity(0.7))
+                .lineLimit(isCompact ? 1 : 2)
+        }
     }
 }
 

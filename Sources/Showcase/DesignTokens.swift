@@ -2,6 +2,8 @@ import SwiftUI
 
 #if canImport(UIKit)
 import UIKit
+#elseif canImport(AppKit)
+import AppKit
 #endif
 
 // MARK: - Adaptive Color Helper
@@ -36,6 +38,36 @@ extension Color {
         })
     }
 }
+#elseif canImport(AppKit)
+extension Color {
+    /// Creates a color that automatically adapts between light and dark appearances (macOS).
+    fileprivate init(
+        lightRed lr: Double, lightGreen lg: Double, lightBlue lb: Double,
+        darkRed dr: Double, darkGreen dg: Double, darkBlue db: Double
+    ) {
+        self.init(NSColor(name: nil) { appearance in
+            if appearance.bestMatch(from: [.aqua, .darkAqua]) == .darkAqua {
+                return NSColor(red: dr, green: dg, blue: db, alpha: 1.0)
+            } else {
+                return NSColor(red: lr, green: lg, blue: lb, alpha: 1.0)
+            }
+        })
+    }
+
+    /// Creates a color with alpha that automatically adapts between light and dark appearances (macOS).
+    fileprivate init(
+        lightRed lr: Double, lightGreen lg: Double, lightBlue lb: Double, lightAlpha la: Double,
+        darkRed dr: Double, darkGreen dg: Double, darkBlue db: Double, darkAlpha da: Double
+    ) {
+        self.init(NSColor(name: nil) { appearance in
+            if appearance.bestMatch(from: [.aqua, .darkAqua]) == .darkAqua {
+                return NSColor(red: dr, green: dg, blue: db, alpha: da)
+            } else {
+                return NSColor(red: lr, green: lg, blue: lb, alpha: la)
+            }
+        })
+    }
+}
 #endif
 
 // MARK: - Brand Colors
@@ -46,7 +78,7 @@ extension Color {
 
     // ── Primary ──────────────────────────────────────────────────────
 
-    #if canImport(UIKit)
+    #if canImport(UIKit) || canImport(AppKit)
     /// Угольный — base text, adapts to warm off-white in dark mode
     static let ink = Color(
         lightRed: 0.102, lightGreen: 0.102, lightBlue: 0.180,   // #1A1A2E
@@ -59,7 +91,7 @@ extension Color {
         darkRed: 0.098, darkGreen: 0.098, darkBlue: 0.133       // #191922
     )
     #else
-    // Fallback for macOS / SKIP (Android) — light-mode static values
+    // Fallback for SKIP (Android) — light-mode static values
     static let ink = Color(red: 0.102, green: 0.102, blue: 0.180)
     static let soft = Color(red: 0.969, green: 0.961, blue: 0.949)
     #endif
@@ -73,7 +105,7 @@ extension Color {
 
     // ── Neutrals ─────────────────────────────────────────────────────
 
-    #if canImport(UIKit)
+    #if canImport(UIKit) || canImport(AppKit)
     /// Средний — captions, metadata; slightly brighter in dark mode for contrast
     static let mid = Color(
         lightRed: 0.541, lightGreen: 0.533, lightBlue: 0.502,   // #8A8880
@@ -87,7 +119,7 @@ extension Color {
     // Used for card backgrounds, list rows, and borders that were
     // previously hardcoded as Color.white.opacity(...).
 
-    #if canImport(UIKit)
+    #if canImport(UIKit) || canImport(AppKit)
     /// Card surface — translucent white in light, subtle white in dark
     static let cardSurface = Color(
         lightRed: 1.0, lightGreen: 1.0, lightBlue: 1.0, lightAlpha: 0.80,
@@ -113,8 +145,8 @@ extension Color {
 
     // ── Liquid Glass tints (iPadOS 26) ───────────────────────────────
 
-    static let glassTint = Color(red: 0.102, green: 0.102, blue: 0.180).opacity(0.04)
-    static let glassStroke = Color(red: 0.102, green: 0.102, blue: 0.180).opacity(0.12)
+    static let glassTint = Color.ink.opacity(0.04)
+    static let glassStroke = Color.ink.opacity(0.12)
 }
 
 // MARK: - ShapeStyle Convenience
@@ -182,6 +214,17 @@ enum ScenarioGradient {
                     Color(red: 0.65, green: 0.68, blue: 0.75)]
         default:
             return [.mid, .mid.opacity(0.5)]
+        }
+    }
+    
+    static func primaryColor(for slug: String) -> Color {
+        switch slug {
+        case "family": return Color(red: 0.75, green: 0.60, blue: 0.45)
+        case "wellness": return Color(red: 0.25, green: 0.45, blue: 0.30)
+        case "guests": return Color(red: 0.60, green: 0.45, blue: 0.55)
+        case "investor": return Color(red: 0.70, green: 0.55, blue: 0.35)
+        case "architecture": return Color(red: 0.35, green: 0.40, blue: 0.55)
+        default: return .terracotta
         }
     }
 }
