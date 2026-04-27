@@ -13,11 +13,13 @@ public actor SupabaseManager {
 
     // Read from Info.plist (injected via xcconfig/Skip.env)
     private static var supabaseURL: String {
-        Bundle.main.object(forInfoDictionaryKey: "SUPABASE_URL") as? String ?? ""
+        let url = Bundle.main.object(forInfoDictionaryKey: "SUPABASE_URL") as? String ?? ""
+        return (url.isEmpty || url.contains("$(")) ? "https://smyfjmdjzfwdehynwfep.supabase.co" : url
     }
     
     private static var supabaseKey: String {
-        Bundle.main.object(forInfoDictionaryKey: "SUPABASE_ANON_KEY") as? String ?? ""
+        let key = Bundle.main.object(forInfoDictionaryKey: "SUPABASE_ANON_KEY") as? String ?? ""
+        return (key.isEmpty || key.contains("$(")) ? "sb_publishable_36vglboOi9AkwTwCw_BqMg_uWQE8NV_" : key
     }
     
     private static let storageBucket = "videos"
