@@ -9,12 +9,14 @@ let logger: Logger = Logger(subsystem: "site.surfy.showcase", category: "Showcas
 ///
 /// The default implementation merely loads the `ContentView` for the app and logs a message.
 /* SKIP @bridge */public struct ShowcaseRootView : View {
+    @AppStorage("appTheme") internal var appTheme: AppTheme = .system
+
     /* SKIP @bridge */public init() {
     }
 
     public var body: some View {
         ContentView()
-            .preferredColorScheme(.dark)
+            .preferredColorScheme(appTheme.colorScheme)
             .task {
                 logger.info("Skip app logs are viewable in the Xcode console for iOS; Android logs can be viewed in Studio or using adb logcat")
             }

@@ -55,7 +55,7 @@ struct VideoRow: View {
             }
             .padding(.vertical, 8)
             .padding(.horizontal, 4)
-            .background(Color.white.opacity(0.001)) // Make entire row tappable
+            .background(Color.soft.opacity(0.001)) // Make entire row tappable
             .scaleEffect(isPressed ? 0.98 : 1.0)
             .animation(.spring(response: 0.3, dampingFraction: 0.7), value: isPressed)
         }

@@ -99,12 +99,12 @@ struct ScenarioCard: View {
             .padding(isCompact ? 6 : 10)
             .background(
                 RoundedRectangle(cornerRadius: isCompact ? 14 : 18)
-                    .fill(Color.white.opacity(0.8))
+                    .fill(Color.cardSurface)
                     .shadow(color: .ink.opacity(isPressed ? 0.02 : 0.06), radius: isPressed ? 8 : 16, y: isPressed ? 4 : 8)
             )
             .overlay(
                 RoundedRectangle(cornerRadius: isCompact ? 14 : 18)
-                    .stroke(isPressed ? Color.terracotta.opacity(0.5) : Color.white, lineWidth: 1.5)
+                    .stroke(isPressed ? Color.terracotta.opacity(0.5) : Color.cardBorder, lineWidth: 1.5)
                     .blendMode(.overlay)
             )
             .scaleEffect(isPressed ? 0.96 : 1.0)

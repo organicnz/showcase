@@ -2,6 +2,7 @@ import SwiftUI
 
 struct SettingsView: View {
     @Environment(ViewModel.self) var viewModel: ViewModel
+    @AppStorage("appTheme") internal var appTheme: AppTheme = .system
     @State internal var showingReloadAlert = false
     @State internal var isConnected: Bool? = nil
     @State internal var isSyncing = false
@@ -12,11 +13,23 @@ struct SettingsView: View {
 
     var body: some View {
         Form {
+            // MARK: - Appearance
+            Section("Оформление") {
+                Picker(selection: $appTheme) {
+                    ForEach(AppTheme.allCases, id: \.self) { theme in
+                        Label(theme.rawValue, systemImage: theme.iconName)
+                            .tag(theme)
+                    }
+                } label: {
+                    Label("Тема", systemImage: "paintbrush")
+                }
+            }
+
             // MARK: - App Information
             Section("О приложении") {
                 LabeledRow(title: "Название", value: "Showcase Мещерский парк")
                 LabeledRow(title: "Версия", value: "0.0.1")
-                LabeledRow(title: "Сборка", value: "Swift 6.3 + SKIP")
+                LabeledRow(title: "Сборка", value: "Swift 6.3.1 + SKIP")
                 LabeledRow(title: "Платформа", value: platformName)
             }
 

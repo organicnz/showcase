@@ -37,7 +37,7 @@ struct LibraryView: View {
                                         viewModel.playVideo(video)
                                         showVideoPlayer = true
                                     }
-                                    .listRowBackground(Color.white.opacity(0.6))
+                                    .listRowBackground(Color.rowSurface)
                                 }
                             }
                         } header: {
