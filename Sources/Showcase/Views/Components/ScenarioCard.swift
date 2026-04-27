@@ -36,6 +36,7 @@ struct ScenarioCard: View {
                         Image(systemName: viewModel.iconName(for: scenario.slug))
                             .font(.system(size: 50, weight: .light))
                             .foregroundStyle(.ink.opacity(0.8))
+                            .shadow(color: .ink.opacity(0.15), radius: 8, y: 4)
 
                         if videoCount > 0 {
                             HStack(spacing: 4) {
@@ -65,7 +66,7 @@ struct ScenarioCard: View {
 
                 // Title and description
                 VStack(alignment: .leading, spacing: 4) {
-                    Text(scenario.title)
+                    Text(viewModel.scenarioTitle(for: scenario))
                         .font(.displaySmall)
                         .foregroundStyle(.ink)
                         .lineLimit(2)
@@ -76,18 +77,22 @@ struct ScenarioCard: View {
                         .lineLimit(2)
                 }
                 .padding(.horizontal, 4)
+                .padding(.bottom, 4)
             }
-            .padding(8)
+            .padding(10)
             .background(
-                RoundedRectangle(cornerRadius: 16)
-                    .fill(.background)
+                RoundedRectangle(cornerRadius: 18)
+                    .fill(Color.white.opacity(0.8))
+                    .shadow(color: .ink.opacity(isPressed ? 0.02 : 0.06), radius: isPressed ? 8 : 16, y: isPressed ? 4 : 8)
             )
             .overlay(
-                RoundedRectangle(cornerRadius: 16)
-                    .stroke(isPressed ? Color.terracotta.opacity(0.5) : Color.glassStroke, lineWidth: isPressed ? 1.5 : 0.5)
+                RoundedRectangle(cornerRadius: 18)
+                    .stroke(isPressed ? Color.terracotta.opacity(0.5) : Color.white, lineWidth: 1.5)
+                    .blendMode(.overlay)
             )
-            .scaleEffect(isPressed ? 0.97 : 1.0)
-            .animation(.spring(response: 0.3, dampingFraction: 0.7), value: isPressed)
+            .scaleEffect(isPressed ? 0.96 : 1.0)
+            .rotation3DEffect(.degrees(isPressed ? 2 : 0), axis: (x: 1, y: 0, z: 0))
+            .animation(.spring(response: 0.4, dampingFraction: 0.6), value: isPressed)
         }
         .buttonStyle(.plain)
         .onLongPressGesture(minimumDuration: .infinity, pressing: { pressing in

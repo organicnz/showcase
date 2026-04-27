@@ -31,7 +31,7 @@ struct SettingsView: View {
                             Image(systemName: viewModel.iconName(for: scenario.slug))
                                 .foregroundStyle(.terracotta)
                                 .frame(width: 20)
-                            Text(scenario.title)
+                            Text(viewModel.scenarioTitle(for: scenario))
                             Spacer()
                             Text("\(viewModel.videosForScenario(scenario).count) видео")
                                 .foregroundStyle(.secondary)
@@ -62,7 +62,6 @@ struct SettingsView: View {
                             .foregroundStyle(connected ? .green : .red)
                     } else {
                         ProgressView()
-                            .controlSize(.small)
                     }
                 }
 
@@ -72,7 +71,7 @@ struct SettingsView: View {
                             .foregroundStyle(.secondary)
                         Text("Последняя синхр.")
                         Spacer()
-                        Text(syncDate, style: .relative)
+                        Text(syncDate, style: .date)
                             .foregroundStyle(.secondary)
                     }
                 }
@@ -98,7 +97,6 @@ struct SettingsView: View {
                         Spacer()
                         if isSyncing {
                             ProgressView()
-                                .controlSize(.small)
                         }
                     }
                 }
@@ -129,6 +127,10 @@ struct SettingsView: View {
                     .foregroundStyle(.secondary)
             }
         }
+        #if !os(macOS)
+        .scrollContentBackground(.hidden)
+        #endif
+        .background(Color.soft.ignoresSafeArea())
         .alert("Перезагрузить контент", isPresented: $showingReloadAlert) {
             Button("Отмена", role: .cancel) { }
             Button("Перезагрузить") {

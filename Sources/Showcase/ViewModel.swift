@@ -46,6 +46,7 @@ import SkipFuse
     /// This is the primary data loading entry point. It fetches scenarios first,
     /// then concurrently preloads videos for each scenario.
     public func loadData() async {
+        logger.debug("Starting loadData()")
         // Load from cache first for instant startup
         loadFromCache()
 
@@ -56,10 +57,13 @@ import SkipFuse
         }
 
         do {
+            logger.debug("Fetching scenarios from backend...")
             // Fetch scenarios from backend
             let fetchedScenarios = try await SupabaseManager.shared.fetchScenarios()
+            logger.debug("Fetched \(fetchedScenarios.count) scenarios.")
             self.scenarios = fetchedScenarios
 
+            logger.debug("Starting video fetch task group...")
             // Concurrently load videos for all scenarios
             await withTaskGroup(of: (UUID, [Video]).self) { group in
                 for scenario in fetchedScenarios {
@@ -78,6 +82,7 @@ import SkipFuse
                     self.videos[scenarioId] = vids
                 }
             }
+            logger.debug("Video fetch task group completed.")
 
             // Save to cache
             saveToCache()
@@ -231,19 +236,27 @@ import SkipFuse
         }
     }
 
-    /// Returns a human-readable description for a scenario slug.
-    /// Falls back to the scenario's `description` field if available.
-    public func scenarioDescription(for scenario: Scenario) -> String {
-        if let desc = scenario.description, !desc.isEmpty {
-            return desc
+    /// Returns a human-readable title for a scenario slug, translating it to Russian.
+    public func scenarioTitle(for scenario: Scenario) -> String {
+        switch scenario.slug {
+        case "family": return "Семья с детьми"
+        case "wellness": return "Здоровье и тишина"
+        case "guests": return "Гости и отель"
+        case "investor": return "Для инвестора"
+        case "architecture": return "Архитектура и дизайн"
+        default: return scenario.title
         }
+    }
+
+    /// Returns a human-readable description for a scenario slug.
+    public func scenarioDescription(for scenario: Scenario) -> String {
         switch scenario.slug {
         case "family": return "Школа, площадка, безопасность, комьюнити"
         case "wellness": return "Спа, лесные прогулки, тишина"
         case "guests": return "Гостиничный номер вместо гостевой комнаты"
         case "investor": return "Ликвидность, ограниченное предложение, уникальная локация"
         case "architecture": return "Материалы, свет, панорамное остекление"
-        default: return scenario.slug
+        default: return scenario.description ?? scenario.slug
         }
     }
 

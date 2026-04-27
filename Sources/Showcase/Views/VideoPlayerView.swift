@@ -32,23 +32,49 @@ struct VideoPlayerView: View {
                 }
                 #endif
 
-                // Loading Indicator
-                if isVideoLoading {
-                    ProgressView()
-                        .progressViewStyle(.circular)
-                        .tint(.white)
-                        .scaleEffect(1.5)
-                }
-
                 // Tablet Controls Overlay
                 controlsOverlay(video: video)
 
             } else {
-                EmptyStateView(
-                    "Видео не выбрано",
-                    systemImage: "video.slash",
-                    description: "Выберите сценарий для воспроизведения видео"
-                )
+                // Empty or Loading state (happens during dynamic fetch or if no videos exist)
+                VStack(spacing: 20) {
+                    EmptyStateView(
+                        "Загрузка контента...",
+                        systemImage: "video.slash",
+                        description: "Подождите, мы динамически загружаем видео для этого сценария."
+                    )
+                    .foregroundStyle(.white)
+                    .colorScheme(.dark)
+                }
+            }
+            
+            // Loading Indicator
+            if isVideoLoading && viewModel.currentVideo != nil {
+                ProgressView()
+                    .progressViewStyle(.circular)
+                    .tint(.white)
+                    .scaleEffect(1.5)
+            }
+            
+            // Close button overlay
+            if isControlsVisible || viewModel.currentVideo == nil {
+                VStack {
+                    HStack {
+                        Button(action: {
+                            viewModel.stopPlayback()
+                            dismiss()
+                        }) {
+                            Image(systemName: "xmark.circle.fill")
+                                .font(.system(size: 36))
+                                .foregroundStyle(.white.opacity(0.9))
+                                .shadow(radius: 4)
+                        }
+                        .padding()
+                        Spacer()
+                    }
+                    Spacer()
+                }
+                .transition(.opacity)
             }
         }
         .onTapGesture {
@@ -75,16 +101,6 @@ struct VideoPlayerView: View {
             VStack {
                 // Top Bar
                 HStack {
-                    Button(action: {
-                        viewModel.stopPlayback()
-                        dismiss()
-                    }) {
-                        Image(systemName: "xmark.circle.fill")
-                            .font(.title)
-                            .foregroundStyle(.white.opacity(0.9))
-                            .shadow(radius: 4)
-                    }
-
                     Spacer()
 
                     VStack(spacing: 2) {
@@ -122,32 +138,33 @@ struct VideoPlayerView: View {
 
                 // Bottom Controls
                 VStack(spacing: 16) {
-                    // Progress bar — always visible
+                    // Progress bar — elegant slim design
                     GeometryReader { geo in
                         ZStack(alignment: .leading) {
                             Capsule()
-                                .fill(.white.opacity(0.3))
-                                .frame(height: 3)
+                                .fill(.white.opacity(0.15))
+                                .frame(height: 2)
 
                             Capsule()
                                 .fill(Color.terracotta)
-                                .frame(width: geo.size.width * videoProgress, height: 3)
+                                .frame(width: geo.size.width * videoProgress, height: 2)
+                                .shadow(color: Color.terracotta.opacity(0.8), radius: 4)
                                 .animation(.linear(duration: 0.5), value: videoProgress)
                         }
                     }
-                    .frame(height: 3)
+                    .frame(height: 2)
                     .padding(.horizontal, 40)
 
                     // Playback buttons
-                    HStack(spacing: 40) {
+                    HStack(spacing: 50) {
                         Button(action: { viewModel.playPreviousVideo() }) {
                             Image(systemName: "backward.fill")
-                                .font(.title)
-                                .foregroundStyle(.white)
+                                .font(.title2)
+                                .foregroundStyle(.white.opacity(0.8))
                                 .shadow(radius: 4)
                         }
                         .disabled(viewModel.videoQueue.count <= 1)
-                        .opacity(viewModel.videoQueue.count <= 1 ? 0.4 : 1)
+                        .opacity(viewModel.videoQueue.count <= 1 ? 0.2 : 1)
 
                         Button(action: {
                             if viewModel.isPlaying {
@@ -159,25 +176,36 @@ struct VideoPlayerView: View {
                             }
                         }) {
                             ZStack {
+                                // Subtle glowing halo
+                                Circle()
+                                    .fill(Color.terracotta.opacity(viewModel.isPlaying ? 0.2 : 0))
+                                    .frame(width: 80, height: 80)
+                                    .blur(radius: 10)
+                                    .animation(.easeInOut(duration: 1.0).repeatForever(), value: viewModel.isPlaying)
+
                                 Circle()
                                     .fill(.ultraThinMaterial)
                                     .frame(width: 64, height: 64)
+                                    .overlay(
+                                        Circle()
+                                            .stroke(Color.white.opacity(0.2), lineWidth: 1)
+                                    )
 
                                 Image(systemName: viewModel.isPlaying ? "pause.fill" : "play.fill")
-                                    .font(.system(size: 28))
+                                    .font(.system(size: 24, weight: .semibold))
                                     .foregroundStyle(.white)
                             }
-                            .shadow(radius: 8)
+                            .shadow(color: .black.opacity(0.3), radius: 10, y: 5)
                         }
 
                         Button(action: { viewModel.playNextVideo() }) {
                             Image(systemName: "forward.fill")
-                                .font(.title)
-                                .foregroundStyle(.white)
+                                .font(.title2)
+                                .foregroundStyle(.white.opacity(0.8))
                                 .shadow(radius: 4)
                         }
                         .disabled(viewModel.videoQueue.count <= 1)
-                        .opacity(viewModel.videoQueue.count <= 1 ? 0.4 : 1)
+                        .opacity(viewModel.videoQueue.count <= 1 ? 0.2 : 1)
                     }
 
                     // Duration label

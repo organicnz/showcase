@@ -10,7 +10,8 @@ struct LibraryView: View {
             return viewModel.scenarios
         }
         return viewModel.scenarios.filter { scenario in
-            scenario.title.localizedCaseInsensitiveContains(searchText) ||
+            let title = viewModel.scenarioTitle(for: scenario)
+            return title.localizedCaseInsensitiveContains(searchText) ||
             scenario.slug.localizedCaseInsensitiveContains(searchText)
         }
     }
@@ -36,13 +37,14 @@ struct LibraryView: View {
                                         viewModel.playVideo(video)
                                         showVideoPlayer = true
                                     }
+                                    .listRowBackground(Color.white.opacity(0.6))
                                 }
                             }
                         } header: {
                             HStack {
                                 Image(systemName: viewModel.iconName(for: scenario.slug))
                                     .foregroundStyle(.terracotta)
-                                Text(scenario.title)
+                                Text(viewModel.scenarioTitle(for: scenario))
                                 Spacer()
                                 Text("\(viewModel.videosForScenario(scenario).count)")
                                     .font(.caption)
@@ -51,6 +53,10 @@ struct LibraryView: View {
                         }
                     }
                 }
+                #if !os(macOS)
+                .scrollContentBackground(.hidden)
+                #endif
+                .background(Color.soft.ignoresSafeArea())
                 .searchable(text: $searchText, prompt: "Поиск сценариев")
             } else {
                 EmptyStateView(

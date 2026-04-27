@@ -11,8 +11,15 @@ public actor SupabaseManager {
 
     // MARK: - Configuration
 
-    private static let supabaseURL = "https://smyfjmdjzfwdehynwfep.supabase.co"
-    private static let supabaseKey = "sb_publishable_36vglboOi9AkwTwCw_BqMg_uWQE8NV_"
+    // Read from Info.plist (injected via xcconfig/Skip.env)
+    private static var supabaseURL: String {
+        Bundle.main.object(forInfoDictionaryKey: "SUPABASE_URL") as? String ?? ""
+    }
+    
+    private static var supabaseKey: String {
+        Bundle.main.object(forInfoDictionaryKey: "SUPABASE_ANON_KEY") as? String ?? ""
+    }
+    
     private static let storageBucket = "videos"
 
     // MARK: - Client
@@ -23,7 +30,7 @@ public actor SupabaseManager {
         self.client = SupabaseClient(
             supabaseURL: URL(string: Self.supabaseURL)!,
             supabaseKey: Self.supabaseKey,
-            options: SupabaseClientOptions(auth: .init())
+            options: SupabaseClientOptions()
         )
     }
 

@@ -103,7 +103,7 @@ cd Android
 ## 📦 Project Structure
 
 ```
-showcase-app/
+showcase/
 ├── Sources/Showcase/
 │   ├── ShowcaseApp.swift          # App entry point
 │   ├── Models.swift                # Data models (Scenario, Video)

@@ -4,6 +4,7 @@ struct VideoRow: View {
     let video: Video
     let action: () -> Void
     @Environment(ViewModel.self) var viewModel: ViewModel
+    @State internal var isPressed = false
 
     var body: some View {
         Button(action: action) {
@@ -26,9 +27,10 @@ struct VideoRow: View {
                 }
 
                 // Video info
-                VStack(alignment: .leading, spacing: 4) {
+                VStack(alignment: .leading, spacing: 6) {
                     Text(video.title ?? "Без названия")
                         .font(.bodyLarge)
+                        .fontWeight(.medium)
                         .foregroundStyle(.ink)
                         .lineLimit(1)
 
@@ -51,9 +53,16 @@ struct VideoRow: View {
                     .font(.caption)
                     .foregroundStyle(.mid.opacity(0.5))
             }
-            .padding(.vertical, 4)
+            .padding(.vertical, 8)
+            .padding(.horizontal, 4)
+            .background(Color.white.opacity(0.001)) // Make entire row tappable
+            .scaleEffect(isPressed ? 0.98 : 1.0)
+            .animation(.spring(response: 0.3, dampingFraction: 0.7), value: isPressed)
         }
         .buttonStyle(.plain)
+        .onLongPressGesture(minimumDuration: .infinity, pressing: { pressing in
+            isPressed = pressing
+        }, perform: {})
     }
 
     /// Formats seconds into a human-readable string (e.g., "0:28").
