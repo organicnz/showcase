@@ -15,20 +15,20 @@ cd ..
 # Append the secrets from Xcode Cloud UI to Skip.env
 echo "SLASH = /" >> Skip.env
 
-if [ -n "$XC_SUPABASE_URL" ]; then
+if [ -n "$SUPABASE_URL" ]; then
     # Replace // with $(SLASH)$(SLASH) to prevent xcconfig from treating it as a comment
-    SAFE_URL=$(echo "$XC_SUPABASE_URL" | sed 's/\/\//$(SLASH)$(SLASH)/g')
+    SAFE_URL=$(echo "$SUPABASE_URL" | sed 's/\/\//$(SLASH)$(SLASH)/g')
     echo "SUPABASE_URL = $SAFE_URL" >> Skip.env
     echo "Successfully injected SUPABASE_URL"
 else
-    echo "WARNING: XC_SUPABASE_URL environment variable is not set in Xcode Cloud Workflow!"
+    echo "WARNING: SUPABASE_URL environment variable is not set in Xcode Cloud Workflow!"
 fi
 
-if [ -n "$XC_SUPABASE_ANON_KEY" ]; then
-    echo "SUPABASE_ANON_KEY = $XC_SUPABASE_ANON_KEY" >> Skip.env
+if [ -n "$SUPABASE_ANON_KEY" ]; then
+    echo "SUPABASE_ANON_KEY = $SUPABASE_ANON_KEY" >> Skip.env
     echo "Successfully injected SUPABASE_ANON_KEY"
 else
-    echo "WARNING: XC_SUPABASE_ANON_KEY environment variable is not set in Xcode Cloud Workflow!"
+    echo "WARNING: SUPABASE_ANON_KEY environment variable is not set in Xcode Cloud Workflow!"
 fi
 
 # Print final status
