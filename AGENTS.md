@@ -17,7 +17,7 @@
 
 | Слой | Технология |
 |---|---|
-| iOS / iPadOS | Swift 6.3, SwiftUI, @Observable, строгая конкурентность (strict concurrency) |
+| iOS / iPadOS | Swift 6.3.1, SwiftUI, @Observable, строгая конкурентность (strict concurrency) |
 | Язык дизайна UI | Liquid Glass (iOS/iPadOS 26) |
 | Android | SKIP 1.0+ (Swift → Kotlin / Jetpack Compose) |
 | Бэкенд | Supabase (общий инстанс) |
@@ -44,7 +44,7 @@
      │                       │
 ┌────▼─────┐          ┌──────▼──────┐
 │  iOS App  │          │ Android App │
-│ Swift 6.3 │◄── SKIP ─│ Jetpack    │
+│ Swift 6.3.1 │◄── SKIP ─│ Jetpack    │
 │ SwiftUI   │          │ Compose    │
 │ iPad UI   │          │            │
 └────┬──────┘          └──────┬─────┘

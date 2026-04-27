@@ -17,7 +17,7 @@ The Showcase app is **on track** for the end of May 2026 deadline. Core architec
 - ✅ Daily automated backups via GitHub Actions
 
 ### iOS/iPadOS App
-- ✅ Swift 6.3 with strict concurrency
+- ✅ Swift 6.3.1 with strict concurrency
 - ✅ SwiftUI screens: Main, Library, Video Player, Settings
 - ✅ @Observable state management (modern, reactive)
 - ✅ Supabase client integration working
