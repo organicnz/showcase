@@ -11,7 +11,7 @@ struct ScenarioGridView: View {
     #if !os(macOS)
     @Environment(\.horizontalSizeClass) private var horizontalSizeClass
     #endif
-    @State internal var showVideoPlayer = false
+    let animationNamespace: Namespace.ID
     @State internal var isAnimating = false
     @State internal var layoutStyle: LayoutStyle = .grid
 
@@ -90,17 +90,6 @@ struct ScenarioGridView: View {
         .refreshable {
             await viewModel.loadData()
         }
-        #if !os(macOS)
-        .fullScreenCover(isPresented: $showVideoPlayer) {
-            ScenarioDetailView()
-                .environment(viewModel)
-        }
-        #else
-        .sheet(isPresented: $showVideoPlayer) {
-            ScenarioDetailView()
-                .environment(viewModel)
-        }
-        #endif
     }
 
     // MARK: - Grid Layout (adaptive)
@@ -125,10 +114,9 @@ struct ScenarioGridView: View {
 
         LazyVGrid(columns: columns, spacing: 16) {
             ForEach(viewModel.scenarios) { scenario in
-                ScenarioCard(scenario: scenario) {
+                ScenarioCard(scenario: scenario, namespace: animationNamespace) {
                     HapticManager.shared.impact(style: .medium)
                     viewModel.selectScenario(scenario)
-                    showVideoPlayer = true
                 }
             }
         }
@@ -146,10 +134,9 @@ struct ScenarioGridView: View {
             let topRow = Array(scenarios.prefix(3))
             HStack(spacing: 24) {
                 ForEach(topRow) { scenario in
-                    ScenarioCard(scenario: scenario) {
+                    ScenarioCard(scenario: scenario, namespace: animationNamespace) {
                         HapticManager.shared.impact(style: .medium)
                         viewModel.selectScenario(scenario)
-                        showVideoPlayer = true
                     }
                 }
             }
@@ -159,10 +146,9 @@ struct ScenarioGridView: View {
                 let bottomRow = Array(scenarios.dropFirst(3))
                 HStack(spacing: 24) {
                     ForEach(bottomRow) { scenario in
-                        ScenarioCard(scenario: scenario) {
+                        ScenarioCard(scenario: scenario, namespace: animationNamespace) {
                             HapticManager.shared.impact(style: .medium)
                             viewModel.selectScenario(scenario)
-                            showVideoPlayer = true
                         }
                     }
                 }
@@ -178,10 +164,9 @@ struct ScenarioGridView: View {
     private var listView: some View {
         VStack(spacing: isCompact ? 16 : 24) {
             ForEach(viewModel.scenarios) { scenario in
-                ScenarioCard(scenario: scenario) {
+                ScenarioCard(scenario: scenario, namespace: animationNamespace) {
                     HapticManager.shared.impact(style: .medium)
                     viewModel.selectScenario(scenario)
-                    showVideoPlayer = true
                 }
                 .frame(maxWidth: 600)
             }
@@ -216,10 +201,9 @@ struct ScenarioGridView: View {
             ForEach(0..<cols.count, id: \.self) { colIndex in
                 VStack(spacing: spacing) {
                     ForEach(cols[colIndex]) { scenario in
-                        ScenarioCard(scenario: scenario) {
+                        ScenarioCard(scenario: scenario, namespace: animationNamespace) {
                             HapticManager.shared.impact(style: .medium)
                             viewModel.selectScenario(scenario)
-                            showVideoPlayer = true
                         }
                     }
                 }

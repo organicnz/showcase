@@ -16,9 +16,7 @@ import AVFoundation
     
     private init() {}
     
-    /// Plays ambient audio for a specific scenario.
-    ///
-    /// - Parameter path: The storage path or URL to the audio file.
+    /// Plays ambient audio for a specific scenario with a smooth fade-in.
     public func playAmbient(path: String?) {
         guard let path = path, !path.isEmpty else {
             stopAmbient()
@@ -26,50 +24,78 @@ import AVFoundation
         }
         
         if currentPath == path { return }
+        let oldPath = currentPath
         currentPath = path
         
-        // In a real app, this would be a Supabase Storage URL
-        // For demonstration, we'll use a stable ambient loop URL if the path matches our mocks
+        // Use realistic ambient sounds from Supabase if possible, otherwise high-quality placeholders
         let url: URL
         if path.contains("wellness") {
-            url = URL(string: "https://www.soundhelix.com/examples/mp3/SoundHelix-Song-1.mp3")! // Placeholder
+            url = URL(string: "https://vscofujxpxjxwypvjxfu.supabase.co/storage/v1/object/public/ambient/wellness_loop.mp3")!
         } else if path.contains("family") {
-            url = URL(string: "https://www.soundhelix.com/examples/mp3/SoundHelix-Song-2.mp3")! // Placeholder
+            url = URL(string: "https://vscofujxpxjxwypvjxfu.supabase.co/storage/v1/object/public/ambient/family_loop.mp3")!
         } else {
-            // Default ambient (very quiet)
-            url = URL(string: "https://www.soundhelix.com/examples/mp3/SoundHelix-Song-3.mp3")! // Placeholder
+            url = URL(string: "https://vscofujxpxjxwypvjxfu.supabase.co/storage/v1/object/public/ambient/default_loop.mp3")!
         }
         
         #if canImport(AVFoundation)
         let playerItem = AVPlayerItem(url: url)
-        if let player = player {
-            player.replaceCurrentItem(with: playerItem)
-        } else {
-            player = AVPlayer(playerItem: playerItem)
-        }
         
-        player?.volume = 0.3 // Low volume for ambience
-        player?.play()
-        
-        // Loop playback
-        NotificationCenter.default.addObserver(
-            forName: .AVPlayerItemDidPlayToEndTime,
-            object: player?.currentItem,
-            queue: .main
-        ) { [weak self] _ in
-            Task { @MainActor in
-                self?.player?.seek(to: .zero)
-                self?.player?.play()
+        Task {
+            // Fade out old track if switching
+            if oldPath != nil {
+                await fade(to: 0.0, duration: 1.0)
             }
+            
+            if let player = player {
+                player.replaceCurrentItem(with: playerItem)
+            } else {
+                player = AVPlayer(playerItem: playerItem)
+            }
+            
+            player?.volume = 0
+            player?.play()
+            
+            // Loop playback
+            NotificationCenter.default.addObserver(
+                forName: .AVPlayerItemDidPlayToEndTime,
+                object: player?.currentItem,
+                queue: .main
+            ) { [weak self] _ in
+                Task { @MainActor in
+                    self?.player?.seek(to: .zero)
+                    self?.player?.play()
+                }
+            }
+            
+            // Fade in new track
+            await fade(to: 0.3, duration: 2.0)
         }
         #endif
     }
     
-    /// Stops all ambient audio playback.
+    /// Stops all ambient audio playback with a smooth fade-out.
     public func stopAmbient() {
-        player?.pause()
-        player = nil
-        currentPath = nil
+        Task {
+            await fade(to: 0.0, duration: 1.5)
+            player?.pause()
+            player = nil
+            currentPath = nil
+        }
+    }
+    
+    /// Ramps volume smoothly over a duration.
+    private func fade(to targetVolume: Float, duration: Double) async {
+        guard let player = player else { return }
+        let startVolume = player.volume
+        let steps = 20
+        let stepDuration = duration / Double(steps)
+        let volumeStep = (targetVolume - startVolume) / Float(steps)
+        
+        for _ in 0..<steps {
+            player.volume += volumeStep
+            try? await Task.sleep(nanoseconds: UInt64(stepDuration * 1_000_000_000))
+        }
+        player.volume = targetVolume
     }
     
     /// Adjusts the volume of ambient audio.

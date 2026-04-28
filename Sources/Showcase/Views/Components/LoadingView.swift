@@ -59,6 +59,8 @@ struct LoadingView: View {
         .onAppear {
             withAnimation(.spring(response: 1.5, dampingFraction: 0.8)) {
                 isAnimate = true
+            }
+            withAnimation(.easeIn(duration: 1.2).delay(0.5)) {
                 textOpacity = 1.0
             }
         }

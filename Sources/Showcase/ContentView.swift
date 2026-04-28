@@ -5,6 +5,7 @@ struct ContentView: View {
     @State var viewModel = ViewModel()
     @State var showLibrary = false
     @State var showSettings = false
+    @Namespace private var animationNamespace
 
     var body: some View {
         Group {
@@ -22,49 +23,56 @@ struct ContentView: View {
                     })
 
                 case .loaded:
-                    NavigationStack {
-                        ScenarioGridView()
-                            #if !os(macOS)
-                            .navigationBarTitleDisplayMode(.inline)
-                            #endif
-                            .toolbar {
-                                ToolbarItem(placement: .principal) {
-                                    LogoView(size: 64)
-                                }
-
+                    ZStack {
+                        NavigationStack {
+                            ScenarioGridView(animationNamespace: animationNamespace)
                                 #if !os(macOS)
-                                ToolbarItem(placement: .topBarTrailing) {
-                                    HStack(spacing: 16) {
-                                        Button(action: { showLibrary = true }) {
-                                            Image(systemName: "play.rectangle.on.rectangle")
-                                                .foregroundStyle(.ink)
-                                        }
-
-                                        Button(action: { showSettings = true }) {
-                                            Image(systemName: "gearshape")
-                                                .foregroundStyle(.mid)
-                                        }
-                                    }
-                                }
-                                #else
-                                ToolbarItem(placement: .automatic) {
-                                    HStack(spacing: 16) {
-                                        Button(action: { showLibrary = true }) {
-                                            Image(systemName: "play.rectangle.on.rectangle")
-                                        }
-
-                                        Button(action: { showSettings = true }) {
-                                            Image(systemName: "gearshape")
-                                        }
-                                    }
-                                }
+                                .navigationBarTitleDisplayMode(.inline)
                                 #endif
-                            }
-                            #if !os(macOS)
-                            .toolbarBackground(.ultraThinMaterial, for: .navigationBar)
-                            #endif
+                                .toolbar {
+                                    ToolbarItem(placement: .principal) {
+                                        LogoView(size: 64)
+                                    }
+
+                                    #if !os(macOS)
+                                    ToolbarItem(placement: .topBarTrailing) {
+                                        HStack(spacing: 16) {
+                                            Button(action: { showLibrary = true }) {
+                                                Image(systemName: "play.rectangle.on.rectangle")
+                                                    .foregroundStyle(.ink)
+                                            }
+
+                                            Button(action: { showSettings = true }) {
+                                                Image(systemName: "gearshape")
+                                                    .foregroundStyle(.mid)
+                                            }
+                                        }
+                                    }
+                                    #else
+                                    ToolbarItem(placement: .automatic) {
+                                        HStack(spacing: 16) {
+                                            Button(action: { showLibrary = true }) {
+                                                Image(systemName: "play.rectangle.on.rectangle")
+                                            }
+
+                                            Button(action: { showSettings = true }) {
+                                                Image(systemName: "gearshape")
+                                            }
+                                        }
+                                    }
+                                    #endif
+                                }
+                                #if !os(macOS)
+                                .toolbarBackground(.ultraThinMaterial, for: .navigationBar)
+                                #endif
+                        }
+                        
+                        if viewModel.isShowingDetail {
+                            ScenarioDetailView(animationNamespace: animationNamespace)
+                                .transition(.identity) // Geometry handles the motion
+                        }
                     }
-                    .tint(.terracotta)
+                    .tint(ScenarioGradient.primaryColor(for: viewModel.selectedScenario?.slug ?? ""))
                     .sheet(isPresented: $showLibrary) {
                         NavigationStack {
                             LibraryView()

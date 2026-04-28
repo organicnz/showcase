@@ -23,6 +23,7 @@ import SkipFuse
     public var lastSyncDate: Date?
     public var isAuthenticated: Bool = false
     public var userEmail: String?
+    public var isShowingDetail: Bool = false
 
     /// The current display mode for the scenario detail
     public var contentMode: ContentMode = .overview
@@ -58,10 +59,15 @@ import SkipFuse
     ///
     /// This is the primary data loading entry point. It fetches scenarios first,
     /// then concurrently preloads videos for each scenario.
-    public func loadData() async {
-        logger.debug("Starting loadData()")
-        // Load from cache first for instant startup
-        loadFromCache()
+    public func loadData(forceRefresh: Bool = false) async {
+        logger.debug("Starting loadData(forceRefresh: \(forceRefresh))")
+        
+        if forceRefresh {
+            clearCache()
+        } else {
+            // Load from cache first for instant startup
+            loadFromCache()
+        }
 
         // Only show full loading screen on initial load if cache was empty
         let isInitialLoad = scenarios.isEmpty
@@ -167,6 +173,18 @@ import SkipFuse
         }
     }
 
+    /// Wipes all locally cached data and resets the state.
+    public func clearCache() {
+        UserDefaults.standard.removeObject(forKey: "cached_scenarios")
+        UserDefaults.standard.removeObject(forKey: "cached_videos")
+        UserDefaults.standard.removeObject(forKey: "cached_photos")
+        
+        self.scenarios = []
+        self.videos = [:]
+        self.photos = [:]
+        self.lastSyncDate = nil
+    }
+
     /// Reloads videos for a single scenario.
     public func reloadVideos(for scenarioId: UUID) async {
         do {
@@ -194,6 +212,10 @@ import SkipFuse
                     startPlayback(with: scenarioVideos)
                 }
             }
+        }
+        
+        withAnimation(.spring(response: 0.6, dampingFraction: 0.8)) {
+            isShowingDetail = true
         }
     }
 

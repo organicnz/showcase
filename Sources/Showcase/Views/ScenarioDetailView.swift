@@ -6,7 +6,7 @@ import AVFoundation
 
 struct ScenarioDetailView: View {
     @Environment(ViewModel.self) var viewModel: ViewModel
-    @Environment(\.dismiss) var dismiss
+    let animationNamespace: Namespace.ID
     @State internal var player: AVPlayer?
     @State internal var isControlsVisible = true
     @State internal var isImmersiveMode = false
@@ -296,7 +296,9 @@ struct ScenarioDetailView: View {
                 withAnimation { viewModel.contentMode = .overview }
             } else {
                 viewModel.stopPlayback()
-                dismiss()
+                withAnimation(.spring(response: 0.6, dampingFraction: 0.8)) {
+                    viewModel.isShowingDetail = false
+                }
             }
         }) {
             ZStack {
