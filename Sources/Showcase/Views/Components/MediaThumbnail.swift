@@ -1,4 +1,7 @@
 import SwiftUI
+#if canImport(AVFoundation)
+import AVFoundation
+#endif
 
 struct MediaThumbnail: View {
     var video: Video?
@@ -8,6 +11,7 @@ struct MediaThumbnail: View {
 
     @Environment(ViewModel.self) var viewModel: ViewModel
     @State internal var isPressed = false
+    @State internal var previewPlayer: AVPlayer?
 
     var body: some View {
         Button(action: action) {
@@ -37,13 +41,52 @@ struct MediaThumbnail: View {
         .onLongPressGesture(minimumDuration: .infinity, maximumDistance: .infinity, pressing: { pressing in
             isPressed = pressing
         }, perform: {})
+        .onAppear {
+            if let video = video {
+                setupPreviewPlayer(for: video)
+            }
+        }
+        .onDisappear {
+            previewPlayer?.pause()
+            previewPlayer = nil
+        }
+    }
+    
+    private func setupPreviewPlayer(for video: Video) {
+        guard previewPlayer == nil,
+              let url = SupabaseManager.shared.getPublicVideoURL(for: video.storagePath) else {
+            return
+        }
+        
+        #if canImport(AVFoundation)
+        let playerItem = AVPlayerItem(url: url)
+        let newPlayer = AVPlayer(playerItem: playerItem)
+        newPlayer.actionAtItemEnd = .none
+        newPlayer.isMuted = true // Always mute gallery thumbnails
+        
+        NotificationCenter.default.addObserver(
+            forName: .AVPlayerItemDidPlayToEndTime,
+            object: playerItem,
+            queue: .main
+        ) { [weak newPlayer] _ in
+            Task { @MainActor in
+                newPlayer?.seek(to: .zero)
+                newPlayer?.play()
+            }
+        }
+        
+        newPlayer.play()
+        self.previewPlayer = newPlayer
+        #endif
     }
 
     @ViewBuilder
     private func videoThumbnailContent(video: Video) -> some View {
         ZStack {
-            // Background image
-            if let url = viewModel.videoThumbnailURL(for: video) {
+            // Background image or video
+            if let player = previewPlayer {
+                VideoPlayerContainer(player: player, contentMode: .fill, isVideoLoading: false)
+            } else if let url = viewModel.videoThumbnailURL(for: video) {
                 AsyncImage(url: url) { phase in
                     if let image = phase.image {
                         image

@@ -1,17 +1,25 @@
 import SwiftUI
+#if canImport(AVFoundation)
+import AVFoundation
+#endif
 
 struct VideoCard: View {
     let video: Video
     let action: () -> Void
     @Environment(ViewModel.self) var viewModel: ViewModel
     @State internal var isPressed = false
+    @State internal var previewPlayer: AVPlayer?
 
     var body: some View {
         Button(action: action) {
             VStack(alignment: .leading, spacing: 12) {
                 // Thumbnail Area
                 ZStack {
-                    if let url = viewModel.videoThumbnailURL(for: video) {
+                    if let player = previewPlayer {
+                        VideoPlayerContainer(player: player, contentMode: .fill, isVideoLoading: false)
+                            .frame(height: 120)
+                            .clipShape(RoundedRectangle(cornerRadius: 16))
+                    } else if let url = viewModel.videoThumbnailURL(for: video) {
                         AsyncImage(url: url) { phase in
                             if let image = phase.image {
                                 image
@@ -34,7 +42,7 @@ struct VideoCard: View {
                     
                     // Glass Overlay
                     RoundedRectangle(cornerRadius: 16)
-                        .fill(.ultraThinMaterial.opacity(0.3))
+                        .fill(.ultraThinMaterial.opacity(previewPlayer != nil ? 0.0 : 0.3))
                         .overlay(
                             RoundedRectangle(cornerRadius: 16)
                                 .stroke(Color.white.opacity(0.1), lineWidth: 0.5)
@@ -96,6 +104,41 @@ struct VideoCard: View {
         .onLongPressGesture(minimumDuration: .infinity, pressing: { pressing in
             isPressed = pressing
         }, perform: {})
+        .onAppear {
+            setupPreviewPlayer()
+        }
+        .onDisappear {
+            previewPlayer?.pause()
+            previewPlayer = nil
+        }
+    }
+    
+    private func setupPreviewPlayer() {
+        guard previewPlayer == nil,
+              let url = SupabaseManager.shared.getPublicVideoURL(for: video.storagePath) else {
+            return
+        }
+        
+        #if canImport(AVFoundation)
+        let playerItem = AVPlayerItem(url: url)
+        let newPlayer = AVPlayer(playerItem: playerItem)
+        newPlayer.actionAtItemEnd = .none
+        newPlayer.isMuted = true // Always mute library thumbnails
+        
+        NotificationCenter.default.addObserver(
+            forName: .AVPlayerItemDidPlayToEndTime,
+            object: playerItem,
+            queue: .main
+        ) { [weak newPlayer] _ in
+            Task { @MainActor in
+                newPlayer?.seek(to: .zero)
+                newPlayer?.play()
+            }
+        }
+        
+        newPlayer.play()
+        self.previewPlayer = newPlayer
+        #endif
     }
 
     private func formatDuration(_ seconds: Int) -> String {

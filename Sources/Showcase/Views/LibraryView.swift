@@ -29,8 +29,10 @@ struct LibraryView: View {
                         VStack(alignment: .leading, spacing: 32) {
                             ForEach(filteredScenarios) { scenario in
                                 let videos = viewModel.videosForScenario(scenario)
-                                if !videos.isEmpty {
-                                    VStack(alignment: .leading, spacing: 16) {
+                                let photos = viewModel.photos[scenario.id] ?? []
+                                
+                                if !videos.isEmpty || !photos.isEmpty {
+                                    VStack(alignment: .leading, spacing: 24) {
                                         // Section Header
                                         HStack {
                                             Image(systemName: viewModel.iconName(for: scenario))
@@ -42,7 +44,7 @@ struct LibraryView: View {
                                             
                                             Spacer()
                                             
-                                            Text("\(videos.count)")
+                                            Text("\(videos.count + photos.count)")
                                                 .font(.caption)
                                                 .padding(.horizontal, 8)
                                                 .padding(.vertical, 4)
@@ -52,17 +54,49 @@ struct LibraryView: View {
                                         }
                                         .padding(.horizontal, 20)
 
-                                        // Video Grid
-                                        LazyVGrid(columns: [GridItem(.adaptive(minimum: 160), spacing: 16)], spacing: 16) {
-                                            ForEach(videos) { video in
-                                                VideoCard(video: video) {
-                                                    viewModel.playVideo(video)
-                                                    viewModel.contentMode = .video
-                                                    showVideoPlayer = true
+                                        if !videos.isEmpty {
+                                            VStack(alignment: .leading, spacing: 12) {
+                                                Text("Видео")
+                                                    .font(.labelCaps)
+                                                    .foregroundStyle(.white.opacity(0.5))
+                                                    .padding(.horizontal, 20)
+                                                
+                                                // Video Grid
+                                                LazyVGrid(columns: [GridItem(.adaptive(minimum: 160), spacing: 16)], spacing: 16) {
+                                                    ForEach(videos) { video in
+                                                        VideoCard(video: video) {
+                                                            viewModel.playVideo(video)
+                                                            viewModel.contentMode = .video
+                                                            showVideoPlayer = true
+                                                        }
+                                                    }
                                                 }
+                                                .padding(.horizontal, 20)
                                             }
                                         }
-                                        .padding(.horizontal, 20)
+                                        
+                                        if !photos.isEmpty {
+                                            VStack(alignment: .leading, spacing: 12) {
+                                                Text("Фотографии")
+                                                    .font(.labelCaps)
+                                                    .foregroundStyle(.white.opacity(0.5))
+                                                    .padding(.horizontal, 20)
+                                                
+                                                // Photo Grid
+                                                LazyVGrid(columns: [GridItem(.adaptive(minimum: 160), spacing: 16)], spacing: 16) {
+                                                    ForEach(photos) { photo in
+                                                        MediaThumbnail(photo: photo, namespace: animationNamespace) {
+                                                            if let idx = photos.firstIndex(where: { $0.id == photo.id }) {
+                                                                viewModel.startPhotoGallery(with: photos, startingAt: idx)
+                                                            }
+                                                            viewModel.contentMode = .photo
+                                                            showVideoPlayer = true
+                                                        }
+                                                    }
+                                                }
+                                                .padding(.horizontal, 20)
+                                            }
+                                        }
                                     }
                                 }
                             }
