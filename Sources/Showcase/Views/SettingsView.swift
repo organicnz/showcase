@@ -29,7 +29,7 @@ struct SettingsView: View {
             // MARK: - App Information
             Section("О приложении") {
                 LabeledRow(title: "Название", value: "Showcase Мещерский парк")
-                LabeledRow(title: "Версия", value: "0.0.1")
+                LabeledRow(title: "Версия", value: "1.0.1")
                 LabeledRow(title: "Сборка", value: "Swift 6.3.1 + SKIP")
                 LabeledRow(title: "Платформа", value: platformName)
             }
@@ -144,6 +144,8 @@ struct SettingsView: View {
                 }
 
                 LabeledRow(title: "Разработчик", value: "Тарлан Исаев")
+                LabeledRow(title: "Дизайн", value: "Женя Миловидов")
+                LabeledRow(title: "PM", value: "Женя Южакова")
                 LabeledRow(title: "Клиент", value: "ООО «СПК-М»")
             }
 

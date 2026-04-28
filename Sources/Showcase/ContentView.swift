@@ -29,7 +29,7 @@ struct ContentView: View {
                             #endif
                             .toolbar {
                                 ToolbarItem(placement: .principal) {
-                                    LogoView(size: 32)
+                                    LogoView(size: 64)
                                 }
 
                                 #if !os(macOS)

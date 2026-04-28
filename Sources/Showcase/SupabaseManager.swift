@@ -22,7 +22,8 @@ public actor SupabaseManager {
         return (key.isEmpty || key.contains("$(")) ? "sb_publishable_36vglboOi9AkwTwCw_BqMg_uWQE8NV_" : key
     }
     
-    private static let storageBucket = "videos"
+    private static let videoBucket = "videos"
+    private static let imageBucket = "photos"
 
     // MARK: - Client
 
@@ -130,6 +131,21 @@ public actor SupabaseManager {
         }
     }
 
+    // MARK: - Photos
+
+    public func fetchPhotos(for scenarioId: UUID) async throws -> [Photo] {
+        try await withRetry {
+            let photos: [Photo] = try await client.from("photos")
+                .select()
+                .eq("scenario_id", value: scenarioId)
+                .eq("active", value: true)
+                .order("order_index", ascending: true)
+                .execute()
+                .value
+            return photos
+        }
+    }
+
     /// Fetches all active videos across all scenarios.
     public func fetchAllVideos() async throws -> [Video] {
         try await withRetry {
@@ -146,8 +162,13 @@ public actor SupabaseManager {
     // MARK: - Storage URLs
 
     /// Generates a public CDN URL for a video file. This is a pure computation — no isolation needed.
-    nonisolated public func getPublicURL(for path: String) -> URL? {
-        return try? client.storage.from(Self.storageBucket).getPublicURL(path: path)
+    nonisolated public func getPublicVideoURL(for path: String) -> URL? {
+        return try? client.storage.from(Self.videoBucket).getPublicURL(path: path)
+    }
+
+    /// Generates a public CDN URL for an image file.
+    nonisolated public func getPublicImageURL(for path: String) -> URL? {
+        return try? client.storage.from(Self.imageBucket).getPublicURL(path: path)
     }
 
     // MARK: - Health Check

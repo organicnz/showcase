@@ -1,6 +1,6 @@
 import SwiftUI
 
-struct VideoRow: View {
+struct VideoCard: View {
     let video: Video
     let action: () -> Void
     @Environment(ViewModel.self) var viewModel: ViewModel
@@ -8,55 +8,70 @@ struct VideoRow: View {
 
     var body: some View {
         Button(action: action) {
-            HStack(spacing: 12) {
-                // Thumbnail placeholder
+            VStack(alignment: .leading, spacing: 12) {
+                // Thumbnail Area
                 ZStack {
-                    RoundedRectangle(cornerRadius: CornerRadius.small)
+                    RoundedRectangle(cornerRadius: 16)
                         .fill(
                             LinearGradient(
-                                colors: [Color.ochre.opacity(0.15), Color.terracotta.opacity(0.05)],
+                                colors: [Color.ochre.opacity(0.1), Color.terracotta.opacity(0.05)],
                                 startPoint: .topLeading,
                                 endPoint: .bottomTrailing
                             )
                         )
-                        .frame(width: 80, height: 60)
+                        .frame(height: 120)
+                    
+                    // Glass Overlay
+                    RoundedRectangle(cornerRadius: 16)
+                        .fill(.ultraThinMaterial.opacity(0.3))
+                        .overlay(
+                            RoundedRectangle(cornerRadius: 16)
+                                .stroke(Color.white.opacity(0.1), lineWidth: 0.5)
+                        )
 
-                    Image(systemName: "play.circle.fill")
-                        .font(.title2)
-                        .foregroundStyle(Color.terracotta.opacity(0.7))
+                    Image(systemName: "play.fill")
+                        .font(.title)
+                        .foregroundStyle(.white)
+                        .padding(16)
+                        .background(.ultraThinMaterial)
+                        .clipShape(Circle())
+                        .shadow(color: .black.opacity(0.2), radius: 10)
                 }
 
-                // Video info
-                VStack(alignment: .leading, spacing: 6) {
+                // Info Area
+                VStack(alignment: .leading, spacing: 4) {
                     Text(video.title ?? "Без названия")
                         .font(.bodyLarge)
-                        .fontWeight(.medium)
-                        .foregroundStyle(.ink)
+                        .fontWeight(.bold)
+                        .foregroundStyle(.white)
                         .lineLimit(1)
 
-                    HStack(spacing: 12) {
+                    HStack {
                         if let duration = video.durationSec {
-                            Label(formatDuration(duration), systemImage: "clock")
-                                .font(.bodySmall2)
-                                .foregroundStyle(.mid)
+                            Text(formatDuration(duration))
+                                .font(.labelCaps)
+                                .foregroundStyle(.white.opacity(0.6))
                         }
-
-                        Label("#\(video.orderIndex)", systemImage: "number")
-                            .font(.bodySmall2)
-                            .foregroundStyle(.mid)
+                        
+                        Spacer()
+                        
+                        Text("#\(video.orderIndex)")
+                            .font(.labelCaps)
+                            .foregroundStyle(.white.opacity(0.4))
                     }
                 }
-
-                Spacer()
-
-                Image(systemName: "chevron.right")
-                    .font(.caption)
-                    .foregroundStyle(.mid.opacity(0.5))
+                .padding(.horizontal, 4)
             }
-            .padding(.vertical, 8)
-            .padding(.horizontal, 4)
-            .background(Color.soft.opacity(0.001)) // Make entire row tappable
-            .scaleEffect(isPressed ? 0.98 : 1.0)
+            .padding(12)
+            .background(
+                RoundedRectangle(cornerRadius: 24)
+                    .fill(.ultraThinMaterial.opacity(0.5))
+            )
+            .overlay(
+                RoundedRectangle(cornerRadius: 24)
+                    .stroke(Color.white.opacity(0.1), lineWidth: 0.5)
+            )
+            .scaleEffect(isPressed ? 0.96 : 1.0)
             .animation(.spring(response: 0.3, dampingFraction: 0.7), value: isPressed)
         }
         .buttonStyle(.plain)
@@ -65,7 +80,6 @@ struct VideoRow: View {
         }, perform: {})
     }
 
-    /// Formats seconds into a human-readable string (e.g., "0:28").
     private func formatDuration(_ seconds: Int) -> String {
         let mins = seconds / 60
         let secs = seconds % 60

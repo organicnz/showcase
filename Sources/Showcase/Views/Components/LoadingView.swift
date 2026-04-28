@@ -1,61 +1,66 @@
 import SwiftUI
 
 struct LoadingView: View {
-    @State internal var isPulsing = false
-    @State internal var textOpacity: Double = 0.3
+    @State internal var isAnimate = false
+    @State internal var textOpacity: Double = 0
+    private let startDate = Date()
 
     var body: some View {
-        VStack(spacing: 30) {
-            // Animated Logo with pulsing effect
-            ZStack {
-                // Outer ring pulse — terracotta accent
-                Circle()
-                    .stroke(Color.terracotta.opacity(0.2), lineWidth: 2)
-                    .frame(width: 140, height: 140)
-                    .scaleEffect(isPulsing ? 1.2 : 0.9)
-                    .opacity(isPulsing ? 0 : 0.6)
-                    .animation(.easeInOut(duration: 1.8).repeatForever(autoreverses: false), value: isPulsing)
-
-                // Glass circle
-                Circle()
-                    .fill(.ultraThinMaterial)
-                    .frame(width: 120, height: 120)
-
-                // Icon — terracotta to ochre gradient
-                Image(systemName: "building.2.fill")
-                    .font(.system(size: 50, weight: .light))
-                    .foregroundStyle(
-                        LinearGradient(
-                            colors: [.terracotta, .ochre],
-                            startPoint: .topLeading,
-                            endPoint: .bottomTrailing
-                        )
-                    )
-                    .scaleEffect(isPulsing ? 1.05 : 0.95)
-                    .animation(.easeInOut(duration: 1.2).repeatForever(autoreverses: true), value: isPulsing)
+        ZStack {
+            // Ambient Shimmer Background
+            TimelineView(.animation) { timeline in
+                let time = timeline.date.timeIntervalSince(startDate)
+                let phase = sin(time * 0.5)
+                
+                LinearGradient(
+                    colors: [
+                        .soft,
+                        .terracotta.opacity(0.05 + 0.05 * phase),
+                        .soft
+                    ],
+                    startPoint: .topLeading,
+                    endPoint: .bottomTrailing
+                )
+                .ignoresSafeArea()
             }
 
-            VStack(spacing: 12) {
-                Text("Мещерский парк")
-                    .font(.displaySmall)
-                    .foregroundStyle(.ink)
+            VStack(spacing: 40) {
+                // Animated Jewel Logo
+                ZStack {
+                    // Multi-layer pulse
+                    ForEach(0..<3) { i in
+                        Circle()
+                            .stroke(Color.terracotta.opacity(0.1), lineWidth: 1)
+                            .frame(width: 120, height: 120)
+                            .scaleEffect(isAnimate ? 2.5 : 0.8)
+                            .opacity(isAnimate ? 0 : 0.4)
+                            .animation(.easeOut(duration: 3).repeatForever(autoreverses: false).delay(Double(i) * 0.8), value: isAnimate)
+                    }
 
-                Text("Загрузка витрины...")
-                    .font(.bodyLarge)
-                    .foregroundStyle(.mid)
-                    .opacity(textOpacity)
-                    .animation(.easeInOut(duration: 1.0).repeatForever(autoreverses: true), value: textOpacity)
+                    LogoView(size: 100)
+                        .shadow(color: .black.opacity(0.05), radius: 20)
+                        .scaleEffect(isAnimate ? 1.0 : 0.9)
+                }
 
-                ProgressView()
-                    .tint(.terracotta)
-                    .padding(.top, 8)
+                VStack(spacing: 16) {
+                    Text("Мещерский парк")
+                        .font(.displaySmall)
+                        .tracking(2)
+                        .foregroundStyle(.ink)
+                        .opacity(textOpacity)
+
+                    Text("Загрузка витрины...")
+                        .font(.labelCaps)
+                        .foregroundStyle(.mid)
+                        .opacity(textOpacity * 0.6)
+                }
             }
         }
-        .frame(maxWidth: .infinity, maxHeight: .infinity)
-        .background(Color.soft.ignoresSafeArea())
         .onAppear {
-            isPulsing = true
-            textOpacity = 1.0
+            withAnimation(.spring(response: 1.5, dampingFraction: 0.8)) {
+                isAnimate = true
+                textOpacity = 1.0
+            }
         }
     }
 }

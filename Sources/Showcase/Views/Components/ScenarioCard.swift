@@ -61,16 +61,24 @@ struct ScenarioCard: View {
                 }
             }
             .background(
-                RoundedRectangle(cornerRadius: CornerRadius.modal)
-                    .fill(Color.cardSurface.opacity(0.4))
-                    .shadow(color: .ink.opacity(0.04), radius: 30, y: 15)
+                ZStack {
+                    // Premium Ambient Glow
+                    RoundedRectangle(cornerRadius: CornerRadius.modal)
+                        .fill(ScenarioGradient.primaryColor(for: scenario.slug).opacity(isPressed ? 0.15 : 0.05))
+                        .blur(radius: isPressed ? 20 : 10)
+                        .padding(-4)
+
+                    RoundedRectangle(cornerRadius: CornerRadius.modal)
+                        .fill(Color.cardSurface.opacity(0.4))
+                }
+                .shadow(color: .ink.opacity(0.04), radius: 30, y: 15)
             )
             .overlay(
                 RoundedRectangle(cornerRadius: CornerRadius.modal)
-                    .stroke(Color.cardBorder.opacity(0.5), lineWidth: 1)
+                    .stroke(isPressed ? ScenarioGradient.primaryColor(for: scenario.slug).opacity(0.6) : Color.cardBorder.opacity(0.5), lineWidth: isPressed ? 2 : 1)
             )
-            .scaleEffect(isPressed ? 0.98 : 1.0)
-            .animation(.spring(response: 0.3, dampingFraction: 0.7), value: isPressed)
+            .scaleEffect(isPressed ? 0.97 : 1.0)
+            .animation(.spring(response: 0.3, dampingFraction: 0.6), value: isPressed)
         }
         .buttonStyle(.plain)
         #if !os(macOS)

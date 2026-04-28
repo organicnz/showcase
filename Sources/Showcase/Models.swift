@@ -9,6 +9,7 @@ public struct Scenario: Identifiable, Codable, Hashable, Sendable {
     public var description: String?
     public var orderIndex: Int
     public var isActive: Bool
+    public var ambientAudioPath: String?
 
     public init(
         id: UUID = UUID(),
@@ -16,7 +17,8 @@ public struct Scenario: Identifiable, Codable, Hashable, Sendable {
         slug: String,
         description: String? = nil,
         orderIndex: Int = 0,
-        isActive: Bool = true
+        isActive: Bool = true,
+        ambientAudioPath: String? = nil
     ) {
         self.id = id
         self.title = title
@@ -24,6 +26,7 @@ public struct Scenario: Identifiable, Codable, Hashable, Sendable {
         self.description = description
         self.orderIndex = orderIndex
         self.isActive = isActive
+        self.ambientAudioPath = ambientAudioPath
     }
 
     enum CodingKeys: String, CodingKey {
@@ -33,6 +36,7 @@ public struct Scenario: Identifiable, Codable, Hashable, Sendable {
         case description
         case orderIndex = "order_index"
         case isActive = "active"
+        case ambientAudioPath = "ambient_audio_path"
     }
 }
 
@@ -47,6 +51,7 @@ public struct Video: Identifiable, Codable, Hashable, Sendable {
     public var durationSec: Int?
     public var orderIndex: Int
     public var isActive: Bool
+    public var highlights: [String]?
     public var createdAt: Date
 
     public init(
@@ -58,6 +63,7 @@ public struct Video: Identifiable, Codable, Hashable, Sendable {
         durationSec: Int? = nil,
         orderIndex: Int = 0,
         isActive: Bool = true,
+        highlights: [String]? = nil,
         createdAt: Date = Date()
     ) {
         self.id = id
@@ -68,6 +74,7 @@ public struct Video: Identifiable, Codable, Hashable, Sendable {
         self.durationSec = durationSec
         self.orderIndex = orderIndex
         self.isActive = isActive
+        self.highlights = highlights
         self.createdAt = createdAt
     }
 
@@ -78,6 +85,47 @@ public struct Video: Identifiable, Codable, Hashable, Sendable {
         case storagePath = "storage_path"
         case thumbnailPath = "thumbnail_path"
         case durationSec = "duration_sec"
+        case orderIndex = "order_index"
+        case isActive = "active"
+        case highlights
+        case createdAt = "created_at"
+    }
+}
+
+// MARK: - Photo
+
+public struct Photo: Identifiable, Codable, Hashable, Sendable {
+    public let id: UUID
+    public var scenarioId: UUID
+    public var title: String?
+    public var storagePath: String
+    public var orderIndex: Int
+    public var isActive: Bool
+    public var createdAt: Date
+
+    public init(
+        id: UUID = UUID(),
+        scenarioId: UUID,
+        title: String? = nil,
+        storagePath: String,
+        orderIndex: Int = 0,
+        isActive: Bool = true,
+        createdAt: Date = Date()
+    ) {
+        self.id = id
+        self.scenarioId = scenarioId
+        self.title = title
+        self.storagePath = storagePath
+        self.orderIndex = orderIndex
+        self.isActive = isActive
+        self.createdAt = createdAt
+    }
+
+    enum CodingKeys: String, CodingKey {
+        case id
+        case scenarioId = "scenario_id"
+        case title
+        case storagePath = "storage_path"
         case orderIndex = "order_index"
         case isActive = "active"
         case createdAt = "created_at"
@@ -102,4 +150,12 @@ public enum LoadState: Sendable {
         if case .failed(let error) = self { return error }
         return nil
     }
+}
+
+// MARK: - Content Mode
+
+public enum ContentMode: String, CaseIterable, Codable, Sendable {
+    case overview = "Обзор"
+    case photo = "Фото"
+    case video = "Видео"
 }

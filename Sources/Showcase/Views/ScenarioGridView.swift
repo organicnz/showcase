@@ -34,7 +34,6 @@ struct ScenarioGridView: View {
                             .font(.labelCaps)
                             .tracking(4)
                             .foregroundStyle(Color.terracotta)
-                            .padding(.top, isCompact ? 12 : 20)
 
                         Text("Выберите сценарий\nобраза жизни")
                             .font(isCompact ? .displayMedium : .displayLarge)
@@ -93,12 +92,12 @@ struct ScenarioGridView: View {
         }
         #if !os(macOS)
         .fullScreenCover(isPresented: $showVideoPlayer) {
-            VideoPlayerView()
+            ScenarioDetailView()
                 .environment(viewModel)
         }
         #else
         .sheet(isPresented: $showVideoPlayer) {
-            VideoPlayerView()
+            ScenarioDetailView()
                 .environment(viewModel)
         }
         #endif
@@ -142,10 +141,10 @@ struct ScenarioGridView: View {
     private var pyramidGrid: some View {
         let scenarios = viewModel.scenarios
 
-        VStack(spacing: 20) {
+        VStack(spacing: 32) {
             // Top row: up to 3 cards
             let topRow = Array(scenarios.prefix(3))
-            HStack(spacing: 20) {
+            HStack(spacing: 24) {
                 ForEach(topRow) { scenario in
                     ScenarioCard(scenario: scenario) {
                         HapticManager.shared.impact(style: .medium)
@@ -158,7 +157,7 @@ struct ScenarioGridView: View {
             // Bottom row: remaining cards, centered
             if scenarios.count > 3 {
                 let bottomRow = Array(scenarios.dropFirst(3))
-                HStack(spacing: 20) {
+                HStack(spacing: 24) {
                     ForEach(bottomRow) { scenario in
                         ScenarioCard(scenario: scenario) {
                             HapticManager.shared.impact(style: .medium)
@@ -167,10 +166,10 @@ struct ScenarioGridView: View {
                         }
                     }
                 }
-                .frame(maxWidth: cardWidth(for: bottomRow.count, total: min(topRow.count, 3)))
+                .frame(maxWidth: .infinity)
             }
         }
-        .padding(.horizontal, 24)
+        .padding(.horizontal, 40)
     }
 
     // MARK: - List View

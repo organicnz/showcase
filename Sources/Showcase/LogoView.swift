@@ -8,13 +8,22 @@ public struct LogoView: View {
     }
 
     public var body: some View {
-        // Using the new refined 'Master' logo asset
-        Image("AppLogo", bundle: .module)
+        // Using the new refined 'Master' logo asset with a circular frame
+        Image("ShowcaseLogo", bundle: .module)
             .resizable()
             .aspectRatio(contentMode: .fill)
             .frame(width: size, height: size)
-            .clipShape(RoundedRectangle(cornerRadius: size * 0.22)) // App icon style rounding
-            .shadow(color: .black.opacity(0.2), radius: 10, y: 5)
+            .clipShape(Circle())
+            .overlay(
+                Circle()
+                    .stroke(Color.white.opacity(0.15), lineWidth: 1)
+            )
+            .background(
+                Circle()
+                    .fill(Color.soft.opacity(0.5))
+                    .blur(radius: 2)
+            )
+            .shadow(color: .black.opacity(0.15), radius: size * 0.1, y: size * 0.05)
     }
 }
 

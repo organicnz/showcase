@@ -13,6 +13,7 @@ import SkipFuse
 
     public var scenarios: [Scenario] = []
     public var videos: [UUID: [Video]] = [:]
+    public var photos: [UUID: [Photo]] = [:]
     public var selectedScenario: Scenario?
     public var currentVideo: Video?
     public var loadState: LoadState = .idle
@@ -22,6 +23,9 @@ import SkipFuse
     public var lastSyncDate: Date?
     public var isAuthenticated: Bool = false
     public var userEmail: String?
+
+    /// The current display mode for the scenario detail
+    public var contentMode: ContentMode = .overview
     
     public var currentThemeColors: [Color] {
         if let slug = selectedScenario?.slug {
@@ -72,26 +76,28 @@ import SkipFuse
             logger.debug("Fetched \(fetchedScenarios.count) scenarios.")
             self.scenarios = fetchedScenarios
 
-            logger.debug("Starting video fetch task group...")
-            // Concurrently load videos for all scenarios
-            await withTaskGroup(of: (UUID, [Video]).self) { group in
+            logger.debug("Starting media fetch task group...")
+            // Concurrently load videos and photos for all scenarios
+            await withTaskGroup(of: (UUID, [Video], [Photo]).self) { group in
                 for scenario in fetchedScenarios {
                     group.addTask {
                         do {
-                            let vids = try await SupabaseManager.shared.fetchVideos(for: scenario.id)
-                            return (scenario.id, vids)
+                            async let vids = SupabaseManager.shared.fetchVideos(for: scenario.id)
+                            async let phs = SupabaseManager.shared.fetchPhotos(for: scenario.id)
+                            return (scenario.id, try await vids, try await phs)
                         } catch {
-                            logger.error("Failed to load videos for \(scenario.slug): \(error)")
-                            return (scenario.id, [])
+                            logger.error("Failed to load media for \(scenario.slug): \(error)")
+                            return (scenario.id, [], [])
                         }
                     }
                 }
 
-                for await (scenarioId, vids) in group {
+                for await (scenarioId, vids, phs) in group {
                     self.videos[scenarioId] = vids
+                    self.photos[scenarioId] = phs
                 }
             }
-            logger.debug("Video fetch task group completed.")
+            logger.debug("Media fetch task group completed.")
 
             // Save to cache
             saveToCache()
@@ -141,6 +147,9 @@ import SkipFuse
         if let encodedVideos = try? JSONEncoder().encode(videos) {
             UserDefaults.standard.set(encodedVideos, forKey: "cached_videos")
         }
+        if let encodedPhotos = try? JSONEncoder().encode(photos) {
+            UserDefaults.standard.set(encodedPhotos, forKey: "cached_photos")
+        }
     }
 
     private func loadFromCache() {
@@ -151,6 +160,10 @@ import SkipFuse
         if let data = UserDefaults.standard.data(forKey: "cached_videos"),
            let decoded = try? JSONDecoder().decode([UUID: [Video]].self, from: data) {
             self.videos = decoded
+        }
+        if let data = UserDefaults.standard.data(forKey: "cached_photos"),
+           let decoded = try? JSONDecoder().decode([UUID: [Photo]].self, from: data) {
+            self.photos = decoded
         }
     }
 
@@ -244,7 +257,12 @@ import SkipFuse
 
     /// Returns the public CDN URL for a video's storage path.
     public func videoURL(for video: Video) -> URL? {
-        SupabaseManager.shared.getPublicURL(for: video.storagePath)
+        SupabaseManager.shared.getPublicVideoURL(for: video.storagePath)
+    }
+
+    /// Returns the public CDN URL for a photo's storage path.
+    public func photoURL(for photo: Photo) -> URL? {
+        SupabaseManager.shared.getPublicImageURL(for: photo.storagePath)
     }
 
     /// Returns the cached videos for a given scenario.
@@ -278,26 +296,12 @@ import SkipFuse
 
     /// Returns a human-readable title for a scenario slug, translating it to Russian.
     public func scenarioTitle(for scenario: Scenario) -> String {
-        switch scenario.slug {
-        case "family": return "Семья с детьми"
-        case "wellness": return "Здоровье и тишина"
-        case "guests": return "Гости и отель"
-        case "investor": return "Для инвестора"
-        case "architecture": return "Архитектура и дизайн"
-        default: return scenario.title
-        }
+        return scenario.title
     }
 
     /// Returns a human-readable description for a scenario slug.
     public func scenarioDescription(for scenario: Scenario) -> String {
-        switch scenario.slug {
-        case "family": return "Школа, площадка, безопасность, комьюнити"
-        case "wellness": return "Спа, лесные прогулки, тишина"
-        case "guests": return "Гостиничный номер вместо гостевой комнаты"
-        case "investor": return "Ликвидность, ограниченное предложение, уникальная локация"
-        case "architecture": return "Материалы, свет, панорамное остекление"
-        default: return scenario.description ?? scenario.slug
-        }
+        return scenario.description ?? ""
     }
 
     /// Returns the gradient colors for a scenario slug (brand palette).

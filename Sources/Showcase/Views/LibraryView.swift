@@ -17,63 +17,75 @@ struct LibraryView: View {
     }
 
     var body: some View {
-        Group {
-            if viewModel.hasVideos {
-                List {
-                    ForEach(filteredScenarios) { scenario in
-                        Section {
-                            let videos = viewModel.videosForScenario(scenario)
-                            if videos.isEmpty {
-                                HStack {
-                                    Image(systemName: "video.slash")
-                                        .foregroundStyle(.mid)
-                                    Text("Нет доступных видео")
-                                        .foregroundStyle(.mid)
-                                }
-                                .padding(.vertical, 8)
-                            } else {
-                                ForEach(videos) { video in
-                                    VideoRow(video: video) {
-                                        viewModel.playVideo(video)
-                                        showVideoPlayer = true
+        ZStack {
+            AmbientBackgroundView()
+                .ignoresSafeArea()
+                .overlay(Color.black.opacity(0.6))
+
+            Group {
+                if viewModel.hasVideos {
+                    ScrollView {
+                        VStack(alignment: .leading, spacing: 32) {
+                            ForEach(filteredScenarios) { scenario in
+                                let videos = viewModel.videosForScenario(scenario)
+                                if !videos.isEmpty {
+                                    VStack(alignment: .leading, spacing: 16) {
+                                        // Section Header
+                                        HStack {
+                                            Image(systemName: viewModel.iconName(for: scenario.slug))
+                                                .foregroundStyle(.terracotta)
+                                            Text(viewModel.scenarioTitle(for: scenario))
+                                                .font(.bodyLarge)
+                                                .fontWeight(.bold)
+                                                .foregroundStyle(.white)
+                                            
+                                            Spacer()
+                                            
+                                            Text("\(videos.count)")
+                                                .font(.caption)
+                                                .padding(.horizontal, 8)
+                                                .padding(.vertical, 4)
+                                                .background(.ultraThinMaterial)
+                                                .clipShape(Capsule())
+                                                .foregroundStyle(.white.opacity(0.6))
+                                        }
+                                        .padding(.horizontal, 20)
+
+                                        // Video Grid
+                                        LazyVGrid(columns: [GridItem(.adaptive(minimum: 160), spacing: 16)], spacing: 16) {
+                                            ForEach(videos) { video in
+                                                VideoCard(video: video) {
+                                                    viewModel.playVideo(video)
+                                                    showVideoPlayer = true
+                                                }
+                                            }
+                                        }
+                                        .padding(.horizontal, 20)
                                     }
-                                    .listRowBackground(Color.rowSurface)
                                 }
-                            }
-                        } header: {
-                            HStack {
-                                Image(systemName: viewModel.iconName(for: scenario.slug))
-                                    .foregroundStyle(.terracotta)
-                                Text(viewModel.scenarioTitle(for: scenario))
-                                Spacer()
-                                Text("\(viewModel.videosForScenario(scenario).count)")
-                                    .font(.caption)
-                                    .foregroundStyle(.mid)
                             }
                         }
+                        .padding(.vertical, 24)
                     }
+                    .searchable(text: $searchText, prompt: "Поиск сценариев")
+                } else {
+                    EmptyStateView(
+                        "Нет видео",
+                        systemImage: "play.rectangle.on.rectangle",
+                        description: "Видео появятся здесь после загрузки в библиотеку"
+                    )
+                    .foregroundStyle(.white)
                 }
-                #if !os(macOS)
-                .scrollContentBackground(.hidden)
-                #endif
-                .background(Color.soft.ignoresSafeArea())
-                .searchable(text: $searchText, prompt: "Поиск сценариев")
-            } else {
-                EmptyStateView(
-                    "Нет видео",
-                    systemImage: "play.rectangle.on.rectangle",
-                    description: "Видео появятся здесь после загрузки в библиотеку"
-                )
             }
         }
         #if !os(macOS)
         .fullScreenCover(isPresented: $showVideoPlayer) {
-            VideoPlayerView()
+            ScenarioDetailView()
                 .environment(viewModel)
         }
         #else
         .sheet(isPresented: $showVideoPlayer) {
-            VideoPlayerView()
+            ScenarioDetailView()
                 .environment(viewModel)
         }
         #endif
