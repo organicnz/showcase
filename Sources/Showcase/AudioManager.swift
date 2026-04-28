@@ -17,6 +17,7 @@ import AVFoundation
     private init() {}
     
     /// Plays ambient audio for a specific scenario with a smooth fade-in.
+    /// The `path` parameter comes from the scenario's `ambient_audio_path` field in the database.
     public func playAmbient(path: String?) {
         guard let path = path, !path.isEmpty else {
             stopAmbient()
@@ -27,14 +28,10 @@ import AVFoundation
         let oldPath = currentPath
         currentPath = path
         
-        // Use realistic ambient sounds from Supabase if possible, otherwise high-quality placeholders
-        let url: URL
-        if path.contains("wellness") {
-            url = URL(string: "https://vscofujxpxjxwypvjxfu.supabase.co/storage/v1/object/public/ambient/wellness_loop.mp3")!
-        } else if path.contains("family") {
-            url = URL(string: "https://vscofujxpxjxwypvjxfu.supabase.co/storage/v1/object/public/ambient/family_loop.mp3")!
-        } else {
-            url = URL(string: "https://vscofujxpxjxwypvjxfu.supabase.co/storage/v1/object/public/ambient/default_loop.mp3")!
+        // Resolve the storage URL from the DB-driven path via SupabaseManager
+        guard let url = SupabaseManager.shared.getPublicVideoURL(for: path) else {
+            logger.error("AudioManager: Could not resolve URL for ambient path: \(path)")
+            return
         }
         
         #if canImport(AVFoundation)
