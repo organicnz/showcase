@@ -26,8 +26,10 @@ import SkipFuse
     public var lastSyncDate: Date?
     public var isAuthenticated: Bool = false
     public var userEmail: String?
+    public var currentUserId: UUID?
+    public var userSettings: UserSettings?
     public var isShowingDetail: Bool = false
-
+    
     /// The current display mode for the scenario detail
     public var contentMode: ContentMode = .overview
     
@@ -133,6 +135,22 @@ import SkipFuse
     public func checkAuth() async {
         isAuthenticated = await SupabaseManager.shared.isAuthenticated()
         userEmail = await SupabaseManager.shared.currentUserEmail()
+        currentUserId = await SupabaseManager.shared.currentUserId()
+        
+        if let uid = currentUserId {
+            do {
+                if let settings = try await SupabaseManager.shared.fetchUserSettings(userId: uid) {
+                    self.userSettings = settings
+                } else {
+                    // Create default settings if none exist
+                    let defaultSettings = UserSettings(userId: uid)
+                    try await SupabaseManager.shared.updateUserSettings(defaultSettings)
+                    self.userSettings = defaultSettings
+                }
+            } catch {
+                logger.error("Failed to load user settings: \(error)")
+            }
+        }
     }
 
     public func login(email: String, password: String) async throws {
@@ -145,6 +163,19 @@ import SkipFuse
         try? await SupabaseManager.shared.signOut()
         isAuthenticated = false
         userEmail = nil
+        currentUserId = nil
+        userSettings = nil
+    }
+    
+    public func saveUserSettings() {
+        guard let settings = userSettings else { return }
+        Task {
+            do {
+                try await SupabaseManager.shared.updateUserSettings(settings)
+            } catch {
+                logger.error("Failed to save user settings: \(error)")
+            }
+        }
     }
 
     // MARK: - Caching

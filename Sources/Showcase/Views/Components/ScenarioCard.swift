@@ -1,4 +1,7 @@
 import SwiftUI
+#if canImport(AVFoundation)
+import AVFoundation
+#endif
 
 struct ScenarioCard: View {
     let scenario: Scenario
@@ -9,6 +12,7 @@ struct ScenarioCard: View {
     @Environment(\.horizontalSizeClass) private var horizontalSizeClass
     #endif
     @State internal var isPressed = false
+    @State internal var previewPlayer: AVPlayer?
 
     var videoCount: Int {
         viewModel.videosForScenario(scenario).count
@@ -88,6 +92,52 @@ struct ScenarioCard: View {
         .onLongPressGesture(minimumDuration: .infinity, pressing: { pressing in
             isPressed = pressing
         }, perform: {})
+        .onAppear {
+            setupPreviewPlayer()
+        }
+        .onDisappear {
+            previewPlayer?.pause()
+            previewPlayer = nil
+        }
+        .onChange(of: viewModel.userSettings?.autoPlayAudio) { _, newValue in
+            let shouldPlayAudio = newValue ?? true
+            previewPlayer?.isMuted = !shouldPlayAudio
+        }
+    }
+
+    private func setupPreviewPlayer() {
+        guard previewPlayer == nil else { return }
+        
+        // Find the first video for this scenario
+        guard let firstVideo = viewModel.videosForScenario(scenario).first,
+              let url = SupabaseManager.shared.getPublicVideoURL(for: firstVideo.storagePath) else {
+            return
+        }
+        
+        #if canImport(AVFoundation)
+        let playerItem = AVPlayerItem(url: url)
+        let newPlayer = AVPlayer(playerItem: playerItem)
+        newPlayer.actionAtItemEnd = .none
+        
+        // Mute if autoPlayAudio is false in user settings
+        let shouldPlayAudio = viewModel.userSettings?.autoPlayAudio ?? true
+        newPlayer.isMuted = !shouldPlayAudio
+        
+        // Ensure seamless looping
+        NotificationCenter.default.addObserver(
+            forName: .AVPlayerItemDidPlayToEndTime,
+            object: playerItem,
+            queue: .main
+        ) { [weak newPlayer] _ in
+            Task { @MainActor in
+                newPlayer?.seek(to: .zero)
+                newPlayer?.play()
+            }
+        }
+        
+        newPlayer.play()
+        self.previewPlayer = newPlayer
+        #endif
     }
 
     private var imageAreaWithBackground: some View {
@@ -108,7 +158,11 @@ struct ScenarioCard: View {
 
     private var imageArea: some View {
         ZStack {
-            if let url = viewModel.scenarioImageURL(for: scenario) {
+            if let player = previewPlayer {
+                VideoPlayerContainer(player: player, contentMode: .fill, isVideoLoading: false)
+                    .frame(height: imageHeight)
+                    .clipShape(RoundedRectangle(cornerRadius: CornerRadius.card))
+            } else if let url = viewModel.scenarioImageURL(for: scenario) {
                 AsyncImage(url: url) { phase in
                     if let image = phase.image {
                         image
@@ -133,7 +187,7 @@ struct ScenarioCard: View {
 
             // Glass overlay for depth (more subtle when image exists)
             RoundedRectangle(cornerRadius: CornerRadius.card)
-                .fill(.ultraThinMaterial.opacity(viewModel.scenarioImageURL(for: scenario) != nil ? 0.3 : 0.8))
+                .fill(.ultraThinMaterial.opacity(previewPlayer != nil || viewModel.scenarioImageURL(for: scenario) != nil ? 0.3 : 0.8))
                 .frame(height: imageHeight)
         }
         .matchedGeometryEffect(id: "card_\(scenario.id)", in: namespace)

@@ -148,6 +148,34 @@ public struct Photo: Identifiable, Codable, Hashable, Sendable {
     }
 }
 
+// MARK: - User Settings
+
+public struct UserSettings: Codable, Sendable, Equatable {
+    public let userId: UUID
+    public var appTheme: String
+    public var autoPlayAudio: Bool
+    public var updatedAt: Date
+
+    public init(
+        userId: UUID,
+        appTheme: String = "system",
+        autoPlayAudio: Bool = true,
+        updatedAt: Date = Date()
+    ) {
+        self.userId = userId
+        self.appTheme = appTheme
+        self.autoPlayAudio = autoPlayAudio
+        self.updatedAt = updatedAt
+    }
+
+    enum CodingKeys: String, CodingKey {
+        case userId = "user_id"
+        case appTheme = "app_theme"
+        case autoPlayAudio = "auto_play_audio"
+        case updatedAt = "updated_at"
+    }
+}
+
 // MARK: - Load State
 
 /// Represents the loading state of async data operations.

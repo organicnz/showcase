@@ -25,6 +25,17 @@ struct SettingsView: View {
                     Label("Тема", systemImage: "paintbrush")
                 }
             }
+            
+            // MARK: - Playback
+            Section("Воспроизведение") {
+                Toggle("Автовоспроизведение аудио (демо)", isOn: Binding(
+                    get: { viewModel.userSettings?.autoPlayAudio ?? true },
+                    set: { 
+                        viewModel.userSettings?.autoPlayAudio = $0
+                        viewModel.saveUserSettings()
+                    }
+                ))
+            }
 
             // MARK: - App Information
             Section("О приложении") {

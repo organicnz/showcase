@@ -118,9 +118,9 @@ struct ScenarioDetailView: View {
             HStack(alignment: .top) {
                 // Left: Media metadata
                 if viewModel.contentMode == .video, let video = viewModel.currentVideo {
-                    mediaMetadataView(title: video.title ?? "Видео", index: viewModel.currentVideoIndex, total: viewModel.videoQueue.count)
+                    mediaMetadataView(title: video.title ?? "Видео", subtitle: video.subtitle, index: viewModel.currentVideoIndex, total: viewModel.videoQueue.count)
                 } else if viewModel.contentMode == .photo, let photo = viewModel.currentPhoto {
-                    mediaMetadataView(title: photo.title ?? "Фото", index: viewModel.currentPhotoIndex, total: viewModel.photoQueue.count)
+                    mediaMetadataView(title: photo.title ?? "Фото", subtitle: photo.subtitle, index: viewModel.currentPhotoIndex, total: viewModel.photoQueue.count)
                 } else {
                     Spacer()
                 }
@@ -142,15 +142,22 @@ struct ScenarioDetailView: View {
     }
     
     @ViewBuilder
-    private func mediaMetadataView(title: String, index: Int, total: Int) -> some View {
+    private func mediaMetadataView(title: String, subtitle: String?, index: Int, total: Int) -> some View {
         VStack(alignment: .leading, spacing: 6) {
             Text(title)
                 .font(.system(size: 18, weight: .semibold))
                 .foregroundStyle(.white)
+                
+            if let subtitle = subtitle, !subtitle.isEmpty {
+                Text(subtitle)
+                    .font(.system(size: 12))
+                    .foregroundStyle(.white.opacity(0.8))
+                    .lineLimit(2)
+            }
             
             if total > 0 {
                 Text("\(index + 1) из \(total)")
-                    .font(.system(size: 12, weight: .medium))
+                    .font(.system(size: 10, weight: .medium))
                     .foregroundStyle(.white.opacity(0.5))
                     .tracking(1)
             }
@@ -201,6 +208,13 @@ struct ScenarioDetailView: View {
                         Text(scenario.title)
                             .font(.displayLarge)
                             .foregroundStyle(.white)
+                            
+                        if let description = scenario.description, !description.isEmpty {
+                            Text(description)
+                                .font(.bodyLarge)
+                                .foregroundStyle(.white.opacity(0.8))
+                                .lineLimit(2)
+                        }
                     }
                     .padding(.top, 120)
                     .padding(.horizontal, 60)

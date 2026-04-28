@@ -81,6 +81,16 @@ public actor SupabaseManager {
             return nil
         }
     }
+    
+    /// Returns the current user's ID.
+    public func currentUserId() async -> UUID? {
+        do {
+            let user = try await client.auth.user()
+            return user.id
+        } catch {
+            return nil
+        }
+    }
 
     // MARK: - Retry Logic
 
@@ -143,6 +153,27 @@ public actor SupabaseManager {
                 .execute()
                 .value
             return photos
+        }
+    }
+    
+    // MARK: - User Settings
+    
+    public func fetchUserSettings(userId: UUID) async throws -> UserSettings? {
+        try await withRetry {
+            let settings: [UserSettings] = try await client.from("user_settings")
+                .select()
+                .eq("user_id", value: userId)
+                .execute()
+                .value
+            return settings.first
+        }
+    }
+    
+    public func updateUserSettings(_ settings: UserSettings) async throws {
+        try await withRetry {
+            try await client.from("user_settings")
+                .upsert(settings)
+                .execute()
         }
     }
 
