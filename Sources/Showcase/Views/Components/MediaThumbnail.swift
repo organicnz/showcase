@@ -45,16 +45,20 @@ struct MediaThumbnail: View {
             if let video = video {
                 setupPreviewPlayer(for: video)
             }
+            previewPlayer?.play()
         }
         .onDisappear {
             previewPlayer?.pause()
-            previewPlayer = nil
         }
     }
     
     private func setupPreviewPlayer(for video: Video) {
-        guard previewPlayer == nil,
-              let url = SupabaseManager.shared.getPublicVideoURL(for: video.storagePath) else {
+        guard previewPlayer == nil else { return }
+        
+        let publicUrl = SupabaseManager.shared.getPublicVideoURL(for: video.storagePath)
+        print("DEBUG MediaThumbnail: storagePath='\(video.storagePath)', publicURL=\(String(describing: publicUrl))")
+        
+        guard let url = publicUrl else {
             return
         }
         

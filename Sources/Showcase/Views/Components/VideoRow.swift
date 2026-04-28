@@ -106,10 +106,10 @@ struct VideoCard: View {
         }, perform: {})
         .onAppear {
             setupPreviewPlayer()
+            previewPlayer?.play()
         }
         .onDisappear {
             previewPlayer?.pause()
-            previewPlayer = nil
         }
     }
     

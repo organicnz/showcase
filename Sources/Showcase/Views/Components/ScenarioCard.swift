@@ -94,10 +94,10 @@ struct ScenarioCard: View {
         }, perform: {})
         .onAppear {
             setupPreviewPlayer()
+            previewPlayer?.play()
         }
         .onDisappear {
             previewPlayer?.pause()
-            previewPlayer = nil
         }
         .onChange(of: viewModel.userSettings?.autoPlayAudio) { _, newValue in
             let shouldPlayAudio = newValue ?? true
