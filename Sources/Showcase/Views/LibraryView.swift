@@ -4,6 +4,7 @@ struct LibraryView: View {
     @Environment(ViewModel.self) var viewModel: ViewModel
     @State internal var showVideoPlayer = false
     @State internal var searchText = ""
+    @Namespace internal var animationNamespace
 
     var filteredScenarios: [Scenario] {
         if searchText.isEmpty {
@@ -32,7 +33,7 @@ struct LibraryView: View {
                                     VStack(alignment: .leading, spacing: 16) {
                                         // Section Header
                                         HStack {
-                                            Image(systemName: viewModel.iconName(for: scenario.slug))
+                                            Image(systemName: viewModel.iconName(for: scenario))
                                                 .foregroundStyle(.terracotta)
                                             Text(viewModel.scenarioTitle(for: scenario))
                                                 .font(.bodyLarge)
@@ -56,6 +57,7 @@ struct LibraryView: View {
                                             ForEach(videos) { video in
                                                 VideoCard(video: video) {
                                                     viewModel.playVideo(video)
+                                                    viewModel.contentMode = .video
                                                     showVideoPlayer = true
                                                 }
                                             }
@@ -79,13 +81,16 @@ struct LibraryView: View {
             }
         }
         #if !os(macOS)
-        .fullScreenCover(isPresented: $showVideoPlayer) {
-            ScenarioDetailView()
-                .environment(viewModel)
+        .overlay {
+            if showVideoPlayer {
+                ScenarioDetailView(animationNamespace: animationNamespace)
+                    .environment(viewModel)
+                    .transition(.opacity)
+            }
         }
         #else
         .sheet(isPresented: $showVideoPlayer) {
-            ScenarioDetailView()
+            ScenarioDetailView(animationNamespace: animationNamespace)
                 .environment(viewModel)
         }
         #endif

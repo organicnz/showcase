@@ -94,6 +94,9 @@ struct LoginView: View {
                 isAnimating = true
             }
         }
+        #if !os(macOS)
+        .persistentSystemOverlays(.hidden)
+        #endif
     }
 
     // MARK: - Components
@@ -111,9 +114,11 @@ struct LoginView: View {
                     .frame(width: 20)
 
                 TextField("example@mail.com", text: text)
-                    .textContentType(.emailAddress)
-                    .autocapitalization(.none)
-                    .disableAutocorrection(true)
+                    .textContentType(.none) // Try to hide Autofill bar
+                    #if !os(macOS)
+                    .textInputAutocapitalization(.never)
+                    #endif
+                    .autocorrectionDisabled(true)
             }
             .padding()
             .background(Color.soft.opacity(0.5))
@@ -138,7 +143,7 @@ struct LoginView: View {
                     .frame(width: 20)
 
                 SecureField("••••••••", text: text)
-                    .textContentType(.password)
+                    .textContentType(.none) // Try to hide Autofill bar
             }
             .padding()
             .background(Color.soft.opacity(0.5))

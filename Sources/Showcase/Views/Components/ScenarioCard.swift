@@ -2,6 +2,7 @@ import SwiftUI
 
 struct ScenarioCard: View {
     let scenario: Scenario
+    let namespace: Namespace.ID
     let action: () -> Void
     @Environment(ViewModel.self) var viewModel: ViewModel
     #if !os(macOS)
@@ -107,33 +108,38 @@ struct ScenarioCard: View {
 
     private var imageArea: some View {
         ZStack {
-            if let imageName = viewModel.imageName(for: scenario.slug) {
-                Image(imageName, bundle: .module)
-                    .resizable()
-                    .aspectRatio(contentMode: .fill)
-                    .frame(height: imageHeight)
-                    .clipShape(RoundedRectangle(cornerRadius: CornerRadius.card))
+            if let url = viewModel.scenarioImageURL(for: scenario) {
+                AsyncImage(url: url) { phase in
+                    if let image = phase.image {
+                        image
+                            .resizable()
+                            .aspectRatio(contentMode: .fill)
+                            .frame(height: imageHeight)
+                            .clipShape(RoundedRectangle(cornerRadius: CornerRadius.card))
+                    } else if phase.error != nil {
+                        // Fallback gradient on error
+                        fallbackGradient
+                    } else {
+                        // Loading state
+                        ZStack {
+                            fallbackGradient
+                            ProgressView().tint(.white)
+                        }
+                    }
+                }
             } else {
-                // Background gradient — warm brand palette
-                RoundedRectangle(cornerRadius: CornerRadius.card)
-                    .fill(
-                        LinearGradient(
-                            colors: viewModel.gradientColors(for: scenario.slug),
-                            startPoint: .topLeading,
-                            endPoint: .bottomTrailing
-                        )
-                    )
-                    .frame(height: imageHeight)
+                fallbackGradient
             }
 
             // Glass overlay for depth (more subtle when image exists)
             RoundedRectangle(cornerRadius: CornerRadius.card)
-                .fill(.ultraThinMaterial.opacity(viewModel.imageName(for: scenario.slug) != nil ? 0.3 : 0.8))
+                .fill(.ultraThinMaterial.opacity(viewModel.scenarioImageURL(for: scenario) != nil ? 0.3 : 0.8))
                 .frame(height: imageHeight)
         }
+        .matchedGeometryEffect(id: "card_\(scenario.id)", in: namespace)
         .overlay(alignment: .topTrailing) {
             // Corner Icon
-            Image(systemName: viewModel.iconName(for: scenario.slug))
+            Image(systemName: viewModel.iconName(for: scenario))
                 .font(.system(size: isCompact ? 16 : 22, weight: .light))
                 .foregroundStyle(ScenarioGradient.primaryColor(for: scenario.slug))
                 .padding(isCompact ? 8 : 12)
@@ -174,6 +180,18 @@ struct ScenarioCard: View {
                 .foregroundStyle(.ink.opacity(0.7))
                 .lineLimit(isCompact ? 1 : 2)
         }
+    }
+    
+    private var fallbackGradient: some View {
+        RoundedRectangle(cornerRadius: CornerRadius.card)
+            .fill(
+                LinearGradient(
+                    colors: viewModel.gradientColors(for: scenario.slug),
+                    startPoint: .topLeading,
+                    endPoint: .bottomTrailing
+                )
+            )
+            .frame(height: imageHeight)
     }
 }
 

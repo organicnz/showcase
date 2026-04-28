@@ -40,13 +40,19 @@ struct HighlightsOverlay: View {
     }
     
     private func startCycling() {
+        guard !highlights.isEmpty else { return }
         isVisible = true
-        Timer.scheduledTimer(withTimeInterval: 5.0, repeats: true) { _ in
-            withAnimation(.easeInOut(duration: 0.8)) {
-                isVisible = false
-            }
-            
-            DispatchQueue.main.asyncAfter(deadline: .now() + 0.8) {
+        
+        Task { @MainActor in
+            while !Task.isCancelled {
+                try? await Task.sleep(nanoseconds: 5_000_000_000)
+                
+                withAnimation(.easeInOut(duration: 0.8)) {
+                    isVisible = false
+                }
+                
+                try? await Task.sleep(nanoseconds: 800_000_000)
+                
                 currentIndex = (currentIndex + 1) % highlights.count
                 withAnimation(.easeInOut(duration: 0.8)) {
                     isVisible = true

@@ -10,6 +10,8 @@ public struct Scenario: Identifiable, Codable, Hashable, Sendable {
     public var orderIndex: Int
     public var isActive: Bool
     public var ambientAudioPath: String?
+    public var imagePath: String?
+    public var iconName: String?
 
     public init(
         id: UUID = UUID(),
@@ -18,7 +20,9 @@ public struct Scenario: Identifiable, Codable, Hashable, Sendable {
         description: String? = nil,
         orderIndex: Int = 0,
         isActive: Bool = true,
-        ambientAudioPath: String? = nil
+        ambientAudioPath: String? = nil,
+        imagePath: String? = nil,
+        iconName: String? = nil
     ) {
         self.id = id
         self.title = title
@@ -27,6 +31,8 @@ public struct Scenario: Identifiable, Codable, Hashable, Sendable {
         self.orderIndex = orderIndex
         self.isActive = isActive
         self.ambientAudioPath = ambientAudioPath
+        self.imagePath = imagePath
+        self.iconName = iconName
     }
 
     enum CodingKeys: String, CodingKey {
@@ -37,6 +43,8 @@ public struct Scenario: Identifiable, Codable, Hashable, Sendable {
         case orderIndex = "order_index"
         case isActive = "active"
         case ambientAudioPath = "ambient_audio_path"
+        case imagePath = "image_path"
+        case iconName = "icon_name"
     }
 }
 
@@ -46,6 +54,7 @@ public struct Video: Identifiable, Codable, Hashable, Sendable {
     public let id: UUID
     public var scenarioId: UUID
     public var title: String?
+    public var subtitle: String?
     public var storagePath: String
     public var thumbnailPath: String?
     public var durationSec: Int?
@@ -58,6 +67,7 @@ public struct Video: Identifiable, Codable, Hashable, Sendable {
         id: UUID = UUID(),
         scenarioId: UUID,
         title: String? = nil,
+        subtitle: String? = nil,
         storagePath: String,
         thumbnailPath: String? = nil,
         durationSec: Int? = nil,
@@ -69,6 +79,7 @@ public struct Video: Identifiable, Codable, Hashable, Sendable {
         self.id = id
         self.scenarioId = scenarioId
         self.title = title
+        self.subtitle = subtitle
         self.storagePath = storagePath
         self.thumbnailPath = thumbnailPath
         self.durationSec = durationSec
@@ -82,6 +93,7 @@ public struct Video: Identifiable, Codable, Hashable, Sendable {
         case id
         case scenarioId = "scenario_id"
         case title
+        case subtitle
         case storagePath = "storage_path"
         case thumbnailPath = "thumbnail_path"
         case durationSec = "duration_sec"
@@ -98,6 +110,7 @@ public struct Photo: Identifiable, Codable, Hashable, Sendable {
     public let id: UUID
     public var scenarioId: UUID
     public var title: String?
+    public var subtitle: String?
     public var storagePath: String
     public var orderIndex: Int
     public var isActive: Bool
@@ -107,6 +120,7 @@ public struct Photo: Identifiable, Codable, Hashable, Sendable {
         id: UUID = UUID(),
         scenarioId: UUID,
         title: String? = nil,
+        subtitle: String? = nil,
         storagePath: String,
         orderIndex: Int = 0,
         isActive: Bool = true,
@@ -115,6 +129,7 @@ public struct Photo: Identifiable, Codable, Hashable, Sendable {
         self.id = id
         self.scenarioId = scenarioId
         self.title = title
+        self.subtitle = subtitle
         self.storagePath = storagePath
         self.orderIndex = orderIndex
         self.isActive = isActive
@@ -125,6 +140,7 @@ public struct Photo: Identifiable, Codable, Hashable, Sendable {
         case id
         case scenarioId = "scenario_id"
         case title
+        case subtitle
         case storagePath = "storage_path"
         case orderIndex = "order_index"
         case isActive = "active"

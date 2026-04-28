@@ -7,32 +7,43 @@ struct AmbientBackgroundView: View {
 
     var body: some View {
         ZStack {
-            #if os(iOS)
-            TimelineView(.animation) { timeline in
-                let time = timeline.date.timeIntervalSince(startDate)
-                
-                if #available(iOS 18.0, *) {
-                    meshGradient(time: time, colors: viewModel.currentThemeColors)
+            GeometryReader { proxy in
+                TimelineView(.animation) { timeline in
+                    let time = timeline.date.timeIntervalSince(startDate)
+                    let colors = viewModel.currentThemeColors
+                    
+                    #if os(iOS) || os(macOS)
+                    #if !SKIP
+                    if #available(iOS 18.0, macOS 15.0, *) {
+                        meshGradient(time: time, colors: colors)
+                            .ignoresSafeArea()
+                    } else {
+                        // MODERN RENDERING: High-end Liquid Canvas
+                        liquidCanvas(time: time, colors: colors)
+                            .ignoresSafeArea()
+                    }
+                    #else
+                    liquidCanvas(time: time, colors: colors)
                         .ignoresSafeArea()
-                } else {
-                    canvasGradient(time: time, colors: viewModel.currentThemeColors)
-                        .ignoresSafeArea()
+                    #endif
+                    #else
+                    fallbackImage
+                    #endif
                 }
             }
-            #else
-            fallbackImage
-            #endif
 
             // Glass Overlay
-            Color.soft.opacity(0.2)
+            Color.soft.opacity(0.15)
                 .ignoresSafeArea()
                 .overlay(.ultraThinMaterial)
         }
     }
 
-    @available(iOS 18.0, *)
+    #if os(iOS) || os(macOS)
+    @available(iOS 18.0, macOS 15.0, *)
     private func meshGradient(time: Double, colors: [Color]) -> some View {
-        let t = Float(time * 0.5)
+        #if !SKIP
+        let t = Float(time * 0.4)
         let baseColors = colors.count >= 3 ? colors : [Color.ink, Color.terracotta, Color.ochre]
         
         return MeshGradient(
@@ -50,35 +61,48 @@ struct AmbientBackgroundView: View {
             ]
         )
         .blur(radius: 40)
-        .animation(.easeInOut(duration: 2.0), value: colors)
+        #else
+        return EmptyView()
+        #endif
     }
+    #endif
 
-    private func canvasGradient(time: Double, colors: [Color]) -> some View {
+    private func liquidCanvas(time: Double, colors: [Color]) -> some View {
         let baseColors = colors.count >= 2 ? colors : [Color.ink, Color.terracotta]
         
         return Canvas { context, size in
-            let t = time * 0.3
-            context.fill(Path(CGRect(origin: .zero, size: size)), with: .color(baseColors[0].opacity(0.8)))
+            let t = time * 0.2
             
-            // Draw organic "blobs" with Metal-like blending
-            for i in 0..<3 {
-                let x = size.width * (0.5 + 0.3 * sin(t + Double(i)))
-                let y = size.height * (0.5 + 0.3 * cos(t * 0.8 + Double(i)))
-                let rect = CGRect(x: x - 200, y: y - 200, width: 400, height: 400)
+            // Base layer (Deepest)
+            context.fill(Path(CGRect(origin: .zero, size: size)), with: .color(baseColors[0]))
+            
+            // 6 Layers of organic motion
+            for i in 0..<6 {
+                let offset = Double(i) * 1.5
+                let speed = 0.5 + Double(i) * 0.1
+                
+                let x = size.width * (0.5 + 0.4 * sin(t * speed + offset))
+                let y = size.height * (0.5 + 0.3 * cos(t * speed * 0.8 + offset * 1.2))
+                
+                let blobSize = size.width * (0.7 + 0.15 * sin(t * 0.4 + offset))
+                let rect = CGRect(x: x - blobSize/2, y: y - blobSize/2, width: blobSize, height: blobSize)
+                
+                let colorIndex = i % baseColors.count
+                let opacity = 0.25 - (Double(i) * 0.02)
+                let color = baseColors[colorIndex].opacity(opacity)
                 
                 context.fill(
                     Circle().path(in: rect),
                     with: .radialGradient(
-                        Gradient(colors: [baseColors[min(i, baseColors.count - 1)].opacity(0.4), .clear]),
+                        Gradient(colors: [color, .clear]),
                         center: CGPoint(x: x, y: y),
                         startRadius: 0,
-                        endRadius: 200
+                        endRadius: blobSize / 2
                     )
                 )
             }
         }
-        .blur(radius: 60)
-        .animation(.easeInOut(duration: 2.0), value: colors)
+        .blur(radius: 90)
     }
 
     private var fallbackImage: some View {

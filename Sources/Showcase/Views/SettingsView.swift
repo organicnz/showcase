@@ -42,7 +42,7 @@ struct SettingsView: View {
                 if !viewModel.scenarios.isEmpty {
                     ForEach(viewModel.scenarios) { scenario in
                         HStack {
-                            Image(systemName: viewModel.iconName(for: scenario.slug))
+                            Image(systemName: viewModel.iconName(for: scenario))
                                 .foregroundStyle(.terracotta)
                                 .frame(width: 20)
                             Text(viewModel.scenarioTitle(for: scenario))

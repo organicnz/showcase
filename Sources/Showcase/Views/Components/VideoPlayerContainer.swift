@@ -1,4 +1,5 @@
 import SwiftUI
+import AVKit
 import SkipAV
 
 struct VideoPlayerContainer: View {
@@ -13,8 +14,17 @@ struct VideoPlayerContainer: View {
     var body: some View {
         ZStack {
             if let player = player {
-                VideoPlayer(player: player)
-                    .scaledToFill()
+                Rectangle()
+                    .fill(Color.black)
+                    .overlay {
+                        #if os(iOS) && !SKIP
+                        NativeVideoPlayerView(player: player, videoGravity: contentMode == .fill ? .resizeAspectFill : .resizeAspect)
+                        #elseif SKIP
+                        SkipAV.VideoPlayer(player: player)
+                        #else
+                        NativeVideoPlayerView(player: player, videoGravity: contentMode == .fill ? .resizeAspectFill : .resizeAspect)
+                        #endif
+                    }
                     .frame(maxWidth: .infinity, maxHeight: .infinity)
                     .ignoresSafeArea()
             }

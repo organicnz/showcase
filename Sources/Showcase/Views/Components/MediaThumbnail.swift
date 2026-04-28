@@ -6,6 +6,7 @@ struct MediaThumbnail: View {
     var namespace: Namespace.ID
     let action: () -> Void
 
+    @Environment(ViewModel.self) var viewModel: ViewModel
     @State internal var isPressed = false
 
     var body: some View {
@@ -41,18 +42,45 @@ struct MediaThumbnail: View {
     @ViewBuilder
     private func videoThumbnailContent(video: Video) -> some View {
         ZStack {
-            // Placeholder color based on video title hash
-            Color.terracotta.opacity(0.2)
+            // Background image
+            if let url = viewModel.videoThumbnailURL(for: video) {
+                AsyncImage(url: url) { phase in
+                    if let image = phase.image {
+                        image
+                            .resizable()
+                            .aspectRatio(contentMode: .fill)
+                    } else if phase.error != nil {
+                        Color.terracotta.opacity(0.2)
+                    } else {
+                        ZStack {
+                            Color.terracotta.opacity(0.2)
+                            ProgressView().tint(.white)
+                        }
+                    }
+                }
+            } else {
+                Color.terracotta.opacity(0.2)
+            }
             
             VStack {
                 Spacer()
-                HStack {
-                    Image(systemName: "play.fill")
-                        .font(.caption)
-                    Text(video.title ?? "Видео")
-                        .font(.caption2)
-                        .fontWeight(.medium)
-                        .lineLimit(1)
+                HStack(alignment: .bottom) {
+                    VStack(alignment: .leading, spacing: 2) {
+                        HStack {
+                            Image(systemName: "play.fill")
+                                .font(.caption)
+                            Text(video.title ?? "Видео")
+                                .font(.caption2)
+                                .fontWeight(.medium)
+                                .lineLimit(1)
+                        }
+                        if let subtitle = video.subtitle, !subtitle.isEmpty {
+                            Text(subtitle)
+                                .font(.system(size: 9))
+                                .foregroundStyle(.white.opacity(0.7))
+                                .lineLimit(1)
+                        }
+                    }
                     Spacer()
                     if let dur = video.durationSec {
                         Text("\(dur) сек.")
@@ -66,7 +94,7 @@ struct MediaThumbnail: View {
                 .foregroundStyle(.white)
                 .padding(12)
                 .background(
-                    LinearGradient(colors: [.clear, .black.opacity(0.4)], startPoint: .top, endPoint: .bottom)
+                    LinearGradient(colors: [.clear, .black.opacity(0.6)], startPoint: .top, endPoint: .bottom)
                 )
             }
             
@@ -80,23 +108,51 @@ struct MediaThumbnail: View {
     @ViewBuilder
     private func photoThumbnailContent(photo: Photo) -> some View {
         ZStack {
-            Color.ochre.opacity(0.2)
+            // Background image
+            if let url = viewModel.photoURL(for: photo) {
+                AsyncImage(url: url) { phase in
+                    if let image = phase.image {
+                        image
+                            .resizable()
+                            .aspectRatio(contentMode: .fill)
+                    } else if phase.error != nil {
+                        Color.ochre.opacity(0.2)
+                    } else {
+                        ZStack {
+                            Color.ochre.opacity(0.2)
+                            ProgressView().tint(.white)
+                        }
+                    }
+                }
+            } else {
+                Color.ochre.opacity(0.2)
+            }
             
             VStack {
                 Spacer()
-                HStack {
-                    Image(systemName: "photo")
-                        .font(.caption)
-                    Text(photo.title ?? "Фото")
-                        .font(.caption2)
-                        .fontWeight(.medium)
-                        .lineLimit(1)
+                HStack(alignment: .bottom) {
+                    VStack(alignment: .leading, spacing: 2) {
+                        HStack {
+                            Image(systemName: "photo")
+                                .font(.caption)
+                            Text(photo.title ?? "Фото")
+                                .font(.caption2)
+                                .fontWeight(.medium)
+                                .lineLimit(1)
+                        }
+                        if let subtitle = photo.subtitle, !subtitle.isEmpty {
+                            Text(subtitle)
+                                .font(.system(size: 9))
+                                .foregroundStyle(.white.opacity(0.7))
+                                .lineLimit(1)
+                        }
+                    }
                     Spacer()
                 }
                 .foregroundStyle(.white)
                 .padding(12)
                 .background(
-                    LinearGradient(colors: [.clear, .black.opacity(0.4)], startPoint: .top, endPoint: .bottom)
+                    LinearGradient(colors: [.clear, .black.opacity(0.6)], startPoint: .top, endPoint: .bottom)
                 )
             }
         }

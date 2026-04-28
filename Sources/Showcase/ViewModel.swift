@@ -20,6 +20,9 @@ import SkipFuse
     public var isPlaying: Bool = false
     public var videoQueue: [Video] = []
     public var currentVideoIndex: Int = 0
+    public var currentPhoto: Photo?
+    public var photoQueue: [Photo] = []
+    public var currentPhotoIndex: Int = 0
     public var lastSyncDate: Date?
     public var isAuthenticated: Bool = false
     public var userEmail: String?
@@ -259,6 +262,27 @@ import SkipFuse
         currentVideo = videoQueue[currentVideoIndex]
         isPlaying = true
     }
+    
+    // MARK: - Photo Gallery Control
+    
+    public func startPhotoGallery(with photos: [Photo], startingAt index: Int = 0) {
+        photoQueue = photos
+        guard !photoQueue.isEmpty else { return }
+        currentPhotoIndex = max(0, min(index, photoQueue.count - 1))
+        currentPhoto = photoQueue[currentPhotoIndex]
+    }
+    
+    public func showNextPhoto() {
+        guard !photoQueue.isEmpty else { return }
+        currentPhotoIndex = (currentPhotoIndex + 1) % photoQueue.count
+        currentPhoto = photoQueue[currentPhotoIndex]
+    }
+    
+    public func showPreviousPhoto() {
+        guard !photoQueue.isEmpty else { return }
+        currentPhotoIndex = (currentPhotoIndex - 1 + photoQueue.count) % photoQueue.count
+        currentPhoto = photoQueue[currentPhotoIndex]
+    }
 
     /// Goes back to the previous video in the queue (wraps around).
     public func playPreviousVideo() {
@@ -282,6 +306,12 @@ import SkipFuse
         SupabaseManager.shared.getPublicVideoURL(for: video.storagePath)
     }
 
+    /// Returns the public CDN URL for a video's thumbnail path.
+    public func videoThumbnailURL(for video: Video) -> URL? {
+        guard let path = video.thumbnailPath, !path.isEmpty else { return nil }
+        return SupabaseManager.shared.getPublicImageURL(for: path)
+    }
+
     /// Returns the public CDN URL for a photo's storage path.
     public func photoURL(for photo: Photo) -> URL? {
         SupabaseManager.shared.getPublicImageURL(for: photo.storagePath)
@@ -292,9 +322,13 @@ import SkipFuse
         videos[scenario.id] ?? []
     }
 
-    /// Returns the SF Symbol name for a scenario slug.
-    public func iconName(for slug: String) -> String {
-        switch slug {
+    /// Returns the SF Symbol name for a scenario.
+    public func iconName(for scenario: Scenario) -> String {
+        if let icon = scenario.iconName, !icon.isEmpty {
+            return icon
+        }
+        // Fallback for older data
+        switch scenario.slug {
         case "family": return "figure.2.and.child.holdinghands"
         case "wellness": return "leaf.fill"
         case "guests": return "building.2.fill"
@@ -304,16 +338,10 @@ import SkipFuse
         }
     }
 
-    /// Returns the asset image name for a scenario slug.
-    public func imageName(for slug: String) -> String? {
-        switch slug {
-        case "family": return "ScenarioFamily"
-        case "wellness": return "ScenarioWellness"
-        case "guests": return "ScenarioGuests"
-        case "investor": return "ScenarioInvestor"
-        case "architecture": return "ScenarioArchitecture"
-        default: return nil
-        }
+    /// Returns the public CDN URL for a scenario's cover image.
+    public func scenarioImageURL(for scenario: Scenario) -> URL? {
+        guard let path = scenario.imagePath, !path.isEmpty else { return nil }
+        return SupabaseManager.shared.getPublicImageURL(for: path)
     }
 
     /// Returns a human-readable title for a scenario slug, translating it to Russian.

@@ -41,7 +41,9 @@ struct PhotoGalleryView: View {
                         .frame(maxWidth: .infinity, maxHeight: .infinity)
                     }
                 }
+                #if !os(macOS)
                 .tabViewStyle(.page(indexDisplayMode: .never))
+                #endif
                 .ignoresSafeArea()
                 .onChange(of: selection) { _, _ in
                     HapticManager.shared.impact(style: .light)
