@@ -1,8 +1,22 @@
 import SwiftUI
 
+/// A high-end, animated background view that provides an immersive atmosphere.
+///
+/// `AmbientBackgroundView` uses a multi-layered rendering strategy:
+/// 1. **MeshGradient (iOS 18+)**: Uses the latest native Metal-backed mesh for fluid color blending.
+/// 2. **Liquid Canvas (Fallback)**: A custom `Canvas` implementation that renders 6 layers of
+///    moving radial gradients with organic offset math.
+/// 3. **Static Image (Fallback)**: A high-quality static asset used if dynamic rendering is unavailable.
+///
+/// The colors are dynamically derived from the `viewModel.currentThemeColors`, ensuring the
+/// background matches the brand palette of the selected scenario.
 struct AmbientBackgroundView: View {
     @Environment(ViewModel.self) var viewModel: ViewModel
+    
+    /// Internal state for simple fallback animations.
     @State internal var animate = false
+    
+    /// The reference date used to drive the time-based animations.
     private let startDate = Date()
 
     var body: some View {
@@ -40,6 +54,11 @@ struct AmbientBackgroundView: View {
     }
 
     #if os(iOS) || os(macOS)
+    /// Renders a fluid mesh using iOS 18+ MeshGradient.
+    ///
+    /// - Parameters:
+    ///   - time: The current animation time.
+    ///   - colors: The theme colors to blend.
     @available(iOS 18.0, macOS 15.0, *)
     private func meshGradient(time: Double, colors: [Color]) -> some View {
         #if !SKIP
@@ -67,6 +86,14 @@ struct AmbientBackgroundView: View {
     }
     #endif
 
+    /// Renders a custom organic motion background using the SwiftUI Canvas.
+    ///
+    /// - Parameters:
+    ///   - time: The current animation time.
+    ///   - colors: The theme colors to use for the radial gradients.
+    ///
+    /// This method creates 6 layers of "blobs" that move using sine/cosine offsets,
+    /// creating a liquid-like appearance without requiring specialized shaders.
     private func liquidCanvas(time: Double, colors: [Color]) -> some View {
         let baseColors = colors.count >= 2 ? colors : [Color.ink, Color.terracotta]
         
@@ -105,6 +132,7 @@ struct AmbientBackgroundView: View {
         .blur(radius: 90)
     }
 
+    /// A static image fallback with a gentle scale animation.
     private var fallbackImage: some View {
         Image("ImmersiveBG", bundle: .module)
             .resizable()

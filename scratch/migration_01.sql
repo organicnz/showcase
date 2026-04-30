@@ -1,3 +1,12 @@
+-- NOTE: This migration has been superseded by the official migration:
+-- supabase/migrations/20250101000000_create_scenarios_and_videos_tables.sql
+-- 
+-- The official migration includes all the schema definitions below plus:
+-- - Required indexes (idx_scenarios_active_order, idx_videos_scenario_active_order, idx_videos_active)
+-- - Table and column comments for documentation
+-- 
+-- This file is kept for reference only.
+
 -- Scenarios
 create table if not exists scenarios (
   id uuid primary key default gen_random_uuid(),

@@ -1,20 +1,37 @@
 import SwiftUI
 
+/// A card component representing a lifestyle scenario in the Meshchersky Park showcase.
+///
+/// `ScenarioCard` implements the **Liquid Glass** design language, featuring:
+/// - Adaptive layout for compact (iPhone) and regular (iPad) size classes.
+/// - Ambient glow effects matching the scenario's brand colors.
+/// - Glassmorphism overlays using `ultraThinMaterial`.
+/// - Smooth spring-animated press states.
 struct ScenarioCard: View {
+    /// The scenario data model.
     let scenario: Scenario
+    
+    /// The namespace used for smooth `matchedGeometryEffect` transitions.
     let namespace: Namespace.ID
+    
+    /// The action to perform when the card is tapped.
     let action: () -> Void
+    
     @Environment(ViewModel.self) var viewModel: ViewModel
+    
     #if !os(macOS)
     @Environment(\.horizontalSizeClass) private var horizontalSizeClass
     #endif
+    
+    /// Internal state to track if the card is currently being pressed.
     @State internal var isPressed = false
 
+    /// The number of videos associated with this scenario.
     var videoCount: Int {
         viewModel.videosForScenario(scenario).count
     }
 
-    /// Whether the current device has a compact width (iPhone portrait, etc.)
+    /// Whether the current device has a compact width (iPhone portrait, etc.).
     private var isCompact: Bool {
         #if os(macOS)
         return false
@@ -23,44 +40,25 @@ struct ScenarioCard: View {
         #endif
     }
 
-    /// Card image area height — shorter on iPhone to fit 2-column grid
-    private var imageHeight: CGFloat {
-        isCompact ? 120 : 180
+    /// The cinematic aspect ratio for the card's visual area.
+    /// Uses 16:9 for iPad and 4:3 for iPhone to optimize grid density.
+    private var imageAspectRatio: CGFloat {
+        isCompact ? (4.0 / 3.0) : (16.0 / 9.0)
     }
 
     var body: some View {
-        Button(action: action) {
-            Group {
-                if isCompact {
-                    VStack(alignment: .leading, spacing: 12) {
-                        imageAreaWithBackground
-                        textSection
-                            .padding(.horizontal, 4)
-                    }
-                    .padding(12)
-                } else {
-                    HStack(spacing: 24) {
-                        imageAreaWithBackground
-                            .frame(width: 280)
-                        
-                        VStack(alignment: .leading, spacing: 8) {
-                            textSection
-                            
-                            Spacer()
-                            
-                            HStack {
-                                Spacer()
-                                Image(systemName: "arrow.right.circle.fill")
-                                    .font(.system(size: 24, weight: .light))
-                                    .foregroundStyle(ScenarioGradient.primaryColor(for: scenario.slug).opacity(0.8))
-                            }
-                        }
-                        .padding(.vertical, 16)
-                        .padding(.trailing, 16)
-                    }
-                    .padding(16)
-                }
+        Button(action: {
+            HapticManager.shared.selection()
+            action()
+        }) {
+            VStack(alignment: .leading, spacing: isCompact ? 12 : 16) {
+                imageAreaWithBackground
+                
+                textSection
+                    .padding(.horizontal, isCompact ? 4 : 8)
+                    .padding(.bottom, isCompact ? 0 : 8)
             }
+            .padding(isCompact ? 12 : 16)
             .background(
                 ZStack {
                     // Premium Ambient Glow
@@ -86,6 +84,9 @@ struct ScenarioCard: View {
         .hoverEffect(.highlight)
         #endif
         .onLongPressGesture(minimumDuration: .infinity, pressing: { pressing in
+            if pressing {
+                HapticManager.shared.impact(style: .light)
+            }
             isPressed = pressing
         }, perform: {})
     }
@@ -111,10 +112,13 @@ struct ScenarioCard: View {
             if let url = viewModel.scenarioImageURL(for: scenario) {
                 AsyncImage(url: url) { phase in
                     if let image = phase.image {
-                        image
-                            .resizable()
-                            .aspectRatio(contentMode: .fill)
-                            .frame(height: imageHeight)
+                        Color.clear
+                            .aspectRatio(imageAspectRatio, contentMode: .fit)
+                            .overlay(
+                                image
+                                    .resizable()
+                                    .aspectRatio(contentMode: .fill)
+                            )
                             .clipShape(RoundedRectangle(cornerRadius: CornerRadius.card))
                     } else if phase.error != nil {
                         // Fallback gradient on error
@@ -134,7 +138,7 @@ struct ScenarioCard: View {
             // Glass overlay for depth (more subtle when image exists)
             RoundedRectangle(cornerRadius: CornerRadius.card)
                 .fill(.ultraThinMaterial.opacity(viewModel.scenarioImageURL(for: scenario) != nil ? 0.3 : 0.8))
-                .frame(height: imageHeight)
+                .aspectRatio(imageAspectRatio, contentMode: .fit)
         }
         .matchedGeometryEffect(id: "card_\(scenario.id)", in: namespace)
         .overlay(alignment: .topTrailing) {
@@ -191,7 +195,7 @@ struct ScenarioCard: View {
                     endPoint: .bottomTrailing
                 )
             )
-            .frame(height: imageHeight)
+            .aspectRatio(imageAspectRatio, contentMode: .fit)
     }
 }
 

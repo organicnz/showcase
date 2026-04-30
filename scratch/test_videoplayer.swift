@@ -1,8 +1,8 @@
 import SwiftUI
 import AVKit
 
-struct TestView: View {
+struct TestVideoPlayer: View {
     var body: some View {
-        VideoPlayer(player: nil)
+        VideoPlayer(player: AVPlayer())
     }
 }

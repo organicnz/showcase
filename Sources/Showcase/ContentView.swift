@@ -15,7 +15,7 @@ struct ContentView: View {
             } else {
                 switch viewModel.loadState {
                 case .idle, .loading:
-                    LoadingView()
+                    LoadingView(status: viewModel.currentWorkflowProgress)
 
                 case .failed(let error):
                     ErrorView(error: error, retryAction: {
@@ -31,40 +31,29 @@ struct ContentView: View {
                                 #endif
                                 .toolbar {
                                     ToolbarItem(placement: .principal) {
-                                        LogoView(size: 64)
+                                        LogoView(size: 48)
                                     }
 
                                     #if !os(macOS)
                                     ToolbarItem(placement: .topBarTrailing) {
-                                        HStack(spacing: 16) {
+                                        HStack(spacing: 20) {
                                             Button(action: { showLibrary = true }) {
                                                 Image(systemName: "play.rectangle.on.rectangle")
+                                                    .font(.system(size: 20, weight: .medium))
                                                     .foregroundStyle(.ink)
                                             }
 
                                             Button(action: { showSettings = true }) {
                                                 Image(systemName: "gearshape")
+                                                    .font(.system(size: 20, weight: .medium))
                                                     .foregroundStyle(.mid)
-                                            }
-                                        }
-                                    }
-                                    #else
-                                    ToolbarItem(placement: .automatic) {
-                                        HStack(spacing: 16) {
-                                            Button(action: { showLibrary = true }) {
-                                                Image(systemName: "play.rectangle.on.rectangle")
-                                            }
-
-                                            Button(action: { showSettings = true }) {
-                                                Image(systemName: "gearshape")
                                             }
                                         }
                                     }
                                     #endif
                                 }
-                                #if !os(macOS)
-                                .toolbarBackground(.ultraThinMaterial, for: .navigationBar)
-                                #endif
+                                .toolbar(.visible, for: .navigationBar)
+                                .toolbarBackground(.hidden, for: .navigationBar)
                         }
                         
                         if viewModel.isShowingDetail {

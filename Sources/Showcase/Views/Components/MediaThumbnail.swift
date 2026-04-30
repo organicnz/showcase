@@ -17,7 +17,7 @@ struct MediaThumbnail: View {
         Button(action: action) {
             ZStack {
                 // Background Placeholder / Thumbnail
-                RoundedRectangle(cornerRadius: 16)
+                RoundedRectangle(cornerRadius: CornerRadius.card)
                     .fill(.ultraThinMaterial.opacity(0.3))
                 
                 // Content
@@ -29,10 +29,10 @@ struct MediaThumbnail: View {
             }
             .matchedGeometryEffect(id: video?.id ?? photo?.id ?? UUID(), in: namespace)
             .aspectRatio(16/9, contentMode: .fill)
-            .clipShape(RoundedRectangle(cornerRadius: 16))
+            .clipShape(RoundedRectangle(cornerRadius: CornerRadius.card))
             .overlay(
-                RoundedRectangle(cornerRadius: 16)
-                    .stroke(.white.opacity(0.1), lineWidth: 0.5)
+                RoundedRectangle(cornerRadius: CornerRadius.card)
+                    .stroke(Color.glassStroke, lineWidth: 0.5)
             )
             .scaleEffect(isPressed ? 0.98 : 1.0)
             .animation(.spring(response: 0.3, dampingFraction: 0.7), value: isPressed)
@@ -115,15 +115,14 @@ struct MediaThumbnail: View {
                     VStack(alignment: .leading, spacing: 2) {
                         HStack {
                             Image(systemName: "play.fill")
-                                .font(.caption)
+                                .font(.labelCaps)
                             Text(video.title ?? "Видео")
-                                .font(.caption2)
-                                .fontWeight(.medium)
+                                .font(.labelCaps)
                                 .lineLimit(1)
                         }
                         if let subtitle = video.subtitle, !subtitle.isEmpty {
                             Text(subtitle)
-                                .font(.system(size: 9))
+                                .font(.bodySmall2)
                                 .foregroundStyle(.white.opacity(0.7))
                                 .lineLimit(1)
                         }
@@ -131,7 +130,7 @@ struct MediaThumbnail: View {
                     Spacer()
                     if let dur = video.durationSec {
                         Text("\(dur) сек.")
-                            .font(.system(size: 8, weight: .bold))
+                            .font(.labelCaps)
                             .padding(.horizontal, 6)
                             .padding(.vertical, 2)
                             .background(.black.opacity(0.3))
@@ -181,15 +180,14 @@ struct MediaThumbnail: View {
                     VStack(alignment: .leading, spacing: 2) {
                         HStack {
                             Image(systemName: "photo")
-                                .font(.caption)
+                                .font(.labelCaps)
                             Text(photo.title ?? "Фото")
-                                .font(.caption2)
-                                .fontWeight(.medium)
+                                .font(.labelCaps)
                                 .lineLimit(1)
                         }
                         if let subtitle = photo.subtitle, !subtitle.isEmpty {
                             Text(subtitle)
-                                .font(.system(size: 9))
+                                .font(.bodySmall2)
                                 .foregroundStyle(.white.opacity(0.7))
                                 .lineLimit(1)
                         }

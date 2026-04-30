@@ -201,6 +201,12 @@ public actor SupabaseManager {
     nonisolated public func getPublicImageURL(for path: String) -> URL? {
         return try? client.storage.from(Self.imageBucket).getPublicURL(path: path)
     }
+    
+    /// Generates a public CDN URL for an audio file.
+    nonisolated public func getPublicAudioURL(for path: String) -> URL? {
+        // Ambient audio lives in the 'assets' bucket.
+        return try? client.storage.from("assets").getPublicURL(path: path)
+    }
 
     // MARK: - Health Check
 

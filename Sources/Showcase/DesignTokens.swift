@@ -212,6 +212,9 @@ enum ScenarioGradient {
         case "architecture":
             return [Color(red: 0.52, green: 0.55, blue: 0.65),
                     Color(red: 0.65, green: 0.68, blue: 0.75)]
+        case "privacy":
+            return [Color(red: 0.20, green: 0.40, blue: 0.35),
+                    Color(red: 0.35, green: 0.55, blue: 0.45)]
         default:
             return [.mid, .mid.opacity(0.5)]
         }
@@ -224,6 +227,7 @@ enum ScenarioGradient {
         case "guests": return Color(red: 0.60, green: 0.45, blue: 0.55)
         case "investor": return Color(red: 0.70, green: 0.55, blue: 0.35)
         case "architecture": return Color(red: 0.35, green: 0.40, blue: 0.55)
+        case "privacy": return Color(red: 0.15, green: 0.35, blue: 0.25)
         default: return .terracotta
         }
     }

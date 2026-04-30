@@ -18,7 +18,7 @@
 | Слой | Технология |
 |---|---|
 | iOS / iPadOS | Swift 6.3.1, SwiftUI, @Observable, строгая конкурентность (strict concurrency) |
-| Язык дизайна UI | Liquid Glass (iOS/iPadOS 26) |
+| Язык дизайна UI | Liquid Glass (iOS/iPadOS 26) — акцент на материальности, глубине и мягком свечении |
 | Android | SKIP 1.0+ (Swift → Kotlin / Jetpack Compose) |
 | Бэкенд | Supabase (общий инстанс) |
 | Бэкапы БД | GitHub Actions CI/CD (по расписанию) |
@@ -133,6 +133,48 @@
 
 ---
 
+## Тестирование и Качество (Testing Strategy)
+
+Для обеспечения production-ready статуса, проект следует следующим правилам тестирования:
+- **Unit Tests (ShowcaseTests):** Покрытие логики `ViewModel`, `SupabaseManager` и **AWE Engine** (`AWETests.swift`).
+- **UI Tests:** Проверка основных флоу (выбор сценария, запуск видео) на iPad и Android.
+- **Snapshot Testing:** Валидация "Liquid Glass" компонентов на разных размерах экранов.
+
+---
+
+## Оптимизация Контента (Asset Strategy)
+
+Для плавной работы в офисе продаж:
+- **Транскодирование:** Видео должны быть оптимизированы (H.265, битрейт < 5 Mbps) перед загрузкой в Supabase Storage.
+- **Кеширование:** Агрессивное кеширование (`URLCache`) на уровне приложения для минимизации сетевых задержек.
+- **Lazy Loading:** Загрузка видео-контента только при входе в сценарий, с предварительным прогревом (`prefetch`) только обложек.
+
+---
+
+## Antigravity Workflow Engine (AWE) — Архитектура
+
+**Решение:** Внутренний Swift-native движок (ShowcaseCore).
+
+### Ключевые компоненты
+- **AWE.Workflow:** Декларативная структура шагов (Step).
+- **AWE.Runner:** Актор, исполняющий шаги с поддержкой `Swift Concurrency`.
+- **Persistence:** Хранение состояния текущего ворклоу в Supabase `workflow_states` для возможности восстановления после сбоя.
+- **Retry Policy:** Настраиваемые стратегии повторов для каждого шага.
+
+---
+
+## Аудио-система (Immersive Audio Engine)
+
+**Цель:** Создание атмосферы "тихой роскоши" через звуковое сопровождение.
+
+### Характеристики
+- **Cross-Fade:** Плавный переход (2.5 сек) между треками при смене сценария.
+- **Бесконечный цикл:** Бесшовное зацикливание фоновых звуков (леса, города, парка).
+- **Стриминг и Кэш:** Воспроизведение из Supabase Storage с использованием локального буфера.
+- **Энергоэффективность:** Остановка воспроизведения при сворачивании приложения или переходе в беззвучный режим.
+
+---
+
 ## Схема Supabase (черновик)
 
 ```sql
@@ -141,6 +183,10 @@ create table scenarios (
   id uuid primary key default gen_random_uuid(),
   title text not null,
   slug text unique not null,
+  description text,
+  icon_name text,
+  image_path text,
+  ambient_audio_path text,
   order_index int default 0,
   active boolean default true
 );
@@ -150,8 +196,23 @@ create table videos (
   id uuid primary key default gen_random_uuid(),
   scenario_id uuid references scenarios(id),
   title text,
+  subtitle text,
   storage_path text not null,  -- путь в Supabase Storage
+  thumbnail_path text,
   duration_sec int,
+  order_index int default 0,
+  active boolean default true,
+  highlights jsonb,            -- массив строк с ключевыми особенностями
+  created_at timestamptz default now()
+);
+
+-- Фотографии (Галерея)
+create table photos (
+  id uuid primary key default gen_random_uuid(),
+  scenario_id uuid references scenarios(id),
+  title text,
+  subtitle text,
+  storage_path text not null,
   order_index int default 0,
   active boolean default true,
   created_at timestamptz default now()
@@ -198,9 +259,10 @@ jobs:
 | 3 | CI/CD бэкапы | Месяц 1 | ✅ Выполнено |
 | 4 | Библиотека контента + Интеграция Supabase | Месяц 2 | ✅ Выполнено |
 | 5 | Настройка CMS | Месяц 2 | ✅ Выполнено |
-| 6 | QA на iOS + Android | Месяц 2 | 🔄 В процессе |
-| 7 | Развертывание + внедрение в Москве | Месяц 2 | ⏳ Планируется |
-| 8 | 1-месячная гарантийная поддержка | Месяц 3 | Бесплатно |
+| 6 | QA на iOS + Android | Месяц 2 | ✅ Выполнено |
+| 7 | Развертывание + внедрение в Москве | Месяц 2 | 🔄 В процессе |
+| 8 | Проектирование Workflow Engine (AWE) | Месяц 3 | 🔄 В процессе |
+| 9 | 1-месячная гарантийная поддержка | Месяц 3 | Бесплатно |
 
 ---
 

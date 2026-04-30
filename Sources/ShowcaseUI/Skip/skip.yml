@@ -1,0 +1,5 @@
+# Skip configuration for ShowcaseUI module
+# SwiftUI views and components transpiled to Jetpack Compose
+
+skip:
+  mode: 'native'

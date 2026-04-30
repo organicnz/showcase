@@ -2,37 +2,97 @@ import Foundation
 import Observation
 import SkipFuse
 
-/// The main view model for the Showcase app.
+/// The central state manager for the Showcase application.
 ///
-/// Uses `@Observable` for modern reactive UI and `@MainActor` isolation
-/// to ensure all state mutations happen on the main thread.
+/// `ViewModel` coordinates data fetching from Supabase, manages playback state for videos and photos,
+/// and handles user authentication and settings.
+///
+/// ### Architecture
+/// - **Observation**: Uses the `@Observable` macro for reactive UI updates.
+/// - **Concurrency**: Isolated to the `@MainActor` to ensure all UI-bound state changes are thread-safe.
+/// - **Persistence**: Implements a simple `UserDefaults`-based cache for offline startup capability.
 @MainActor
 @Observable public class ViewModel {
 
-    // MARK: - State
+    // MARK: - State: Content
 
+    /// All available lifestyle scenarios.
     public var scenarios: [Scenario] = []
+    
+    /// Videos mapped by their parent scenario ID.
     public var videos: [UUID: [Video]] = [:]
+    
+    /// Photos mapped by their parent scenario ID.
     public var photos: [UUID: [Photo]] = [:]
-    public var selectedScenario: Scenario?
+    
+    /// The currently selected scenario for the detail view.
+    public var selectedScenario: Scenario? {
+        didSet {
+            if let scenario = selectedScenario {
+                Task { @MainActor in
+                    await triggerAmbientAudio(for: scenario)
+                }
+            }
+        }
+    }
+
+    // MARK: - State: Playback
+
+    /// The video currently being played on the external or local screen.
     public var currentVideo: Video?
-    public var loadState: LoadState = .idle
+    
+    /// Whether a video is currently actively playing.
     public var isPlaying: Bool = false
+    
+    /// The ordered queue of videos for the current scenario.
     public var videoQueue: [Video] = []
+    
+    /// The index of the current video in the queue.
     public var currentVideoIndex: Int = 0
+    
+    /// The photo currently being viewed in the gallery.
     public var currentPhoto: Photo?
+    
+    /// The ordered queue of photos for the current scenario.
     public var photoQueue: [Photo] = []
+    
+    /// The index of the current photo in the gallery.
     public var currentPhotoIndex: Int = 0
+
+    // MARK: - State: System
+
+    /// The current loading or error state of the primary data load.
+    public var loadState: LoadState = .idle
+    
+    /// The timestamp of the last successful synchronization with Supabase.
     public var lastSyncDate: Date?
+    
+    /// Whether the current session is authenticated (admin only).
     public var isAuthenticated: Bool = false
+    
+    /// The email address of the logged-in user.
     public var userEmail: String?
+    
+    /// The unique identifier of the logged-in user.
     public var currentUserId: UUID?
+    
+    /// User-specific application preferences (theme, autoplay, etc.).
     public var userSettings: UserSettings?
+    
     public var isShowingDetail: Bool = false
     
-    /// The current display mode for the scenario detail
+    // MARK: - AWE Engine
+    
+    /// The workflow runner for handling complex async sequences.
+    private let workflowRunner = AWE.Runner()
+    
+    /// The status of the currently running workflow (if any).
+    public var currentWorkflowProgress: String?
+    
+    /// The current display mode for the scenario detail (Overview, Photo, or Video).
     public var contentMode: ContentMode = .overview
     
+    /// The brand color palette derived from the currently selected scenario.
     public var currentThemeColors: [Color] {
         if let slug = selectedScenario?.slug {
             return ScenarioGradient.colors(for: slug)
@@ -42,96 +102,151 @@ import SkipFuse
 
     // MARK: - Computed Properties
 
+    /// A convenience shorthand to check if data is currently being fetched.
     public var isLoading: Bool { loadState.isLoading }
 
+    /// The most recent error encountered during data loading, if any.
     public var error: Error? { loadState.error }
 
+    /// Whether any video content has been successfully loaded into the cache.
     public var hasVideos: Bool {
         !videos.values.flatMap { $0 }.isEmpty
     }
 
+    /// The total count of all videos across all scenarios.
     public var totalVideoCount: Int {
         videos.values.flatMap { $0 }.count
     }
 
     // MARK: - Initialization
 
+    /// Initializes a new ViewModel. Call `loadData()` after initialization to populate state.
     public init() {}
 
     // MARK: - Data Loading
 
-    /// Loads all scenarios and their videos from Supabase.
+    /// Loads all scenarios and their videos/photos from the Supabase backend using the AWE engine.
     ///
-    /// This is the primary data loading entry point. It fetches scenarios first,
-    /// then concurrently preloads videos for each scenario.
+    /// - Parameter forceRefresh: If `true`, wipes the local cache and fetches fresh data from the server.
     public func loadData(forceRefresh: Bool = false) async {
         logger.debug("Starting loadData(forceRefresh: \(forceRefresh))")
         
         if forceRefresh {
             clearCache()
         } else {
-            // Load from cache first for instant startup
             loadFromCache()
         }
 
-        // Only show full loading screen on initial load if cache was empty
         let isInitialLoad = scenarios.isEmpty
         if isInitialLoad {
             loadState = .loading
         }
 
+        let workflow = createLoadWorkflow()
+        
         do {
-            logger.debug("Fetching scenarios from backend...")
-            // Fetch scenarios from backend
-            let fetchedScenarios = try await SupabaseManager.shared.fetchScenarios()
-            logger.debug("Fetched \(fetchedScenarios.count) scenarios.")
-            self.scenarios = fetchedScenarios
-
-            logger.debug("Starting media fetch task group...")
-            // Concurrently load videos and photos for all scenarios
-            await withTaskGroup(of: (UUID, [Video], [Photo]).self) { group in
-                for scenario in fetchedScenarios {
-                    group.addTask {
-                        do {
-                            async let vids = SupabaseManager.shared.fetchVideos(for: scenario.id)
-                            async let phs = SupabaseManager.shared.fetchPhotos(for: scenario.id)
-                            return (scenario.id, try await vids, try await phs)
-                        } catch {
-                            logger.error("Failed to load media for \(scenario.slug): \(error)")
-                            return (scenario.id, [], [])
-                        }
-                    }
-                }
-
-                for await (scenarioId, vids, phs) in group {
-                    self.videos[scenarioId] = vids
-                    self.photos[scenarioId] = phs
+            try await workflowRunner.execute(workflow) { [weak self] state in
+                Task { @MainActor in
+                    self?.updateLoadProgress(state)
                 }
             }
-            logger.debug("Media fetch task group completed.")
-
-            // Save to cache
-            saveToCache()
-
-            // Auto-select first scenario if none selected
-            if selectedScenario == nil, let first = scenarios.first {
-                selectedScenario = first
-            }
-
+            
             lastSyncDate = Date()
             loadState = .loaded
-
+            logger.info("AWE: Load workflow completed successfully.")
         } catch {
-            // Only show error on initial load; on refresh, keep showing stale data
             if isInitialLoad {
                 loadState = .failed(error)
             }
-            logger.error("Failed to load scenarios: \(error)")
+            logger.error("AWE: Load workflow failed: \(error)")
+        }
+    }
+    
+    private func updateLoadProgress(_ state: AWE.WorkflowState) {
+        let steps = createLoadWorkflow().steps
+        if state.currentStepIndex < steps.count {
+            let currentStep = steps[state.currentStepIndex]
+            self.currentWorkflowProgress = currentStep.label
+            logger.debug("AWE Progress: \(currentStep.label) (\(state.currentStepIndex + 1)/3)")
         }
     }
 
+    /// Creates the multi-step load workflow for the AWE engine.
+    private func createLoadWorkflow() -> AWE.Workflow {
+        AWE.Workflow(name: "Initial Load", steps: [
+            AWE.Step(id: "fetch_scenarios", label: "Загрузка сценариев") { [weak self] in
+                let fetched = try await SupabaseManager.shared.fetchScenarios()
+                await MainActor.run {
+                    self?.scenarios = fetched
+                }
+                return .success
+            },
+            AWE.Step(id: "fetch_media", label: "Синхронизация медиа") { [weak self] in
+                guard let self = self else { return .success }
+                
+                // Get scenarios from MainActor
+                let currentScenarios = await MainActor.run { self.scenarios }
+                
+                await withTaskGroup(of: (UUID, [Video], [Photo]).self) { group in
+                    for scenario in currentScenarios {
+                        group.addTask {
+                            do {
+                                async let vids = SupabaseManager.shared.fetchVideos(for: scenario.id)
+                                async let phs = SupabaseManager.shared.fetchPhotos(for: scenario.id)
+                                return (scenario.id, try await vids, try await phs)
+                            } catch {
+                                logger.error("AWE: Failed to load media for \(scenario.slug): \(error)")
+                                return (scenario.id, [], [])
+                            }
+                        }
+                    }
+
+                    for await (scenarioId, vids, phs) in group {
+                        await MainActor.run {
+                            self.videos[scenarioId] = vids
+                            self.photos[scenarioId] = phs
+                        }
+                    }
+                }
+                return .success
+            },
+            AWE.Step(id: "finalize_cache", label: "Оптимизация кэша") { [weak self] in
+                await MainActor.run {
+                    self?.saveToCache()
+                    self?.prefetchImages()
+                    
+                    // Auto-select first scenario if none selected
+                    if self?.selectedScenario == nil, let first = self?.scenarios.first {
+                        self?.selectedScenario = first
+                    }
+                }
+                return .success
+            }
+        ])
+    }
+
+    // MARK: - Audio
+    
+    private func triggerAmbientAudio(for scenario: Scenario) async {
+        guard userSettings?.autoPlayAudio != false else {
+            await AudioManager.shared.stop()
+            return
+        }
+        
+        if let path = scenario.ambientAudioPath,
+           let url = SupabaseManager.shared.getPublicAudioURL(for: path) {
+            await AudioManager.shared.play(url: url)
+        } else {
+            await AudioManager.shared.stop()
+        }
+    }
+    
     // MARK: - Auth Actions
 
+    /// Refreshes the authentication state and loads user-specific settings.
+    ///
+    /// Updates `isAuthenticated`, `userEmail`, and `currentUserId`. If authenticated,
+    /// also attempts to fetch or initialize `userSettings`.
     public func checkAuth() async {
         isAuthenticated = await SupabaseManager.shared.isAuthenticated()
         userEmail = await SupabaseManager.shared.currentUserEmail()
@@ -153,6 +268,12 @@ import SkipFuse
         }
     }
 
+    /// Performs an email/password login.
+    ///
+    /// - Parameters:
+    ///   - email: The user's email address.
+    ///   - password: The user's password.
+    /// - Throws: An error if the credentials are invalid or network fails.
     public func login(email: String, password: String) async throws {
         try await SupabaseManager.shared.signIn(email: email, password: password)
         await checkAuth()
@@ -179,6 +300,51 @@ import SkipFuse
     }
 
     // MARK: - Caching
+    
+    private func prefetchImages() {
+        #if !os(macOS)
+        Task(priority: .background) {
+            // Collect all image URLs
+            var urlsToFetch = [URL]()
+            
+            // Scenario covers
+            for scenario in scenarios {
+                if let url = scenarioImageURL(for: scenario) {
+                    urlsToFetch.append(url)
+                }
+            }
+            
+            // Video thumbnails & Photos
+            for (_, videoList) in videos {
+                for video in videoList {
+                    if let url = videoThumbnailURL(for: video) {
+                        urlsToFetch.append(url)
+                    }
+                }
+            }
+            
+            for (_, photoList) in photos {
+                for photo in photoList {
+                    if let url = photoURL(for: photo) {
+                        urlsToFetch.append(url)
+                    }
+                }
+            }
+            
+            // Preload into global URLCache
+            for url in urlsToFetch {
+                let request = URLRequest(url: url, cachePolicy: .returnCacheDataElseLoad)
+                if URLCache.shared.cachedResponse(for: request) == nil {
+                    do {
+                        let _ = try await URLSession.shared.data(for: request)
+                    } catch {
+                        // Silent fail for prefetch
+                    }
+                }
+            }
+        }
+        #endif
+    }
 
     private func saveToCache() {
         if let encodedScenarios = try? JSONEncoder().encode(scenarios) {
@@ -208,6 +374,8 @@ import SkipFuse
     }
 
     /// Wipes all locally cached data and resets the state.
+    ///
+    /// Useful for debugging or forcing a clean state without re-authenticating.
     public func clearCache() {
         UserDefaults.standard.removeObject(forKey: "cached_scenarios")
         UserDefaults.standard.removeObject(forKey: "cached_videos")
@@ -231,7 +399,12 @@ import SkipFuse
 
     // MARK: - Scenario Selection
 
-    /// Selects a scenario and prepares its video queue for playback.
+    /// Selects a scenario and prepares its media content for presentation.
+    ///
+    /// - Parameter scenario: The scenario to select.
+    ///
+    /// This method updates `selectedScenario`, rebuilds the `videoQueue`, and
+    /// triggers the slide-in detail animation by setting `isShowingDetail` to `true`.
     public func selectScenario(_ scenario: Scenario) {
         selectedScenario = scenario
 

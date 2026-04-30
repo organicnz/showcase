@@ -34,6 +34,15 @@ let logger: Logger = Logger(subsystem: "site.surfy.showcase", category: "Showcas
 
     /* SKIP @bridge */public func onInit() {
         logger.debug("onInit")
+        
+        // Setup aggressive caching for AsyncImage and multi-media content
+        let memoryCapacity = 50 * 1024 * 1024 // 50 MB
+        let diskCapacity = 500 * 1024 * 1024 // 500 MB
+        
+        #if !os(macOS)
+        let cache = URLCache(memoryCapacity: memoryCapacity, diskCapacity: diskCapacity, diskPath: "showcase_media_cache")
+        URLCache.shared = cache
+        #endif
     }
 
     /* SKIP @bridge */public func onLaunch() {

@@ -1,0 +1,5 @@
+# Skip configuration for ShowcaseCore module
+# Core business logic, models, and services
+
+skip:
+  mode: 'native'

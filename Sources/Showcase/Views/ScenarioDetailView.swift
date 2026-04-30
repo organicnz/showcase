@@ -145,19 +145,19 @@ struct ScenarioDetailView: View {
     private func mediaMetadataView(title: String, subtitle: String?, index: Int, total: Int) -> some View {
         VStack(alignment: .leading, spacing: 6) {
             Text(title)
-                .font(.system(size: 18, weight: .semibold))
+                .font(.displaySmall)
                 .foregroundStyle(.white)
                 
             if let subtitle = subtitle, !subtitle.isEmpty {
                 Text(subtitle)
-                    .font(.system(size: 12))
+                    .font(.bodySmall2)
                     .foregroundStyle(.white.opacity(0.8))
                     .lineLimit(2)
             }
             
             if total > 0 {
                 Text("\(index + 1) из \(total)")
-                    .font(.system(size: 10, weight: .medium))
+                    .font(.labelCaps)
                     .foregroundStyle(.white.opacity(0.5))
                     .tracking(1)
             }
@@ -165,10 +165,10 @@ struct ScenarioDetailView: View {
         .padding(.horizontal, 20)
         .padding(.vertical, 14)
         .background(.ultraThinMaterial.opacity(0.6))
-        .clipShape(RoundedRectangle(cornerRadius: 16))
+        .clipShape(RoundedRectangle(cornerRadius: CornerRadius.card))
         .overlay(
-            RoundedRectangle(cornerRadius: 16)
-                .stroke(.white.opacity(0.08), lineWidth: 0.5)
+            RoundedRectangle(cornerRadius: CornerRadius.card)
+                .stroke(Color.glassStroke, lineWidth: 0.5)
         )
     }
     
@@ -256,7 +256,7 @@ struct ScenarioDetailView: View {
             }
         }) {
             Text(title.uppercased())
-                .font(.system(size: 13, weight: .semibold))
+                .font(.labelCaps)
                 .tracking(1.5)
                 .foregroundStyle(selectedMediaType == type ? .ink : .white.opacity(0.7))
                 .padding(.horizontal, 24)
@@ -290,7 +290,7 @@ struct ScenarioDetailView: View {
                 .frame(width: 56, height: 56)
                 .background(.ultraThinMaterial)
                 .clipShape(Circle())
-                .overlay(Circle().stroke(.white.opacity(0.1), lineWidth: 1))
+                .overlay(Circle().stroke(Color.glassStroke, lineWidth: 1))
         }
     }
     
@@ -307,7 +307,7 @@ struct ScenarioDetailView: View {
                 .frame(width: 48, height: 48)
                 .background(.ultraThinMaterial)
                 .clipShape(Circle())
-                .overlay(Circle().stroke(.white.opacity(0.1), lineWidth: 1))
+                .overlay(Circle().stroke(Color.glassStroke, lineWidth: 1))
         }
     }
     
@@ -340,7 +340,7 @@ struct ScenarioDetailView: View {
                     Capsule()
                         .fill(
                             LinearGradient(
-                                colors: [Color.terracotta, Color.ochre],
+                                colors: ScenarioGradient.colors(for: viewModel.selectedScenario?.slug ?? "default"),
                                 startPoint: .leading,
                                 endPoint: .trailing
                             )
@@ -455,10 +455,10 @@ struct ScenarioDetailView: View {
         .padding(.horizontal, 20)
         .padding(.vertical, 16)
         .background(.ultraThinMaterial.opacity(0.5))
-        .clipShape(RoundedRectangle(cornerRadius: 24))
+        .clipShape(RoundedRectangle(cornerRadius: CornerRadius.button))
         .overlay(
-            RoundedRectangle(cornerRadius: 24)
-                .stroke(.white.opacity(0.08), lineWidth: 0.5)
+            RoundedRectangle(cornerRadius: CornerRadius.button)
+                .stroke(Color.glassStroke, lineWidth: 0.5)
         )
     }
     
@@ -614,21 +614,23 @@ struct ScenarioDetailView: View {
         
         let interval = CMTime(seconds: 0.1, preferredTimescale: 600)
         timeObserver = player.addPeriodicTimeObserver(forInterval: interval, queue: .main) { [weak player] time in
-            guard !isScrubbing else { return }
-            
-            let seconds = time.seconds
-            guard seconds.isFinite, !seconds.isNaN else { return }
-            
-            self.currentTime = seconds
-            
-            if let duration = player?.currentItem?.duration.seconds,
-               duration.isFinite, !duration.isNaN, duration > 0 {
-                self.videoDuration = duration
-                self.videoProgress = seconds / duration
+            Task { @MainActor in
+                guard !isScrubbing else { return }
+                
+                let seconds = time.seconds
+                guard seconds.isFinite, !seconds.isNaN else { return }
+                
+                self.currentTime = seconds
+                
+                if let duration = player?.currentItem?.duration.seconds,
+                   duration.isFinite, !duration.isNaN, duration > 0 {
+                    self.videoDuration = duration
+                    self.videoProgress = seconds / duration
+                }
+                
+                // Update play state reactively
+                self.isPlayerPlaying = (player?.rate ?? 0) > 0
             }
-            
-            // Update play state reactively
-            self.isPlayerPlaying = (player?.rate ?? 0) > 0
         }
     }
     

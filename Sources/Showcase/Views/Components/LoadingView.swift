@@ -1,6 +1,17 @@
 import SwiftUI
 
+/// A premium loading screen with a pulsing brand logo.
+///
+/// Supports two modes:
+/// - **Initial Load**: Full screen shimmer and center logo.
+/// - **Reconnecting**: A more subtle overlay state when network recovery is in progress.
 struct LoadingView: View {
+    /// If true, the view displays a "Reconnecting" message instead of initial loading.
+    var isReconnecting: Bool = false
+    
+    /// Optional status text to display current progress (e.g., from AWE workflow).
+    var status: String? = nil
+    
     @State internal var isAnimate = false
     @State internal var textOpacity: Double = 0
     private let startDate = Date()
@@ -49,10 +60,11 @@ struct LoadingView: View {
                         .foregroundStyle(.ink)
                         .opacity(textOpacity)
 
-                    Text("Загрузка витрины...")
+                    Text(status ?? (isReconnecting ? "Восстановление связи..." : "Загрузка витрины..."))
                         .font(.labelCaps)
                         .foregroundStyle(.mid)
                         .opacity(textOpacity * 0.6)
+                        .contentTransition(.interpolate)
                 }
             }
         }

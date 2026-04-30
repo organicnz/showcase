@@ -1,0 +1,4 @@
+# Skip configuration for ShowcaseCoreTests
+
+skip:
+  mode: 'native'

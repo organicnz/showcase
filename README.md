@@ -123,10 +123,17 @@ showcase/
 │           └── ErrorView.swift     # Error state
 ├── Android/                        # Android project (SKIP generated)
 ├── Darwin/                         # iOS/macOS specific files
+├── .agents/                        # AI agent workflows and internal tools
+│   └── workflows/                  # Agent-specific workflows
+├── scripts/                        # Database & Storage helper scripts
+├── logs/                           # Build and execution logs
+├── assets/                         # Project assets (videos, photos, logos)
+├── docs/                           # Documentation (guides, design, technical)
 ├── .github/workflows/
 │   └── backup.yml                  # Daily database backup
-└── scratch/
-    └── migration_01.sql            # Database schema
+├── AGENTS.md                       # Project overview for AI agents
+├── README.md                       # Project overview for humans
+└── Package.swift                   # Swift package definition
 ```
 
 ## 🎨 Design Language

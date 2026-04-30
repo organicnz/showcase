@@ -1,20 +1,24 @@
+---
 name: Supabase Backup
-on:
+'on':
   schedule:
-    - cron: '0 2 * * *'  # daily at 02:00 UTC
-  workflow_dispatch:      # manual trigger
+    - cron: 0 2 * * *  # daily at 02:00 UTC
+  workflow_dispatch: {}  # manual trigger
+
+permissions:
+  contents: write
 
 jobs:
   backup:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
-      
+
       - name: Install PostgreSQL client
         run: |
           sudo apt-get update
           sudo apt-get install -y postgresql-client
-          
+
       - name: Dump Supabase DB
         env:
           PGPASSWORD: ${{ secrets.SUPABASE_DB_PASSWORD }}
@@ -22,8 +26,9 @@ jobs:
           DB_USER: postgres
         run: |
           mkdir -p backups
-          pg_dump -h $DB_HOST -U $DB_USER -d postgres -F p > backups/backup_$(date +%Y%m%d).sql
-          
+          pg_dump -h $DB_HOST -U $DB_USER -d postgres -F p \
+            > backups/backup_$(date +%Y%m%d).sql
+
       - name: Commit backup
         run: |
           git config user.email "ci@bot"
@@ -35,3 +40,9 @@ jobs:
             git commit -m "backup: $(date +%Y-%m-%d)"
             git push
           fi
+
+      - name: Notify on failure
+        if: failure()
+        run: |
+          echo "::error::Backup pipeline failed on $(date +%Y-%m-%d). \
+          Check workflow logs for details."
