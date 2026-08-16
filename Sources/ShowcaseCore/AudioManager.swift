@@ -1,5 +1,7 @@
 import Foundation
+#if canImport(AVFoundation)
 import AVFoundation
+#endif
 
 #if canImport(SkipAV)
 import SkipAV
@@ -12,8 +14,10 @@ import SkipAV
 public actor AudioManager {
     public static let shared = AudioManager()
     
+    #if canImport(AVFoundation)
     private var currentPlayer: AVAudioPlayer?
     private var nextPlayer: AVAudioPlayer?
+    #endif
     
     private var currentUrl: URL?
     private let fadeDuration: TimeInterval = 2.5
@@ -35,6 +39,7 @@ public actor AudioManager {
     public func play(url: URL?) async {
         guard let url = url, url != currentUrl else { return }
         
+        #if canImport(AVFoundation)
         // Stop any pending transition
         nextPlayer?.stop()
         nextPlayer = nil
@@ -58,10 +63,12 @@ public actor AudioManager {
         } catch {
             print("AudioManager: Failed to play audio from \(url): \(error)")
         }
+        #endif
     }
     
     /// Fades out the current track and stops playback.
     public func stop() async {
+        #if canImport(AVFoundation)
         guard let player = currentPlayer else { return }
         
         let steps = 20
@@ -70,20 +77,36 @@ public actor AudioManager {
         
         for _ in 0..<steps {
             player.volume -= volumeStep
-            try? await Task.sleep(nanoseconds: UInt64(interval * 1_000_000_000))
+            try? await Task.sleep(for: .milliseconds(Int(interval * 1000)))
         }
         
         player.stop()
         currentPlayer = nil
         currentUrl = nil
+        #endif
     }
     
     // MARK: - Private Helpers
     
+    #if canImport(AVFoundation)
     private func loadPlayer(for url: URL) async throws -> AVAudioPlayer {
-        // In a real production app, we would check a local disk cache here first.
-        // For this implementation, we assume the URL is either local or handled by the system.
-        let data = try Data(contentsOf: url)
+        // Use URLCache for local buffering as per AGENTS.md requirements
+        let request = URLRequest(url: url, cachePolicy: .returnCacheDataElseLoad)
+        
+        if let cachedResponse = URLCache.shared.cachedResponse(for: request) {
+            logger.debug("AudioManager: Loading audio from cache for \(url.lastPathComponent)")
+            return try AVAudioPlayer(data: cachedResponse.data)
+        }
+        
+        logger.debug("AudioManager: Downloading audio for \(url.lastPathComponent)")
+        let (data, response) = try await URLSession.shared.data(for: request)
+        
+        // Explicitly store in cache if it's a remote URL
+        if let httpResponse = response as? HTTPURLResponse, httpResponse.statusCode == 200 {
+            let cached = CachedURLResponse(response: response, data: data)
+            URLCache.shared.storeCachedResponse(cached, for: request)
+        }
+        
         return try AVAudioPlayer(data: data)
     }
     
@@ -100,11 +123,12 @@ public actor AudioManager {
             newPlayer.volume = volume
             oldPlayer?.volume = 1.0 - volume
             
-            try? await Task.sleep(nanoseconds: UInt64(interval * 1_000_000_000))
+            try? await Task.sleep(for: .milliseconds(Int(interval * 1000)))
         }
         
         oldPlayer?.stop()
         currentPlayer = newPlayer
         nextPlayer = nil
     }
+    #endif
 }

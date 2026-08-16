@@ -103,34 +103,27 @@ cd Android
 ## 📦 Project Structure
 
 ```
-showcase/
-├── Sources/Showcase/
-│   ├── ShowcaseApp.swift          # App entry point
-│   ├── Models.swift                # Data models (Scenario, Video)
-│   ├── SupabaseManager.swift      # Supabase client & API calls
-│   ├── ViewModel.swift             # Observable state management
-│   ├── ContentView.swift           # Main tab view
-│   ├── LogoView.swift              # Premium logo component
-│   └── Views/
-│       ├── ScenarioGridView.swift  # Main scenario grid
-│       ├── LibraryView.swift       # Video library
-│       ├── VideoDetailView.swift   # Video player
-│       ├── SettingsView.swift      # Settings screen
-│       └── Components/
-│           ├── ScenarioCard.swift  # Scenario card component
-│           ├── VideoRow.swift      # Video list item
-│           ├── LoadingView.swift   # Loading state
-│           └── ErrorView.swift     # Error state
+├── Sources/
+│   ├── ShowcaseCore/               # Business logic, models, services
+│   │   ├── Models.swift            # Data models (Scenario, Video, WorkflowState)
+│   │   ├── SupabaseManager.swift  # Supabase client & API calls
+│   │   ├── ViewModel.swift         # Observable state management
+│   │   ├── AWE.swift               # Antigravity Workflow Engine
+│   │   ├── AudioManager.swift      # Immersive Audio Engine
+│   │   └── ThemeTokens.swift       # Shared design tokens
+│   ├── ShowcaseUI/                 # UI components and screens
+│   │   ├── Screens/                # MainScreen, LibraryScreen, PlayerScreen
+│   │   ├── Components/             # ScenarioCard, VideoCard, etc.
+│   │   └── Theme/                  # ShowcaseTheme (Liquid Glass)
+│   └── ShowcaseApp/                # App entry point
+│       └── ShowcaseApp.swift       # @main App struct
 ├── Android/                        # Android project (SKIP generated)
 ├── Darwin/                         # iOS/macOS specific files
-├── .agents/                        # AI agent workflows and internal tools
-│   └── workflows/                  # Agent-specific workflows
-├── scripts/                        # Database & Storage helper scripts
-├── logs/                           # Build and execution logs
-├── assets/                         # Project assets (videos, photos, logos)
-├── docs/                           # Documentation (guides, design, technical)
+├── supabase/
+│   └── migrations/                 # DB schema migrations
 ├── .github/workflows/
-│   └── backup.yml                  # Daily database backup
+│   ├── backup.yml                  # Daily database backup
+│   └── build.yml                   # CI/CD build & test
 ├── AGENTS.md                       # Project overview for AI agents
 ├── README.md                       # Project overview for humans
 └── Package.swift                   # Swift package definition
@@ -146,17 +139,17 @@ showcase/
 
 ## 📊 Current Status
 
-### ✅ Completed (Milestone 1)
-- [x] Swift package structure with SKIP integration
+### ✅ Completed (Milestone 1 & 2)
+- [x] Modular Swift package structure (ShowcaseCore, ShowcaseUI)
 - [x] Supabase backend setup (database + storage)
 - [x] Database schema with RLS policies
+- [x] **AWE (Antigravity Workflow Engine)** with Supabase persistence
+- [x] **Immersive Audio Engine** with local caching and cross-fade
 - [x] 5 life scenarios seeded in database
-- [x] SwiftUI screens (Main, Library, Video Player, Settings)
+- [x] SwiftUI screens with Liquid Glass design language
 - [x] Observable state management with @Observable
-- [x] Supabase client integration
-- [x] Video storage bucket with public read access
-- [x] GitHub Actions backup workflow
-- [x] Android project structure
+- [x] GitHub Actions backup & build workflows
+- [x] Android project structure with SKIP integration
 
 ### 🔄 In Progress (Milestone 2)
 - [ ] Upload video content (20-25 videos, max 30 sec each)

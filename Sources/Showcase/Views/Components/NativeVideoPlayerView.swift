@@ -1,5 +1,9 @@
+import ShowcaseCore
+import ShowcaseUI
 import SwiftUI
+#if canImport(AVKit)
 import AVKit
+#endif
 
 #if os(iOS)
 struct NativeVideoPlayerView: UIViewControllerRepresentable {

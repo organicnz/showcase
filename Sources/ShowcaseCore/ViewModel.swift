@@ -421,7 +421,7 @@ import SkipFuse
             }
         }
         
-        withAnimation(.spring(response: 0.6, dampingFraction: 0.8)) {
+        withAnimation(.spring(response: 0.6, dampingFraction: 0.8, blendDuration: 0)) {
             isShowingDetail = true
         }
     }

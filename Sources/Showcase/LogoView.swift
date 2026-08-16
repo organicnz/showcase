@@ -1,3 +1,5 @@
+import ShowcaseCore
+import ShowcaseUI
 import SwiftUI
 
 public struct LogoView: View {

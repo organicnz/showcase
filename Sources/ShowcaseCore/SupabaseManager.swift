@@ -1,6 +1,9 @@
 import Foundation
 import SkipSupabase
 import Supabase
+import PostgREST
+import Storage
+import Realtime
 
 /// A thread-safe Supabase client manager using actor isolation.
 ///
@@ -107,7 +110,7 @@ public actor SupabaseManager {
                 }
                 // Exponential backoff: 1s, 2s, 4s
                 let delaySecs = 1 << (attempt - 1)
-                try? await Task.sleep(nanoseconds: UInt64(delaySecs) * 1_000_000_000)
+                try? await Task.sleep(for: .seconds(delaySecs))
             }
         }
     }
@@ -173,6 +176,29 @@ public actor SupabaseManager {
         try await withRetry {
             try await client.from("user_settings")
                 .upsert(settings)
+                .execute()
+        }
+    }
+
+    // MARK: - Workflow States
+    
+    public func fetchWorkflowState(name: String) async throws -> WorkflowState? {
+        try await withRetry {
+            let states: [WorkflowState] = try await client.from("workflow_states")
+                .select()
+                .eq("workflow_name", value: name)
+                .order("updated_at", ascending: false)
+                .limit(1)
+                .execute()
+                .value
+            return states.first
+        }
+    }
+    
+    public func updateWorkflowState(_ state: WorkflowState) async throws {
+        try await withRetry {
+            try await client.from("workflow_states")
+                .upsert(state)
                 .execute()
         }
     }

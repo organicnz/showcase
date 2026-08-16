@@ -1,3 +1,5 @@
+import ShowcaseCore
+import ShowcaseUI
 import SwiftUI
 import SkipFuse
 
@@ -5,7 +7,11 @@ struct ContentView: View {
     @State var viewModel = ViewModel()
     @State var showLibrary = false
     @State var showSettings = false
+    #if os(Android)
+    @SkipNamespace private var animationNamespace
+    #else
     @Namespace private var animationNamespace
+    #endif
 
     var body: some View {
         Group {
@@ -100,7 +106,7 @@ struct ContentView: View {
             }
         }
         .environment(viewModel)
-        .animation(.spring(), value: viewModel.isAuthenticated)
+        .animation(.spring(duration: 0.5, bounce: 0, blendDuration: 0), value: viewModel.isAuthenticated)
         .task {
             await viewModel.checkAuth()
             if viewModel.isAuthenticated {

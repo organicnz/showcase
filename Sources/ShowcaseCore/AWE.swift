@@ -49,16 +49,8 @@ public enum AWE {
     }
     
     /// The current state of a running workflow.
-    public struct WorkflowState: Sendable, Codable {
-        public let workflowId: UUID
-        public var currentStepIndex: Int
-        public var completedSteps: [String]
-        public var status: Status
-        
-        public enum Status: String, Codable, Sendable {
-            case pending, running, completed, failed
-        }
-    }
+    // Moved to Models.swift for shared access
+    public typealias WorkflowState = ShowcaseCore.WorkflowState
     
     // MARK: - Runner
     
@@ -75,18 +67,31 @@ public enum AWE {
         ///   - workflow: The workflow to execute.
         ///   - progress: An optional closure to track progress updates.
         public func execute(_ workflow: Workflow, onProgress: (@Sendable (WorkflowState) -> Void)? = nil) async throws {
-            var state = WorkflowState(
-                workflowId: workflow.id,
+            // Check for existing state to resume
+            let existingState = try? await SupabaseManager.shared.fetchWorkflowState(name: workflow.name)
+            
+            var state = existingState ?? WorkflowState(
+                id: workflow.id,
+                workflowName: workflow.name,
                 currentStepIndex: 0,
                 completedSteps: [],
-                status: .running
+                status: .running,
+                updatedAt: Date()
             )
             
+            state.status = .running
             activeWorkflows[workflow.id] = state
             onProgress?(state)
             
-            for (index, step) in workflow.steps.enumerated() {
+            let startIndex = state.currentStepIndex
+            
+            for index in startIndex..<workflow.steps.count {
+                let step = workflow.steps[index]
                 state.currentStepIndex = index
+                state.updatedAt = Date()
+                
+                // Persist state to Supabase
+                try? await SupabaseManager.shared.updateWorkflowState(state)
                 onProgress?(state)
                 
                 let result = try await executeStepWithRetries(step)
@@ -96,17 +101,22 @@ public enum AWE {
                     state.completedSteps.append(step.id)
                 case .failure(let error):
                     state.status = .failed
+                    state.updatedAt = Date()
+                    try? await SupabaseManager.shared.updateWorkflowState(state)
                     onProgress?(state)
                     throw error
                 case .retry(let reason):
-                    // Should not happen if retries are exhausted in executeStepWithRetries
                     state.status = .failed
+                    state.updatedAt = Date()
+                    try? await SupabaseManager.shared.updateWorkflowState(state)
                     onProgress?(state)
                     throw NSError(domain: "AWE", code: 1, userInfo: [NSLocalizedDescriptionKey: "Retry limit exhausted: \(reason)"])
                 }
             }
             
             state.status = .completed
+            state.updatedAt = Date()
+            try? await SupabaseManager.shared.updateWorkflowState(state)
             activeWorkflows[workflow.id] = state
             onProgress?(state)
         }
@@ -138,8 +148,8 @@ public enum AWE {
         }
         
         private func backoff(attempt: Int) async throws {
-            let delay = UInt64(pow(2.0, Double(attempt))) * 1_000_000_000
-            try await Task.sleep(nanoseconds: delay)
+            let seconds = Int(pow(2.0, Double(attempt)))
+            try await Task.sleep(for: .seconds(seconds))
         }
     }
 }

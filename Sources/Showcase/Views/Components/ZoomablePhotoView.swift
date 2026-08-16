@@ -1,3 +1,5 @@
+import ShowcaseCore
+import ShowcaseUI
 import SwiftUI
 
 /// A high-performance, zoomable photo view with pinch-to-zoom and double-tap-to-reset.
@@ -21,6 +23,7 @@ struct ZoomablePhotoView: View {
                         .aspectRatio(contentMode: .fit)
                         .scaleEffect(scale)
                         .offset(offset)
+                        #if !os(Android)
                         .gesture(
                             MagnificationGesture()
                                 .onChanged { value in
@@ -30,7 +33,7 @@ struct ZoomablePhotoView: View {
                                 }
                                 .onEnded { _ in
                                     lastScale = 1.0
-                                    withAnimation(.spring()) {
+                                    withAnimation(.spring(response: 0.35, dampingFraction: 0.85, blendDuration: 0)) {
                                         if scale < 1.0 {
                                             scale = 1.0
                                             offset = .zero
@@ -38,6 +41,8 @@ struct ZoomablePhotoView: View {
                                     }
                                 }
                         )
+                        #endif
+                        #if !os(Android)
                         .simultaneousGesture(
                             DragGesture()
                                 .onChanged { value in
@@ -50,7 +55,7 @@ struct ZoomablePhotoView: View {
                                 }
                                 .onEnded { _ in
                                     lastOffset = offset
-                                    withAnimation(.spring()) {
+                                    withAnimation(.spring(response: 0.35, dampingFraction: 0.85, blendDuration: 0)) {
                                         if scale <= 1.0 {
                                             offset = .zero
                                             lastOffset = .zero
@@ -58,8 +63,9 @@ struct ZoomablePhotoView: View {
                                     }
                                 }
                         )
+                        #endif
                         .onTapGesture(count: 2) {
-                            withAnimation(.spring()) {
+                            withAnimation(.spring(duration: 0.5, bounce: 0, blendDuration: 0)) {
                                 if scale > 1.0 {
                                     scale = 1.0
                                     offset = .zero

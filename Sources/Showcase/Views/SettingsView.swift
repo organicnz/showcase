@@ -1,3 +1,5 @@
+import ShowcaseCore
+import ShowcaseUI
 import SwiftUI
 
 struct SettingsView: View {
@@ -92,7 +94,9 @@ struct SettingsView: View {
                         Spacer()
                         Text("\(health.latencyMs) ms")
                             .foregroundStyle(health.latencyMs < 200 ? .green : (health.latencyMs < 500 ? .orange : .red))
+                            #if !os(Android)
                             .monospacedDigit()
+                            #endif
                     }
                 } else {
                     HStack {

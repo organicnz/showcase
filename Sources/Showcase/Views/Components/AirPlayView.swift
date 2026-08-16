@@ -1,3 +1,5 @@
+import ShowcaseCore
+import ShowcaseUI
 import SwiftUI
 #if canImport(AVKit) && !os(macOS)
 import AVKit

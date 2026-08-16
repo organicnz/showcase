@@ -1,5 +1,0 @@
-# Skip configuration for ShowcaseApp module
-# Application entry point
-
-skip:
-  mode: 'native'

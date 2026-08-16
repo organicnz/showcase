@@ -1,3 +1,5 @@
+import ShowcaseCore
+import ShowcaseUI
 import SwiftUI
 
 struct PhotoGalleryView: View {
@@ -11,8 +13,10 @@ struct PhotoGalleryView: View {
             VStack(spacing: 24) {
                 Image(systemName: "photo.on.rectangle.angled")
                     .font(.system(size: 80, weight: .ultraLight))
-                    .foregroundStyle(.terracotta.opacity(0.6))
+                    .foregroundStyle(Color.terracotta.opacity(0.6))
+                    #if !os(Android)
                     .symbolEffect(.bounce, value: true)
+                    #endif
 
                 VStack(spacing: 12) {
                     Text("Галерея наполняется")
@@ -56,7 +60,7 @@ struct PhotoGalleryView: View {
                             Capsule()
                                 .fill(selection == index ? Color.terracotta : Color.white.opacity(0.3))
                                 .frame(width: selection == index ? 24 : 6, height: 6)
-                                .animation(.spring(response: 0.3, dampingFraction: 0.7), value: selection)
+                                .animation(.spring(response: 0.3, dampingFraction: 0.7, blendDuration: 0), value: selection)
                         }
                     }
                     .padding(.horizontal, 16)
@@ -72,8 +76,10 @@ struct PhotoGalleryView: View {
     }
 }
 
+#if !os(Android)
 #Preview {
     PhotoGalleryView(photos: [])
         .background(Color.black)
         .environment(ViewModel())
 }
+#endif

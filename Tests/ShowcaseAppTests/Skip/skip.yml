@@ -1,4 +1,0 @@
-# Skip configuration for ShowcaseAppTests
-
-skip:
-  mode: 'native'

@@ -1,9 +1,9 @@
+import ShowcaseCore
+import ShowcaseUI
 import Foundation
 import SkipFuse
 import SwiftUI
 
-/// A logger for the Showcase module.
-let logger: Logger = Logger(subsystem: "site.surfy.showcase", category: "Showcase")
 
 /// The shared top-level view for the app, loaded from the platform-specific App delegates below.
 ///

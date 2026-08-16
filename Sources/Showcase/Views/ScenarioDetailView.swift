@@ -1,3 +1,5 @@
+import ShowcaseCore
+import ShowcaseUI
 import SwiftUI
 import SkipAV
 #if canImport(AVFoundation)
@@ -6,7 +8,7 @@ import AVFoundation
 
 struct ScenarioDetailView: View {
     @Environment(ViewModel.self) var viewModel: ViewModel
-    let animationNamespace: Namespace.ID
+    let animationNamespace: NamespaceID
     
     @State internal var player: AVPlayer?
     @State internal var isControlsVisible = true
@@ -56,7 +58,7 @@ struct ScenarioDetailView: View {
                 // Top Navigation Bar
                 topBar
                     .opacity(isControlsVisible ? 1 : 0)
-                    .animation(.spring(response: 0.4), value: isControlsVisible)
+                    .animation(.spring(response: 0.4, dampingFraction: 0.8, blendDuration: 0), value: isControlsVisible)
                 
                 Spacer()
                 
@@ -65,14 +67,14 @@ struct ScenarioDetailView: View {
                     bottomPlayerChrome
                         .opacity(isControlsVisible ? 1 : 0)
                         .offset(y: isControlsVisible ? 0 : 40)
-                        .animation(.spring(response: 0.5, dampingFraction: 0.85), value: isControlsVisible)
+                        .animation(.spring(response: 0.5, dampingFraction: 0.85, blendDuration: 0), value: isControlsVisible)
                 }
             }
             .padding(.bottom, 40)
             .zIndex(9999) // Stay above the video
         }
         .ignoresSafeArea()
-        #if !os(macOS)
+        #if !os(macOS) && !os(Android)
         .persistentSystemOverlays(.hidden)
         #endif
         .onAppear {
@@ -84,7 +86,7 @@ struct ScenarioDetailView: View {
         }
         .onDisappear { cleanupPlayer() }
         .onTapGesture {
-            withAnimation(.spring(response: 0.4)) {
+            withAnimation(.spring(response: 0.4, dampingFraction: 0.8, blendDuration: 0)) {
                 isControlsVisible.toggle()
             }
             if isControlsVisible {
@@ -112,7 +114,9 @@ struct ScenarioDetailView: View {
                 .padding(6)
                 .background(.ultraThinMaterial.opacity(0.4))
                 .clipShape(Capsule())
+                #if !os(Android)
                 .overlay(Capsule().stroke(.white.opacity(0.1), lineWidth: 0.5))
+                #endif
             }
             
             HStack(alignment: .top) {
@@ -166,10 +170,12 @@ struct ScenarioDetailView: View {
         .padding(.vertical, 14)
         .background(.ultraThinMaterial.opacity(0.6))
         .clipShape(RoundedRectangle(cornerRadius: CornerRadius.card))
+        #if !os(Android)
         .overlay(
             RoundedRectangle(cornerRadius: CornerRadius.card)
                 .stroke(Color.glassStroke, lineWidth: 0.5)
         )
+        #endif
     }
     
     // MARK: - Components
@@ -251,7 +257,7 @@ struct ScenarioDetailView: View {
     private func mediaTypeTab(title: String, type: MediaType) -> some View {
         Button(action: {
             HapticManager.shared.impact(style: .light)
-            withAnimation(.spring(response: 0.4, dampingFraction: 0.75)) {
+            withAnimation(.spring(response: 0.4, dampingFraction: 0.75, blendDuration: 0)) {
                 selectedMediaType = type
             }
         }) {
@@ -266,7 +272,9 @@ struct ScenarioDetailView: View {
                         Capsule()
                             .fill(.white)
                             .shadow(color: .black.opacity(0.15), radius: 4, y: 2)
+                        #if !os(Android)
                             .matchedGeometryEffect(id: "TabSelection", in: animationNamespace)
+                        #endif
                     }
                 }
         }
@@ -297,7 +305,7 @@ struct ScenarioDetailView: View {
     private var aspectRatioButton: some View {
         Button(action: {
             HapticManager.shared.impact(style: .light)
-            withAnimation(.spring(response: 0.3)) {
+            withAnimation(.spring(response: 0.3, dampingFraction: 0.8, blendDuration: 0)) {
                 contentModeScale = contentModeScale == .fill ? .fit : .fill
             }
         }) {
@@ -356,7 +364,9 @@ struct ScenarioDetailView: View {
                         .opacity(isScrubbing || isControlsVisible ? 1 : 0)
                 }
                 .frame(height: 20)
+                #if !os(Android)
                 .contentShape(Rectangle())
+                #endif
                 .gesture(
                     DragGesture(minimumDistance: 0)
                         .onChanged { value in
@@ -371,7 +381,9 @@ struct ScenarioDetailView: View {
                             isScrubbing = false
                         }
                 )
-                .animation(.spring(response: 0.25), value: isScrubbing)
+                #if !os(Android)
+                .animation(.spring(response: 0.25, dampingFraction: 0.8, blendDuration: 0), value: isScrubbing)
+                #endif
             }
             .frame(height: 20)
             
@@ -456,10 +468,12 @@ struct ScenarioDetailView: View {
         .padding(.vertical, 16)
         .background(.ultraThinMaterial.opacity(0.5))
         .clipShape(RoundedRectangle(cornerRadius: CornerRadius.button))
+        #if !os(Android)
         .overlay(
             RoundedRectangle(cornerRadius: CornerRadius.button)
                 .stroke(Color.glassStroke, lineWidth: 0.5)
         )
+        #endif
     }
     
     // MARK: - Queue Indicator Dots
@@ -475,7 +489,7 @@ struct ScenarioDetailView: View {
                         .fill(idx == currentIdx ? Color.white : Color.white.opacity(0.25))
                         .frame(width: idx == currentIdx ? 7 : 5,
                                height: idx == currentIdx ? 7 : 5)
-                        .animation(.spring(response: 0.3), value: currentIdx)
+                        .animation(.spring(response: 0.3, dampingFraction: 0.8, blendDuration: 0), value: currentIdx)
                 }
                 if count > 8 {
                     Text("…")
@@ -497,7 +511,9 @@ struct ScenarioDetailView: View {
                 .font(.system(size: size))
                 .foregroundStyle(.white)
                 .frame(width: 48, height: 48)
+                #if !os(Android)
                 .contentShape(Circle())
+                #endif
         }
     }
     
@@ -526,16 +542,18 @@ struct ScenarioDetailView: View {
                     }
                 }
                 .id(photo.id)
-                .animation(.spring(response: 0.4), value: photo.id)
+                .animation(.spring(response: 0.4, dampingFraction: 0.8, blendDuration: 0), value: photo.id)
             } else {
                 Text("Фото не выбрано").foregroundStyle(.white.opacity(0.5))
             }
         }
         .frame(maxWidth: .infinity, maxHeight: .infinity)
         .ignoresSafeArea()
+        #if !os(Android)
         .contentShape(Rectangle())
+        #endif
         .onTapGesture {
-            withAnimation(.spring(response: 0.4)) {
+            withAnimation(.spring(response: 0.4, dampingFraction: 0.8, blendDuration: 0)) {
                 isControlsVisible.toggle()
             }
         }
@@ -707,7 +725,7 @@ struct ScenarioDetailView: View {
         hideControlsTask = Task {
             try? await Task.sleep(nanoseconds: 4_000_000_000)
             if !Task.isCancelled && isPlayerPlaying {
-                withAnimation(.spring(response: 0.6)) {
+                withAnimation(.spring(response: 0.6, dampingFraction: 0.8, blendDuration: 0)) {
                     isControlsVisible = false
                 }
             }

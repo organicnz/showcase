@@ -1,3 +1,5 @@
+import ShowcaseCore
+import ShowcaseUI
 import SwiftUI
 
 struct LoginView: View {
@@ -28,7 +30,7 @@ struct LoginView: View {
 
                         Text("Вход в систему")
                             .font(.displayMedium)
-                            .foregroundStyle(.ink)
+                            .foregroundStyle(Color.ink)
                     }
                     .offset(y: isAnimating ? 0 : 20)
                     .opacity(isAnimating ? 1.0 : 0.0)
@@ -44,7 +46,7 @@ struct LoginView: View {
                     if let error = errorMessage {
                         Text(error)
                             .font(.caption)
-                            .foregroundStyle(.red)
+                            .foregroundStyle(Color.red)
                             .transition(.opacity)
                     }
 
@@ -61,7 +63,7 @@ struct LoginView: View {
                         .frame(maxWidth: .infinity)
                         .padding(.vertical, 16)
                         .background(Color.terracotta)
-                        .foregroundStyle(.white)
+                        .foregroundStyle(Color.white)
                         .clipShape(RoundedRectangle(cornerRadius: CornerRadius.button))
                         .shadow(color: Color.terracotta.opacity(0.3), radius: 10, y: 5)
                     }
@@ -84,17 +86,17 @@ struct LoginView: View {
                 // Footer
                 Text("Только для авторизованных сотрудников")
                     .font(.caption)
-                    .foregroundStyle(.mid)
+                    .foregroundStyle(Color.mid)
                     .opacity(isAnimating ? 0.6 : 0.0)
             }
             .padding(24)
         }
         .onAppear {
-            withAnimation(.spring(response: 0.8, dampingFraction: 0.8)) {
+            withAnimation(.spring(response: 0.8, dampingFraction: 0.8, blendDuration: 0)) {
                 isAnimating = true
             }
         }
-        #if !os(macOS)
+        #if !os(macOS) && !os(Android)
         .persistentSystemOverlays(.hidden)
         #endif
     }
@@ -106,7 +108,7 @@ struct LoginView: View {
         VStack(alignment: .leading, spacing: 8) {
             Text(title)
                 .font(.labelCaps)
-                .foregroundStyle(.mid)
+                .foregroundStyle(Color.mid)
 
             HStack {
                 Image(systemName: icon)
@@ -135,7 +137,7 @@ struct LoginView: View {
         VStack(alignment: .leading, spacing: 8) {
             Text(title)
                 .font(.labelCaps)
-                .foregroundStyle(.mid)
+                .foregroundStyle(Color.mid)
 
             HStack {
                 Image(systemName: icon)

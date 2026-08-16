@@ -1,7 +1,10 @@
+import ShowcaseCore
+import ShowcaseUI
 import SwiftUI
 #if canImport(AVFoundation)
 import AVFoundation
 #endif
+import SkipAV
 
 struct VideoCard: View {
     let video: Video
@@ -69,8 +72,14 @@ struct VideoCard: View {
                         Text(subtitle)
                             .font(.bodySmall2)
                             .foregroundStyle(.white.opacity(0.7))
-                            .lineLimit(2)
+                            .lineLimit(1)
+                    } else {
+                        // Empty spacer to keep height consistent
+                        Text(" ")
+                            .font(.bodySmall2)
                     }
+
+                    Spacer(minLength: 0)
 
                     HStack {
                         if let duration = video.durationSec {
@@ -87,6 +96,7 @@ struct VideoCard: View {
                     }
                 }
                 .padding(.horizontal, 4)
+                .frame(height: 70, alignment: .topLeading)
             }
             .padding(12)
             .background(
@@ -98,7 +108,7 @@ struct VideoCard: View {
                     .stroke(Color.white.opacity(0.1), lineWidth: 0.5)
             )
             .scaleEffect(isPressed ? 0.96 : 1.0)
-            .animation(.spring(response: 0.3, dampingFraction: 0.7), value: isPressed)
+            .animation(.spring(response: 0.3, dampingFraction: 0.7, blendDuration: 0), value: isPressed)
         }
         .buttonStyle(.plain)
         .onLongPressGesture(minimumDuration: .infinity, pressing: { pressing in

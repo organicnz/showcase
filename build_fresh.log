@@ -1,0 +1,665 @@
+[0/1] Planning build
+[1/1] Compiling plugin Create SkipLink
+[2/2] Compiling plugin skipstone
+Building for debugging...
+[2/71] Write swift-version-61F0DE9FCAD3B8F0.txt
+[4/113] Compiling IssueReportingPackageSupport _Test.swift
+[5/113] Emitting module IssueReportingPackageSupport
+[6/114] Compiling SkipUnit FoundationBridge_Support.swift
+[7/114] Compiling SkipUnit XCTest_Bridge.swift
+[8/114] Compiling SkipUnit AnyDynamicObject_Support.swift
+[9/114] Compiling SkipUnit Bundle_Support.swift
+[10/114] Compiling CryptoBoringWrapper CryptoKitErrors_boring.swift
+[11/114] Compiling SkipUnit XCTest.swift
+[12/114] Compiling SkipUnit resource_bundle_accessor.swift
+[13/114] Emitting module SkipUnit
+[14/115] Compiling CryptoBoringWrapper resource_bundle_accessor.swift
+[15/115] Compiling ConcurrencyExtras UncheckedBox.swift
+[16/115] Compiling ConcurrencyExtras Result.swift
+[17/115] Compiling ConcurrencyExtras Task.swift
+[18/115] Compiling ConcurrencyExtras UncheckedSendable.swift
+[19/115] Compiling ConcurrencyExtras MainSerialExecutor.swift
+[20/115] Compiling ConcurrencyExtras LockIsolated.swift
+[23/117] Compiling HTTPTypes NIOLock.swift
+[24/135] Compiling CryptoBoringWrapper FiniteFieldArithmeticContext.swift
+[25/135] Compiling CryptoBoringWrapper RandomBytes.swift
+[26/137] Compiling ConcurrencyExtras AnyHashableSendable.swift
+[27/138] Compiling ConcurrencyExtras Locking.swift
+[28/138] Compiling ConcurrencyExtras AsyncStream.swift
+[29/138] Compiling ConcurrencyExtras ActorIsolated.swift
+[30/138] Emitting module ConcurrencyExtras
+[31/138] Compiling ConcurrencyExtras AsyncThrowingStream.swift
+[32/152] Compiling CryptoBoringWrapper BoringSSLAEAD.swift
+[33/154] Compiling HTTPTypes ISOLatin1String.swift
+[34/155] Compiling CryptoBoringWrapper EllipticCurvePoint.swift
+[35/155] Compiling CryptoBoringWrapper EllipticCurve.swift
+[36/155] Compiling CryptoBoringWrapper ArbitraryPrecisionInteger.swift
+[37/155] Emitting module CryptoBoringWrapper
+[38/158] Compiling HTTPTypes HTTPRequest.swift
+[39/158] Compiling HTTPTypes HTTPResponse.swift
+[40/158] Compiling HTTPTypes HTTPRequest+URL.swift
+[41/158] Compiling HTTPTypes HTTPFieldName.swift
+[42/158] Compiling HTTPTypes HTTPParsedFields.swift
+[43/158] Compiling HTTPTypes HTTPField.swift
+[44/158] Compiling HTTPTypes HTTPFields.swift
+[45/158] Emitting module HTTPTypes
+note: Skip 1.8.11: skipstone plugin to: /Users/organic/dev/work/showcase/.build/plugins/outputs/skip-foundation/SkipFoundation/destination/skipstone/SkipFoundation/src/main at 17:59:41
+/Users/organic/dev/work/showcase/.build/checkouts/skip-foundation/Sources/SkipFoundation/Skip/skip.yml: note: loading skip.yml from /Users/organic/dev/work/showcase/.build/checkouts/skip-foundation/Sources/SkipFoundation/Skip/skip.yml
+/Users/organic/dev/work/showcase/.build/checkouts/skip-lib/Sources/SkipLib/Skip/skip.yml: note: SkipLib skip.yml config loaded (4 ms)
+/Users/organic/dev/work/showcase/.build/checkouts/skip-unit/Sources/SkipUnit/Skip/skip.yml: note: SkipUnit skip.yml config loaded (28 ms)
+note: skip.yml aggregate created (93 ms) for modules: ["SkipFoundation", "SkipLib", "SkipUnit"]
+/Users/organic/dev/work/showcase/.build/plugins/outputs/skip-lib/SkipLib/destination/skipstone/SkipLib.skipcode.json: note: SkipLib.skipcode.json codebase (692 KB) loaded (89 ms) for SkipLib
+/Users/organic/dev/work/showcase/.build/plugins/outputs/skip-unit/SkipUnit/destination/skipstone/SkipUnit.skipcode.json: note: SkipUnit.skipcode.json codebase (24 KB) loaded (3 ms) for SkipUnit
+/Users/organic/dev/work/showcase/.build/plugins/outputs/skip-foundation/SkipFoundation/destination/skipstone/SkipFoundation.skipcode.json: note: SkipFoundation.skipcode.json (1.5 MB) codebase unchanged
+/Users/organic/dev/work/showcase/.build/plugins/outputs/skip-foundation/SkipFoundation/destination/skipstone/SkipBridgeGenerated/IndexPath_Bridge.swift: note: SkipBridgeGenerated/IndexPath_Bridge.swift (Zero KB) skipbridge unchanged
+/Users/organic/dev/work/showcase/.build/plugins/outputs/skip-foundation/SkipFoundation/destination/skipstone/SkipBridgeGenerated/URLComponents_Bridge.swift: note: SkipBridgeGenerated/URLComponents_Bridge.swift (Zero KB) skipbridge unchanged
+/Users/organic/dev/work/showcase/.build/plugins/outputs/skip-foundation/SkipFoundation/destination/skipstone/SkipBridgeGenerated/Date_Bridge.swift: note: SkipBridgeGenerated/Date_Bridge.swift (Zero KB) skipbridge unchanged
+/Users/organic/dev/work/showcase/.build/plugins/outputs/skip-foundation/SkipFoundation/destination/skipstone/SkipBridgeGenerated/NumberFormatter_Bridge.swift: note: SkipBridgeGenerated/NumberFormatter_Bridge.swift (Zero KB) skipbridge unchanged
+/Users/organic/dev/work/showcase/.build/plugins/outputs/skip-foundation/SkipFoundation/destination/skipstone/SkipBridgeGenerated/CharacterSet_Bridge.swift: note: SkipBridgeGenerated/CharacterSet_Bridge.swift (Zero KB) skipbridge unchanged
+/Users/organic/dev/work/showcase/.build/plugins/outputs/skip-foundation/SkipFoundation/destination/skipstone/SkipBridgeGenerated/URLRequest_Bridge.swift: note: SkipBridgeGenerated/URLRequest_Bridge.swift (Zero KB) skipbridge unchanged
+/Users/organic/dev/work/showcase/.build/plugins/outputs/skip-foundation/SkipFoundation/destination/skipstone/SkipBridgeGenerated/Unicode_Bridge.swift: note: SkipBridgeGenerated/Unicode_Bridge.swift (Zero KB) skipbridge unchanged
+/Users/organic/dev/work/showcase/.build/plugins/outputs/skip-foundation/SkipFoundation/destination/skipstone/SkipBridgeGenerated/StringLocalizationValue_Bridge.swift: note: SkipBridgeGenerated/StringLocalizationValue_Bridge.swift (Zero KB) skipbridge unchanged
+/Users/organic/dev/work/showcase/.build/plugins/outputs/skip-foundation/SkipFoundation/destination/skipstone/SkipBridgeGenerated/JSONEncoder_Bridge.swift: note: SkipBridgeGenerated/JSONEncoder_Bridge.swift (Zero KB) skipbridge unchanged
+/Users/organic/dev/work/showcase/.build/plugins/outputs/skip-foundation/SkipFoundation/destination/skipstone/SkipBridgeGenerated/LocalizedStringResource_Bridge.swift: note: SkipBridgeGenerated/LocalizedStringResource_Bridge.swift (Zero KB) skipbridge unchanged
+/Users/organic/dev/work/showcase/.build/plugins/outputs/skip-foundation/SkipFoundation/destination/skipstone/SkipBridgeGenerated/Data_Bridge.swift: note: SkipBridgeGenerated/Data_Bridge.swift (Zero KB) skipbridge unchanged
+/Users/organic/dev/work/showcase/.build/plugins/outputs/skip-foundation/SkipFoundation/destination/skipstone/SkipBridgeGenerated/Locale_Bridge.swift: note: SkipBridgeGenerated/Locale_Bridge.swift (Zero KB) skipbridge unchanged
+/Users/organic/dev/work/showcase/.build/plugins/outputs/skip-foundation/SkipFoundation/destination/skipstone/SkipBridgeGenerated/SkipFoundation_Bridge.swift: note: SkipBridgeGenerated/SkipFoundation_Bridge.swift (Zero KB) skipbridge unchanged
+/Users/organic/dev/work/showcase/.build/plugins/outputs/skip-foundation/SkipFoundation/destination/skipstone/SkipBridgeGenerated/Digest_Bridge.swift: note: SkipBridgeGenerated/Digest_Bridge.swift (Zero KB) skipbridge unchanged
+/Users/organic/dev/work/showcase/.build/plugins/outputs/skip-foundation/SkipFoundation/destination/skipstone/SkipBridgeGenerated/ComparisonResult_Bridge.swift: note: SkipBridgeGenerated/ComparisonResult_Bridge.swift (Zero KB) skipbridge unchanged
+/Users/organic/dev/work/showcase/.build/plugins/outputs/skip-foundation/SkipFoundation/destination/skipstone/SkipBridgeGenerated/IndexSet_Bridge.swift: note: SkipBridgeGenerated/IndexSet_Bridge.swift (Zero KB) skipbridge unchanged
+/Users/organic/dev/work/showcase/.build/plugins/outputs/skip-foundation/SkipFoundation/destination/skipstone/SkipBridgeGenerated/Logger_Bridge.swift: note: SkipBridgeGenerated/Logger_Bridge.swift (Zero KB) skipbridge unchanged
+/Users/organic/dev/work/showcase/.build/plugins/outputs/skip-foundation/SkipFoundation/destination/skipstone/SkipBridgeGenerated/Measurement_Bridge.swift: note: SkipBridgeGenerated/Measurement_Bridge.swift (Zero KB) skipbridge unchanged
+/Users/organic/dev/work/showcase/.build/plugins/outputs/skip-foundation/SkipFoundation/destination/skipstone/SkipBridgeGenerated/NotificationCenter_Bridge.swift: note: SkipBridgeGenerated/NotificationCenter_Bridge.swift (Zero KB) skipbridge unchanged
+/Users/organic/dev/work/showcase/.build/plugins/outputs/skip-foundation/SkipFoundation/destination/skipstone/SkipBridgeGenerated/DateIntervalFormatter_Bridge.swift: note: SkipBridgeGenerated/DateIntervalFormatter_Bridge.swift (Zero KB) skipbridge unchanged
+/Users/organic/dev/work/showcase/.build/plugins/outputs/skip-foundation/SkipFoundation/destination/skipstone/SkipBridgeGenerated/FileManager_Bridge.swift: note: SkipBridgeGenerated/FileManager_Bridge.swift (Zero KB) skipbridge unchanged
+/Users/organic/dev/work/showcase/.build/plugins/outputs/skip-foundation/SkipFoundation/destination/skipstone/SkipBridgeGenerated/RelativeDateTimeFormatter_Bridge.swift: note: SkipBridgeGenerated/RelativeDateTimeFormatter_Bridge.swift (Zero KB) skipbridge unchanged
+/Users/organic/dev/work/showcase/.build/plugins/outputs/skip-foundation/SkipFoundation/destination/skipstone/SkipBridgeGenerated/JSONDecoder_Bridge.swift: note: SkipBridgeGenerated/JSONDecoder_Bridge.swift (Zero KB) skipbridge unchanged
+/Users/organic/dev/work/showcase/.build/plugins/outputs/skip-foundation/SkipFoundation/destination/skipstone/SkipBridgeGenerated/DateComponents_Bridge.swift: note: SkipBridgeGenerated/DateComponents_Bridge.swift (Zero KB) skipbridge unchanged
+/Users/organic/dev/work/showcase/.build/plugins/outputs/skip-foundation/SkipFoundation/destination/skipstone/SkipBridgeGenerated/JSONSerialization_Bridge.swift: note: SkipBridgeGenerated/JSONSerialization_Bridge.swift (Zero KB) skipbridge unchanged
+/Users/organic/dev/work/showcase/.build/plugins/outputs/skip-foundation/SkipFoundation/destination/skipstone/SkipBridgeGenerated/URLResponse_Bridge.swift: note: SkipBridgeGenerated/URLResponse_Bridge.swift (Zero KB) skipbridge unchanged
+/Users/organic/dev/work/showcase/.build/plugins/outputs/skip-foundation/SkipFoundation/destination/skipstone/SkipBridgeGenerated/Timer_Bridge.swift: note: SkipBridgeGenerated/Timer_Bridge.swift (Zero KB) skipbridge unchanged
+/Users/organic/dev/work/showcase/.build/plugins/outputs/skip-foundation/SkipFoundation/destination/skipstone/SkipBridgeGenerated/XMLParser_Bridge.swift: note: SkipBridgeGenerated/XMLParser_Bridge.swift (Zero KB) skipbridge unchanged
+/Users/organic/dev/work/showcase/.build/plugins/outputs/skip-foundation/SkipFoundation/destination/skipstone/SkipBridgeGenerated/DateInterval_Bridge.swift: note: SkipBridgeGenerated/DateInterval_Bridge.swift (Zero KB) skipbridge unchanged
+/Users/organic/dev/work/showcase/.build/plugins/outputs/skip-foundation/SkipFoundation/destination/skipstone/SkipBridgeGenerated/UUID_Bridge.swift: note: SkipBridgeGenerated/UUID_Bridge.swift (Zero KB) skipbridge unchanged
+/Users/organic/dev/work/showcase/.build/plugins/outputs/skip-foundation/SkipFoundation/destination/skipstone/SkipBridgeGenerated/URLSessionConfiguration_Bridge.swift: note: SkipBridgeGenerated/URLSessionConfiguration_Bridge.swift (Zero KB) skipbridge unchanged
+/Users/organic/dev/work/showcase/.build/plugins/outputs/skip-foundation/SkipFoundation/destination/skipstone/SkipBridgeGenerated/ISO8601DateFormatter_Bridge.swift: note: SkipBridgeGenerated/ISO8601DateFormatter_Bridge.swift (Zero KB) skipbridge unchanged
+/Users/organic/dev/work/showcase/.build/plugins/outputs/skip-foundation/SkipFoundation/destination/skipstone/SkipBridgeGenerated/URLSessionTask_Bridge.swift: note: SkipBridgeGenerated/URLSessionTask_Bridge.swift (Zero KB) skipbridge unchanged
+/Users/organic/dev/work/showcase/.build/plugins/outputs/skip-foundation/SkipFoundation/destination/skipstone/SkipBridgeGenerated/Thread_Bridge.swift: note: SkipBridgeGenerated/Thread_Bridge.swift (Zero KB) skipbridge unchanged
+/Users/organic/dev/work/showcase/.build/plugins/outputs/skip-foundation/SkipFoundation/destination/skipstone/SkipBridgeGenerated/Number_Bridge.swift: note: SkipBridgeGenerated/Number_Bridge.swift (Zero KB) skipbridge unchanged
+/Users/organic/dev/work/showcase/.build/plugins/outputs/skip-foundation/SkipFoundation/destination/skipstone/SkipBridgeGenerated/TimeZone_Bridge.swift: note: SkipBridgeGenerated/TimeZone_Bridge.swift (Zero KB) skipbridge unchanged
+/Users/organic/dev/work/showcase/.build/plugins/outputs/skip-foundation/SkipFoundation/destination/skipstone/SkipBridgeGenerated/UnitPressure_Bridge.swift: note: SkipBridgeGenerated/UnitPressure_Bridge.swift (Zero KB) skipbridge unchanged
+/Users/organic/dev/work/showcase/.build/plugins/outputs/skip-foundation/SkipFoundation/destination/skipstone/SkipBridgeGenerated/UnitElectricPotentialDifference_Bridge.swift: note: SkipBridgeGenerated/UnitElectricPotentialDifference_Bridge.swift (Zero KB) skipbridge unchanged
+/Users/organic/dev/work/showcase/.build/plugins/outputs/skip-foundation/SkipFoundation/destination/skipstone/SkipBridgeGenerated/UnitFrequency_Bridge.swift: note: SkipBridgeGenerated/UnitFrequency_Bridge.swift (Zero KB) skipbridge unchanged
+/Users/organic/dev/work/showcase/.build/plugins/outputs/skip-foundation/SkipFoundation/destination/skipstone/SkipBridgeGenerated/UnitDispersion_Bridge.swift: note: SkipBridgeGenerated/UnitDispersion_Bridge.swift (Zero KB) skipbridge unchanged
+/Users/organic/dev/work/showcase/.build/plugins/outputs/skip-foundation/SkipFoundation/destination/skipstone/SkipBridgeGenerated/UnitLength_Bridge.swift: note: SkipBridgeGenerated/UnitLength_Bridge.swift (Zero KB) skipbridge unchanged
+/Users/organic/dev/work/showcase/.build/plugins/outputs/skip-foundation/SkipFoundation/destination/skipstone/SkipBridgeGenerated/UnitInformationStorage_Bridge.swift: note: SkipBridgeGenerated/UnitInformationStorage_Bridge.swift (Zero KB) skipbridge unchanged
+/Users/organic/dev/work/showcase/.build/plugins/outputs/skip-foundation/SkipFoundation/destination/skipstone/SkipBridgeGenerated/UnitElectricCurrent_Bridge.swift: note: SkipBridgeGenerated/UnitElectricCurrent_Bridge.swift (Zero KB) skipbridge unchanged
+/Users/organic/dev/work/showcase/.build/plugins/outputs/skip-foundation/SkipFoundation/destination/skipstone/SkipBridgeGenerated/UnitDuration_Bridge.swift: note: SkipBridgeGenerated/UnitDuration_Bridge.swift (Zero KB) skipbridge unchanged
+/Users/organic/dev/work/showcase/.build/plugins/outputs/skip-foundation/SkipFoundation/destination/skipstone/SkipBridgeGenerated/Unit_Bridge.swift: note: SkipBridgeGenerated/Unit_Bridge.swift (Zero KB) skipbridge unchanged
+/Users/organic/dev/work/showcase/.build/plugins/outputs/skip-foundation/SkipFoundation/destination/skipstone/SkipBridgeGenerated/UnitSpeed_Bridge.swift: note: SkipBridgeGenerated/UnitSpeed_Bridge.swift (Zero KB) skipbridge unchanged
+/Users/organic/dev/work/showcase/.build/plugins/outputs/skip-foundation/SkipFoundation/destination/skipstone/SkipBridgeGenerated/UnitConcentrationMass_Bridge.swift: note: SkipBridgeGenerated/UnitConcentrationMass_Bridge.swift (Zero KB) skipbridge unchanged
+/Users/organic/dev/work/showcase/.build/plugins/outputs/skip-foundation/SkipFoundation/destination/skipstone/SkipBridgeGenerated/UnitIlluminance_Bridge.swift: note: SkipBridgeGenerated/UnitIlluminance_Bridge.swift (Zero KB) skipbridge unchanged
+/Users/organic/dev/work/showcase/.build/plugins/outputs/skip-foundation/SkipFoundation/destination/skipstone/SkipBridgeGenerated/UnitEnergy_Bridge.swift: note: SkipBridgeGenerated/UnitEnergy_Bridge.swift (Zero KB) skipbridge unchanged
+/Users/organic/dev/work/showcase/.build/plugins/outputs/skip-foundation/SkipFoundation/destination/skipstone/SkipBridgeGenerated/UnitPower_Bridge.swift: note: SkipBridgeGenerated/UnitPower_Bridge.swift (Zero KB) skipbridge unchanged
+/Users/organic/dev/work/showcase/.build/plugins/outputs/skip-foundation/SkipFoundation/destination/skipstone/SkipBridgeGenerated/UnitArea_Bridge.swift: note: SkipBridgeGenerated/UnitArea_Bridge.swift (Zero KB) skipbridge unchanged
+/Users/organic/dev/work/showcase/.build/plugins/outputs/skip-foundation/SkipFoundation/destination/skipstone/SkipBridgeGenerated/UnitElectricCharge_Bridge.swift: note: SkipBridgeGenerated/UnitElectricCharge_Bridge.swift (Zero KB) skipbridge unchanged
+/Users/organic/dev/work/showcase/.build/plugins/outputs/skip-foundation/SkipFoundation/destination/skipstone/SkipBridgeGenerated/UnitFuelEfficiency_Bridge.swift: note: SkipBridgeGenerated/UnitFuelEfficiency_Bridge.swift (Zero KB) skipbridge unchanged
+/Users/organic/dev/work/showcase/.build/plugins/outputs/skip-foundation/SkipFoundation/destination/skipstone/SkipBridgeGenerated/UnitTemperature_Bridge.swift: note: SkipBridgeGenerated/UnitTemperature_Bridge.swift (Zero KB) skipbridge unchanged
+/Users/organic/dev/work/showcase/.build/plugins/outputs/skip-foundation/SkipFoundation/destination/skipstone/SkipBridgeGenerated/UnitMass_Bridge.swift: note: SkipBridgeGenerated/UnitMass_Bridge.swift (Zero KB) skipbridge unchanged
+/Users/organic/dev/work/showcase/.build/plugins/outputs/skip-foundation/SkipFoundation/destination/skipstone/SkipBridgeGenerated/UnitAcceleration_Bridge.swift: note: SkipBridgeGenerated/UnitAcceleration_Bridge.swift (Zero KB) skipbridge unchanged
+/Users/organic/dev/work/showcase/.build/plugins/outputs/skip-foundation/SkipFoundation/destination/skipstone/SkipBridgeGenerated/UnitVolume_Bridge.swift: note: SkipBridgeGenerated/UnitVolume_Bridge.swift (Zero KB) skipbridge unchanged
+/Users/organic/dev/work/showcase/.build/plugins/outputs/skip-foundation/SkipFoundation/destination/skipstone/SkipBridgeGenerated/UnitElectricResistance_Bridge.swift: note: SkipBridgeGenerated/UnitElectricResistance_Bridge.swift (Zero KB) skipbridge unchanged
+/Users/organic/dev/work/showcase/.build/plugins/outputs/skip-foundation/SkipFoundation/destination/skipstone/SkipBridgeGenerated/UnitAngle_Bridge.swift: note: SkipBridgeGenerated/UnitAngle_Bridge.swift (Zero KB) skipbridge unchanged
+/Users/organic/dev/work/showcase/.build/plugins/outputs/skip-foundation/SkipFoundation/destination/skipstone/SkipBridgeGenerated/DateComponentsFormatter_Bridge.swift: note: SkipBridgeGenerated/DateComponentsFormatter_Bridge.swift (Zero KB) skipbridge unchanged
+/Users/organic/dev/work/showcase/.build/plugins/outputs/skip-foundation/SkipFoundation/destination/skipstone/SkipBridgeGenerated/URLSession_Bridge.swift: note: SkipBridgeGenerated/URLSession_Bridge.swift (Zero KB) skipbridge unchanged
+/Users/organic/dev/work/showcase/.build/plugins/outputs/skip-foundation/SkipFoundation/destination/skipstone/SkipBridgeGenerated/OperationQueue_Bridge.swift: note: SkipBridgeGenerated/OperationQueue_Bridge.swift (Zero KB) skipbridge unchanged
+/Users/organic/dev/work/showcase/.build/plugins/outputs/skip-foundation/SkipFoundation/destination/skipstone/SkipBridgeGenerated/Dispatch_Bridge.swift: note: SkipBridgeGenerated/Dispatch_Bridge.swift (Zero KB) skipbridge unchanged
+/Users/organic/dev/work/showcase/.build/plugins/outputs/skip-foundation/SkipFoundation/destination/skipstone/SkipBridgeGenerated/JSONSerialization+Parser_Bridge.swift: note: SkipBridgeGenerated/JSONSerialization+Parser_Bridge.swift (Zero KB) skipbridge unchanged
+/Users/organic/dev/work/showcase/.build/plugins/outputs/skip-foundation/SkipFoundation/destination/skipstone/SkipBridgeGenerated/URL_Bridge.swift: note: SkipBridgeGenerated/URL_Bridge.swift (Zero KB) skipbridge unchanged
+/Users/organic/dev/work/showcase/.build/plugins/outputs/skip-foundation/SkipFoundation/destination/skipstone/SkipBridgeGenerated/MarkdownNode_Bridge.swift: note: SkipBridgeGenerated/MarkdownNode_Bridge.swift (Zero KB) skipbridge unchanged
+/Users/organic/dev/work/showcase/.build/plugins/outputs/skip-foundation/SkipFoundation/destination/skipstone/SkipBridgeGenerated/AttributedString_Bridge.swift: note: SkipBridgeGenerated/AttributedString_Bridge.swift (Zero KB) skipbridge unchanged
+/Users/organic/dev/work/showcase/.build/plugins/outputs/skip-foundation/SkipFoundation/destination/skipstone/SkipBridgeGenerated/Scanner_Bridge.swift: note: SkipBridgeGenerated/Scanner_Bridge.swift (Zero KB) skipbridge unchanged
+/Users/organic/dev/work/showcase/.build/plugins/outputs/skip-foundation/SkipFoundation/destination/skipstone/SkipBridgeGenerated/Formatter_Bridge.swift: note: SkipBridgeGenerated/Formatter_Bridge.swift (Zero KB) skipbridge unchanged
+/Users/organic/dev/work/showcase/.build/plugins/outputs/skip-foundation/SkipFoundation/destination/skipstone/SkipBridgeGenerated/String_Bridge.swift: note: SkipBridgeGenerated/String_Bridge.swift (Zero KB) skipbridge unchanged
+/Users/organic/dev/work/showcase/.build/plugins/outputs/skip-foundation/SkipFoundation/destination/skipstone/SkipBridgeGenerated/Calendar_Enumerate_Bridge.swift: note: SkipBridgeGenerated/Calendar_Enumerate_Bridge.swift (Zero KB) skipbridge unchanged
+/Users/organic/dev/work/showcase/.build/plugins/outputs/skip-foundation/SkipFoundation/destination/skipstone/SkipBridgeGenerated/UserDefaults_Bridge.swift: note: SkipBridgeGenerated/UserDefaults_Bridge.swift (Zero KB) skipbridge unchanged
+/Users/organic/dev/work/showcase/.build/plugins/outputs/skip-foundation/SkipFoundation/destination/skipstone/SkipBridgeGenerated/DateFormatter_Bridge.swift: note: SkipBridgeGenerated/DateFormatter_Bridge.swift (Zero KB) skipbridge unchanged
+/Users/organic/dev/work/showcase/.build/plugins/outputs/skip-foundation/SkipFoundation/destination/skipstone/SkipBridgeGenerated/HTTPURLResponse_Bridge.swift: note: SkipBridgeGenerated/HTTPURLResponse_Bridge.swift (Zero KB) skipbridge unchanged
+/Users/organic/dev/work/showcase/.build/plugins/outputs/skip-foundation/SkipFoundation/destination/skipstone/SkipBridgeGenerated/NSLock_Bridge.swift: note: SkipBridgeGenerated/NSLock_Bridge.swift (Zero KB) skipbridge unchanged
+/Users/organic/dev/work/showcase/.build/plugins/outputs/skip-foundation/SkipFoundation/destination/skipstone/SkipBridgeGenerated/ProcessInfo_Bridge.swift: note: SkipBridgeGenerated/ProcessInfo_Bridge.swift (Zero KB) skipbridge unchanged
+/Users/organic/dev/work/showcase/.build/plugins/outputs/skip-foundation/SkipFoundation/destination/skipstone/SkipBridgeGenerated/Bundle_Bridge.swift: note: SkipBridgeGenerated/Bundle_Bridge.swift (Zero KB) skipbridge unchanged
+/Users/organic/dev/work/showcase/.build/plugins/outputs/skip-foundation/SkipFoundation/destination/skipstone/SkipBridgeGenerated/PropertyListSerialization_Bridge.swift: note: SkipBridgeGenerated/PropertyListSerialization_Bridge.swift (Zero KB) skipbridge unchanged
+/Users/organic/dev/work/showcase/.build/plugins/outputs/skip-foundation/SkipFoundation/destination/skipstone/SkipBridgeGenerated/NSError_Bridge.swift: note: SkipBridgeGenerated/NSError_Bridge.swift (Zero KB) skipbridge unchanged
+/Users/organic/dev/work/showcase/.build/plugins/outputs/skip-foundation/SkipFoundation/destination/skipstone/SkipBridgeGenerated/Calendar_Bridge.swift: note: SkipBridgeGenerated/Calendar_Bridge.swift (Zero KB) skipbridge unchanged
+/Users/organic/dev/work/showcase/.build/plugins/outputs/skip-foundation/SkipFoundation/destination/skipstone/SkipBridgeGenerated/StringEncoding_Bridge.swift: note: SkipBridgeGenerated/StringEncoding_Bridge.swift (Zero KB) skipbridge unchanged
+/Users/organic/dev/work/showcase/.build/plugins/outputs/skip-foundation/SkipFoundation/destination/skipstone/SkipBridgeGenerated/OSAllocatedUnfairLock_Bridge.swift: note: SkipBridgeGenerated/OSAllocatedUnfairLock_Bridge.swift (Zero KB) skipbridge unchanged
+/Users/organic/dev/work/showcase/.build/plugins/outputs/skip-foundation/SkipFoundation/destination/skipstone/SkipBridgeGenerated/AnyDynamicObject_Support.swift: note: SkipBridgeGenerated/AnyDynamicObject_Support.swift (Zero KB) skipbridge unchanged
+/Users/organic/dev/work/showcase/.build/plugins/outputs/skip-foundation/SkipFoundation/destination/skipstone/SkipBridgeGenerated/Bundle_Support.swift: note: SkipBridgeGenerated/Bundle_Support.swift (Zero KB) skipbridge unchanged
+/Users/organic/dev/work/showcase/.build/plugins/outputs/skip-foundation/SkipFoundation/destination/skipstone/SkipBridgeGenerated/FoundationBridge_Support.swift: note: SkipBridgeGenerated/FoundationBridge_Support.swift (Zero KB) skipbridge unchanged
+/Users/organic/dev/work/showcase/.build/plugins/outputs/skip-foundation/SkipFoundation/destination/skipstone/gradle/wrapper/gradle-wrapper.properties: note: gradle/wrapper/gradle-wrapper.properties (80 bytes) gradle wrapper unchanged
+/Users/organic/dev/work/showcase/.build/plugins/outputs/skip-foundation/SkipFoundation/destination/skipstone/SkipFoundation/proguard-rules.pro: note: SkipFoundation/proguard-rules.pro (356 bytes) proguard unchanged
+/Users/organic/dev/work/showcase/.build/plugins/outputs/skip-foundation/SkipFoundation/destination/skipstone/SkipFoundation/build.gradle.kts: note: SkipFoundation/build.gradle.kts (3 KB) gradle project unchanged
+/Users/organic/dev/work/showcase/.build/plugins/outputs/skip-foundation/SkipFoundation/destination/skipstone/gradle.properties: note: gradle.properties (79 bytes) gradle config unchanged
+/Users/organic/dev/work/showcase/.build/plugins/outputs/skip-foundation/SkipFoundation/destination/skipstone/settings.gradle.kts: note: settings.gradle.kts (3 KB) gradle settings unchanged
+/Users/organic/dev/work/showcase/.build/plugins/outputs/skip-foundation/SkipFoundation/destination/skipstone/SkipFoundation/src/main/kotlin/skip/foundation/AttributedString.kt: warning: removing stale output file: AttributedString.kt
+/Users/organic/dev/work/showcase/.build/plugins/outputs/skip-foundation/SkipFoundation/destination/skipstone/SkipFoundation/src/main/kotlin/skip/foundation/Bundle.kt: warning: removing stale output file: Bundle.kt
+/Users/organic/dev/work/showcase/.build/plugins/outputs/skip-foundation/SkipFoundation/destination/skipstone/SkipFoundation/src/main/kotlin/skip/foundation/Calendar.kt: warning: removing stale output file: Calendar.kt
+/Users/organic/dev/work/showcase/.build/plugins/outputs/skip-foundation/SkipFoundation/destination/skipstone/SkipFoundation/src/main/kotlin/skip/foundation/Calendar_Enumerate.kt: warning: removing stale output file: Calendar_Enumerate.kt
+/Users/organic/dev/work/showcase/.build/plugins/outputs/skip-foundation/SkipFoundation/destination/skipstone/SkipFoundation/src/main/kotlin/skip/foundation/CharacterSet.kt: warning: removing stale output file: CharacterSet.kt
+/Users/organic/dev/work/showcase/.build/plugins/outputs/skip-foundation/SkipFoundation/destination/skipstone/SkipFoundation/src/main/kotlin/skip/foundation/ComparisonResult.kt: warning: removing stale output file: ComparisonResult.kt
+/Users/organic/dev/work/showcase/.build/plugins/outputs/skip-foundation/SkipFoundation/destination/skipstone/SkipFoundation/src/main/kotlin/skip/foundation/Data.kt: warning: removing stale output file: Data.kt
+/Users/organic/dev/work/showcase/.build/plugins/outputs/skip-foundation/SkipFoundation/destination/skipstone/SkipFoundation/src/main/kotlin/skip/foundation/Date.kt: warning: removing stale output file: Date.kt
+/Users/organic/dev/work/showcase/.build/plugins/outputs/skip-foundation/SkipFoundation/destination/skipstone/SkipFoundation/src/main/kotlin/skip/foundation/DateComponents.kt: warning: removing stale output file: DateComponents.kt
+/Users/organic/dev/work/showcase/.build/plugins/outputs/skip-foundation/SkipFoundation/destination/skipstone/SkipFoundation/src/main/kotlin/skip/foundation/DateComponentsFormatter.kt: warning: removing stale output file: DateComponentsFormatter.kt
+/Users/organic/dev/work/showcase/.build/plugins/outputs/skip-foundation/SkipFoundation/destination/skipstone/SkipFoundation/src/main/kotlin/skip/foundation/DateFormatter.kt: warning: removing stale output file: DateFormatter.kt
+/Users/organic/dev/work/showcase/.build/plugins/outputs/skip-foundation/SkipFoundation/destination/skipstone/SkipFoundation/src/main/kotlin/skip/foundation/DateInterval.kt: warning: removing stale output file: DateInterval.kt
+/Users/organic/dev/work/showcase/.build/plugins/outputs/skip-foundation/SkipFoundation/destination/skipstone/SkipFoundation/src/main/kotlin/skip/foundation/DateIntervalFormatter.kt: warning: removing stale output file: DateIntervalFormatter.kt
+/Users/organic/dev/work/showcase/.build/plugins/outputs/skip-foundation/SkipFoundation/destination/skipstone/SkipFoundation/src/main/kotlin/skip/foundation/Digest.kt: warning: removing stale output file: Digest.kt
+/Users/organic/dev/work/showcase/.build/plugins/outputs/skip-foundation/SkipFoundation/destination/skipstone/SkipFoundation/src/main/kotlin/skip/foundation/Dispatch.kt: warning: removing stale output file: Dispatch.kt
+/Users/organic/dev/work/showcase/.build/plugins/outputs/skip-foundation/SkipFoundation/destination/skipstone/SkipFoundation/src/main/kotlin/skip/foundation/FileManager.kt: warning: removing stale output file: FileManager.kt
+/Users/organic/dev/work/showcase/.build/plugins/outputs/skip-foundation/SkipFoundation/destination/skipstone/SkipFoundation/src/main/kotlin/skip/foundation/Formatter.kt: warning: removing stale output file: Formatter.kt
+/Users/organic/dev/work/showcase/.build/plugins/outputs/skip-foundation/SkipFoundation/destination/skipstone/SkipFoundation/src/main/kotlin/skip/foundation/HTTPURLResponse.kt: warning: removing stale output file: HTTPURLResponse.kt
+/Users/organic/dev/work/showcase/.build/plugins/outputs/skip-foundation/SkipFoundation/destination/skipstone/SkipFoundation/src/main/kotlin/skip/foundation/ISO8601DateFormatter.kt: warning: removing stale output file: ISO8601DateFormatter.kt
+/Users/organic/dev/work/showcase/.build/plugins/outputs/skip-foundation/SkipFoundation/destination/skipstone/SkipFoundation/src/main/kotlin/skip/foundation/IndexPath.kt: warning: removing stale output file: IndexPath.kt
+/Users/organic/dev/work/showcase/.build/plugins/outputs/skip-foundation/SkipFoundation/destination/skipstone/SkipFoundation/src/main/kotlin/skip/foundation/IndexSet.kt: warning: removing stale output file: IndexSet.kt
+/Users/organic/dev/work/showcase/.build/plugins/outputs/skip-foundation/SkipFoundation/destination/skipstone/SkipFoundation/src/main/kotlin/skip/foundation/JSONDecoder.kt: warning: removing stale output file: JSONDecoder.kt
+/Users/organic/dev/work/showcase/.build/plugins/outputs/skip-foundation/SkipFoundation/destination/skipstone/SkipFoundation/src/main/kotlin/skip/foundation/JSONEncoder.kt: warning: removing stale output file: JSONEncoder.kt
+/Users/organic/dev/work/showcase/.build/plugins/outputs/skip-foundation/SkipFoundation/destination/skipstone/SkipFoundation/src/main/kotlin/skip/foundation/JSONSerialization+Parser.kt: warning: removing stale output file: JSONSerialization+Parser.kt
+/Users/organic/dev/work/showcase/.build/plugins/outputs/skip-foundation/SkipFoundation/destination/skipstone/SkipFoundation/src/main/kotlin/skip/foundation/JSONSerialization.kt: warning: removing stale output file: JSONSerialization.kt
+/Users/organic/dev/work/showcase/.build/plugins/outputs/skip-foundation/SkipFoundation/destination/skipstone/SkipFoundation/src/main/kotlin/skip/foundation/Locale.kt: warning: removing stale output file: Locale.kt
+/Users/organic/dev/work/showcase/.build/plugins/outputs/skip-foundation/SkipFoundation/destination/skipstone/SkipFoundation/src/main/kotlin/skip/foundation/LocalizedStringResource.kt: warning: removing stale output file: LocalizedStringResource.kt
+/Users/organic/dev/work/showcase/.build/plugins/outputs/skip-foundation/SkipFoundation/destination/skipstone/SkipFoundation/src/main/kotlin/skip/foundation/Logger.kt: warning: removing stale output file: Logger.kt
+/Users/organic/dev/work/showcase/.build/plugins/outputs/skip-foundation/SkipFoundation/destination/skipstone/SkipFoundation/src/main/kotlin/skip/foundation/MarkdownNode.kt: warning: removing stale output file: MarkdownNode.kt
+/Users/organic/dev/work/showcase/.build/plugins/outputs/skip-foundation/SkipFoundation/destination/skipstone/SkipFoundation/src/main/kotlin/skip/foundation/Measurement.kt: warning: removing stale output file: Measurement.kt
+/Users/organic/dev/work/showcase/.build/plugins/outputs/skip-foundation/SkipFoundation/destination/skipstone/SkipFoundation/src/main/kotlin/skip/foundation/NSError.kt: warning: removing stale output file: NSError.kt
+/Users/organic/dev/work/showcase/.build/plugins/outputs/skip-foundation/SkipFoundation/destination/skipstone/SkipFoundation/src/main/kotlin/skip/foundation/NSLock.kt: warning: removing stale output file: NSLock.kt
+/Users/organic/dev/work/showcase/.build/plugins/outputs/skip-foundation/SkipFoundation/destination/skipstone/SkipFoundation/src/main/kotlin/skip/foundation/NotificationCenter.kt: warning: removing stale output file: NotificationCenter.kt
+/Users/organic/dev/work/showcase/.build/plugins/outputs/skip-foundation/SkipFoundation/destination/skipstone/SkipFoundation/src/main/kotlin/skip/foundation/Number.kt: warning: removing stale output file: Number.kt
+/Users/organic/dev/work/showcase/.build/plugins/outputs/skip-foundation/SkipFoundation/destination/skipstone/SkipFoundation/src/main/kotlin/skip/foundation/NumberFormatter.kt: warning: removing stale output file: NumberFormatter.kt
+/Users/organic/dev/work/showcase/.build/plugins/outputs/skip-foundation/SkipFoundation/destination/skipstone/SkipFoundation/src/main/kotlin/skip/foundation/OSAllocatedUnfairLock.kt: warning: removing stale output file: OSAllocatedUnfairLock.kt
+/Users/organic/dev/work/showcase/.build/plugins/outputs/skip-foundation/SkipFoundation/destination/skipstone/SkipFoundation/src/main/kotlin/skip/foundation/OperationQueue.kt: warning: removing stale output file: OperationQueue.kt
+/Users/organic/dev/work/showcase/.build/plugins/outputs/skip-foundation/SkipFoundation/destination/skipstone/SkipFoundation/src/main/kotlin/skip/foundation/PackageSupport.kt: warning: removing stale output file: PackageSupport.kt
+/Users/organic/dev/work/showcase/.build/plugins/outputs/skip-foundation/SkipFoundation/destination/skipstone/SkipFoundation/src/main/kotlin/skip/foundation/ProcessInfo.kt: warning: removing stale output file: ProcessInfo.kt
+/Users/organic/dev/work/showcase/.build/plugins/outputs/skip-foundation/SkipFoundation/destination/skipstone/SkipFoundation/src/main/kotlin/skip/foundation/PropertyListSerialization.kt: warning: removing stale output file: PropertyListSerialization.kt
+/Users/organic/dev/work/showcase/.build/plugins/outputs/skip-foundation/SkipFoundation/destination/skipstone/SkipFoundation/src/main/kotlin/skip/foundation/RelativeDateTimeFormatter.kt: warning: removing stale output file: RelativeDateTimeFormatter.kt
+/Users/organic/dev/work/showcase/.build/plugins/outputs/skip-foundation/SkipFoundation/destination/skipstone/SkipFoundation/src/main/kotlin/skip/foundation/Scanner.kt: warning: removing stale output file: Scanner.kt
+/Users/organic/dev/work/showcase/.build/plugins/outputs/skip-foundation/SkipFoundation/destination/skipstone/SkipFoundation/src/main/kotlin/skip/foundation/SkipFoundation.kt: warning: removing stale output file: SkipFoundation.kt
+/Users/organic/dev/work/showcase/.build/plugins/outputs/skip-foundation/SkipFoundation/destination/skipstone/SkipFoundation/src/main/kotlin/skip/foundation/String.kt: warning: removing stale output file: String.kt
+/Users/organic/dev/work/showcase/.build/plugins/outputs/skip-foundation/SkipFoundation/destination/skipstone/SkipFoundation/src/main/kotlin/skip/foundation/StringEncoding.kt: warning: removing stale output file: StringEncoding.kt
+/Users/organic/dev/work/showcase/.build/plugins/outputs/skip-foundation/SkipFoundation/destination/skipstone/SkipFoundation/src/main/kotlin/skip/foundation/StringLocalizationValue.kt: warning: removing stale output file: StringLocalizationValue.kt
+/Users/organic/dev/work/showcase/.build/plugins/outputs/skip-foundation/SkipFoundation/destination/skipstone/SkipFoundation/src/main/kotlin/skip/foundation/Thread.kt: warning: removing stale output file: Thread.kt
+/Users/organic/dev/work/showcase/.build/plugins/outputs/skip-foundation/SkipFoundation/destination/skipstone/SkipFoundation/src/main/kotlin/skip/foundation/TimeZone.kt: warning: removing stale output file: TimeZone.kt
+/Users/organic/dev/work/showcase/.build/plugins/outputs/skip-foundation/SkipFoundation/destination/skipstone/SkipFoundation/src/main/kotlin/skip/foundation/Timer.kt: warning: removing stale output file: Timer.kt
+/Users/organic/dev/work/showcase/.build/plugins/outputs/skip-foundation/SkipFoundation/destination/skipstone/SkipFoundation/src/main/kotlin/skip/foundation/URL.kt: warning: removing stale output file: URL.kt
+/Users/organic/dev/work/showcase/.build/plugins/outputs/skip-foundation/SkipFoundation/destination/skipstone/SkipFoundation/src/main/kotlin/skip/foundation/URLComponents.kt: warning: removing stale output file: URLComponents.kt
+/Users/organic/dev/work/showcase/.build/plugins/outputs/skip-foundation/SkipFoundation/destination/skipstone/SkipFoundation/src/main/kotlin/skip/foundation/URLRequest.kt: warning: removing stale output file: URLRequest.kt
+/Users/organic/dev/work/showcase/.build/plugins/outputs/skip-foundation/SkipFoundation/destination/skipstone/SkipFoundation/src/main/kotlin/skip/foundation/URLResponse.kt: warning: removing stale output file: URLResponse.kt
+/Users/organic/dev/work/showcase/.build/plugins/outputs/skip-foundation/SkipFoundation/destination/skipstone/SkipFoundation/src/main/kotlin/skip/foundation/URLSession.kt: warning: removing stale output file: URLSession.kt
+/Users/organic/dev/work/showcase/.build/plugins/outputs/skip-foundation/SkipFoundation/destination/skipstone/SkipFoundation/src/main/kotlin/skip/foundation/URLSessionConfiguration.kt: warning: removing stale output file: URLSessionConfiguration.kt
+/Users/organic/dev/work/showcase/.build/plugins/outputs/skip-foundation/SkipFoundation/destination/skipstone/SkipFoundation/src/main/kotlin/skip/foundation/URLSessionTask.kt: warning: removing stale output file: URLSessionTask.kt
+/Users/organic/dev/work/showcase/.build/plugins/outputs/skip-foundation/SkipFoundation/destination/skipstone/SkipFoundation/src/main/kotlin/skip/foundation/UUID.kt: warning: removing stale output file: UUID.kt
+/Users/organic/dev/work/showcase/.build/plugins/outputs/skip-foundation/SkipFoundation/destination/skipstone/SkipFoundation/src/main/kotlin/skip/foundation/Unicode.kt: warning: removing stale output file: Unicode.kt
+/Users/organic/dev/work/showcase/.build/plugins/outputs/skip-foundation/SkipFoundation/destination/skipstone/SkipFoundation/src/main/kotlin/skip/foundation/Unit.kt: warning: removing stale output file: Unit.kt
+/Users/organic/dev/work/showcase/.build/plugins/outputs/skip-foundation/SkipFoundation/destination/skipstone/SkipFoundation/src/main/kotlin/skip/foundation/UnitAcceleration.kt: warning: removing stale output file: UnitAcceleration.kt
+/Users/organic/dev/work/showcase/.build/plugins/outputs/skip-foundation/SkipFoundation/destination/skipstone/SkipFoundation/src/main/kotlin/skip/foundation/UnitAngle.kt: warning: removing stale output file: UnitAngle.kt
+/Users/organic/dev/work/showcase/.build/plugins/outputs/skip-foundation/SkipFoundation/destination/skipstone/SkipFoundation/src/main/kotlin/skip/foundation/UnitArea.kt: warning: removing stale output file: UnitArea.kt
+/Users/organic/dev/work/showcase/.build/plugins/outputs/skip-foundation/SkipFoundation/destination/skipstone/SkipFoundation/src/main/kotlin/skip/foundation/UnitConcentrationMass.kt: warning: removing stale output file: UnitConcentrationMass.kt
+/Users/organic/dev/work/showcase/.build/plugins/outputs/skip-foundation/SkipFoundation/destination/skipstone/SkipFoundation/src/main/kotlin/skip/foundation/UnitDispersion.kt: warning: removing stale output file: UnitDispersion.kt
+/Users/organic/dev/work/showcase/.build/plugins/outputs/skip-foundation/SkipFoundation/destination/skipstone/SkipFoundation/src/main/kotlin/skip/foundation/UnitDuration.kt: warning: removing stale output file: UnitDuration.kt
+/Users/organic/dev/work/showcase/.build/plugins/outputs/skip-foundation/SkipFoundation/destination/skipstone/SkipFoundation/src/main/kotlin/skip/foundation/UnitElectricCharge.kt: warning: removing stale output file: UnitElectricCharge.kt
+/Users/organic/dev/work/showcase/.build/plugins/outputs/skip-foundation/SkipFoundation/destination/skipstone/SkipFoundation/src/main/kotlin/skip/foundation/UnitElectricCurrent.kt: warning: removing stale output file: UnitElectricCurrent.kt
+/Users/organic/dev/work/showcase/.build/plugins/outputs/skip-foundation/SkipFoundation/destination/skipstone/SkipFoundation/src/main/kotlin/skip/foundation/UnitElectricPotentialDifference.kt: warning: removing stale output file: UnitElectricPotentialDifference.kt
+/Users/organic/dev/work/showcase/.build/plugins/outputs/skip-foundation/SkipFoundation/destination/skipstone/SkipFoundation/src/main/kotlin/skip/foundation/UnitElectricResistance.kt: warning: removing stale output file: UnitElectricResistance.kt
+/Users/organic/dev/work/showcase/.build/plugins/outputs/skip-foundation/SkipFoundation/destination/skipstone/SkipFoundation/src/main/kotlin/skip/foundation/UnitEnergy.kt: warning: removing stale output file: UnitEnergy.kt
+/Users/organic/dev/work/showcase/.build/plugins/outputs/skip-foundation/SkipFoundation/destination/skipstone/SkipFoundation/src/main/kotlin/skip/foundation/UnitFrequency.kt: warning: removing stale output file: UnitFrequency.kt
+/Users/organic/dev/work/showcase/.build/plugins/outputs/skip-foundation/SkipFoundation/destination/skipstone/SkipFoundation/src/main/kotlin/skip/foundation/UnitFuelEfficiency.kt: warning: removing stale output file: UnitFuelEfficiency.kt
+/Users/organic/dev/work/showcase/.build/plugins/outputs/skip-foundation/SkipFoundation/destination/skipstone/SkipFoundation/src/main/kotlin/skip/foundation/UnitIlluminance.kt: warning: removing stale output file: UnitIlluminance.kt
+/Users/organic/dev/work/showcase/.build/plugins/outputs/skip-foundation/SkipFoundation/destination/skipstone/SkipFoundation/src/main/kotlin/skip/foundation/UnitInformationStorage.kt: warning: removing stale output file: UnitInformationStorage.kt
+/Users/organic/dev/work/showcase/.build/plugins/outputs/skip-foundation/SkipFoundation/destination/skipstone/SkipFoundation/src/main/kotlin/skip/foundation/UnitLength.kt: warning: removing stale output file: UnitLength.kt
+/Users/organic/dev/work/showcase/.build/plugins/outputs/skip-foundation/SkipFoundation/destination/skipstone/SkipFoundation/src/main/kotlin/skip/foundation/UnitMass.kt: warning: removing stale output file: UnitMass.kt
+/Users/organic/dev/work/showcase/.build/plugins/outputs/skip-foundation/SkipFoundation/destination/skipstone/SkipFoundation/src/main/kotlin/skip/foundation/UnitPower.kt: warning: removing stale output file: UnitPower.kt
+/Users/organic/dev/work/showcase/.build/plugins/outputs/skip-foundation/SkipFoundation/destination/skipstone/SkipFoundation/src/main/kotlin/skip/foundation/UnitPressure.kt: warning: removing stale output file: UnitPressure.kt
+/Users/organic/dev/work/showcase/.build/plugins/outputs/skip-foundation/SkipFoundation/destination/skipstone/SkipFoundation/src/main/kotlin/skip/foundation/UnitSpeed.kt: warning: removing stale output file: UnitSpeed.kt
+/Users/organic/dev/work/showcase/.build/plugins/outputs/skip-foundation/SkipFoundation/destination/skipstone/SkipFoundation/src/main/kotlin/skip/foundation/UnitTemperature.kt: warning: removing stale output file: UnitTemperature.kt
+/Users/organic/dev/work/showcase/.build/plugins/outputs/skip-foundation/SkipFoundation/destination/skipstone/SkipFoundation/src/main/kotlin/skip/foundation/UnitVolume.kt: warning: removing stale output file: UnitVolume.kt
+/Users/organic/dev/work/showcase/.build/plugins/outputs/skip-foundation/SkipFoundation/destination/skipstone/SkipFoundation/src/main/kotlin/skip/foundation/UrlEncoderUtil.kt: warning: removing stale output file: UrlEncoderUtil.kt
+/Users/organic/dev/work/showcase/.build/plugins/outputs/skip-foundation/SkipFoundation/destination/skipstone/SkipFoundation/src/main/kotlin/skip/foundation/UserDefaults.kt: warning: removing stale output file: UserDefaults.kt
+/Users/organic/dev/work/showcase/.build/plugins/outputs/skip-foundation/SkipFoundation/destination/skipstone/SkipFoundation/src/main/kotlin/skip/foundation/XMLParser.kt: warning: removing stale output file: XMLParser.kt
+/Users/organic/dev/work/showcase/.build/plugins/outputs/skip-foundation/SkipFoundation/destination/skipstone/.SkipFoundation.sourcehash: note: .SkipFoundation.sourcehash (8 KB) sourcehash unchanged
+[45/188] Skip SkipFoundation
+[46/188] Copying .SkipFoundation.sourcehash
+[47/188] Write sources
+[52/209] Compiling SkipLib Hashable_Bridge.swift
+[53/209] Compiling SkipLib Identifiable_Bridge.swift
+[54/209] Compiling SkipLib IntSet_Bridge.swift
+[55/209] Compiling SkipLib Math_Bridge.swift
+[56/209] Compiling SkipLib Numbers_Bridge.swift
+[57/209] Compiling SkipLib ObjectIdentifier_Bridge.swift
+[58/209] Compiling SkipLib OptionSet_Bridge.swift
+[59/209] Compiling SkipLib Optional_Bridge.swift
+[60/209] Compiling SkipLib Pointer_Bridge.swift
+[61/209] Compiling SkipLib Random_Bridge.swift
+[62/209] Compiling SkipLib RawRepresentable_Bridge.swift
+[63/209] Compiling SkipLib Regex_Bridge.swift
+[64/209] Compiling SkipLib Equatable.swift
+[65/209] Compiling SkipLib Error.swift
+[66/209] Compiling SkipLib Globals.swift
+[67/209] Compiling SkipLib Hashable.swift
+[68/209] Compiling SkipLib Identifiable.swift
+[69/209] Compiling SkipLib IntSet.swift
+[70/209] Compiling SkipLib AsyncStream_Bridge.swift
+[71/209] Compiling SkipLib Bool_Bridge.swift
+[72/209] Compiling SkipLib BridgeSupport_Bridge.swift
+[73/209] Compiling SkipLib Bundle_Support.swift
+[74/209] Compiling SkipLib CaseIterable_Bridge.swift
+[75/209] Compiling SkipLib CodableSupport_Bridge.swift
+[76/209] Compiling SkipLib Codable_Bridge.swift
+[77/209] Compiling SkipLib Collections_Bridge.swift
+[78/209] Compiling SkipLib Concurrency_Bridge.swift
+[79/209] Compiling SkipLib Copyable_Bridge.swift
+[80/209] Compiling SkipLib CoreGraphics_Bridge.swift
+[81/209] Compiling SkipLib CustomStringConvertible_Bridge.swift
+[82/209] Compiling SkipLib Dictionary_Bridge.swift
+[83/209] Compiling SkipLib Duration_Bridge.swift
+[84/209] Compiling SkipLib Equatable_Bridge.swift
+[85/209] Compiling SkipLib Error_Bridge.swift
+[86/209] Compiling SkipLib FoundationBridge_Support.swift
+[87/209] Compiling SkipLib Globals_Bridge.swift
+[88/218] Compiling Crypto ArraySliceBigint.swift
+[89/218] Compiling SkipLib AsyncStream.swift
+[90/218] Compiling SkipLib Bool.swift
+[91/218] Compiling SkipLib BridgeSupport.swift
+[92/218] Compiling SkipLib CaseIterable.swift
+[93/218] Compiling SkipLib Codable.swift
+[94/218] Compiling SkipLib CodableSupport.swift
+[95/218] Compiling Crypto ASN1BitString.swift
+[96/218] Compiling Crypto ASN1Boolean.swift
+[97/218] Compiling Crypto ASN1Identifier.swift
+[98/218] Compiling Crypto ASN1Integer.swift
+[99/218] Compiling Crypto ASN1Null.swift
+[100/218] Compiling Crypto ASN1OctetString.swift
+[101/218] Compiling Crypto ASN1Strings.swift
+[102/245] Compiling SkipLib SkipLib.swift
+[103/245] Compiling SkipLib String.swift
+[104/245] Compiling SkipLib StringInterpolationProtocol.swift
+[105/245] Compiling SkipLib resource_bundle_accessor.swift
+[106/245] Compiling SkipLib AnyDynamicObject_Support.swift
+[107/245] Compiling SkipLib Array_Bridge.swift
+[108/270] Emitting module SkipLib
+[109/298] Compiling Crypto ECDSA_boring.swift
+[110/298] Compiling Crypto EdDSA_boring.swift
+[111/298] Compiling Crypto MLDSA_boring.swift
+[112/298] Compiling Crypto MLDSA_wrapper.swift
+[113/298] Compiling Crypto ECDH_boring.swift
+[114/298] Compiling Crypto DH.swift
+[115/298] Compiling Crypto MLKEM.swift
+[116/298] Compiling Crypto XWing.swift
+[117/298] Compiling Crypto CryptoKitErrors.swift
+[118/298] Compiling Crypto Digest_boring.swift
+[119/298] Compiling Crypto Digest.swift
+[120/298] Compiling Crypto Digests.swift
+[121/298] Compiling Crypto HashFunctions.swift
+[122/298] Compiling Crypto HashFunctions_SHA2.swift
+[123/298] Compiling Crypto HashFunctions_SHA3.swift
+[124/298] Compiling Crypto Digest_xkcp.swift
+[125/298] Compiling Crypto HPKE-AEAD.swift
+[126/298] Compiling Crypto HPKE-Ciphersuite.swift
+note: Skip 1.8.11: skipstone plugin to: /Users/organic/dev/work/showcase/.build/plugins/outputs/skip-android-bridge/SkipAndroidBridge/destination/skipstone/SkipAndroidBridge/src/main at 17:59:51
+/Users/organic/dev/work/showcase/.build/checkouts/skip-android-bridge/Sources/SkipAndroidBridge/Skip/skip.yml: note: loading skip.yml from /Users/organic/dev/work/showcase/.build/checkouts/skip-android-bridge/Sources/SkipAndroidBridge/Skip/skip.yml
+/Users/organic/dev/work/showcase/.build/checkouts/skip-bridge/Sources/SkipBridge/Skip/skip.yml: note: SkipBridge skip.yml config loaded (26 ms)
+/Users/organic/dev/work/showcase/.build/checkouts/skip-lib/Sources/SkipLib/Skip/skip.yml: note: SkipLib skip.yml config loaded (4 ms)
+/Users/organic/dev/work/showcase/.build/checkouts/skip-unit/Sources/SkipUnit/Skip/skip.yml: note: SkipUnit skip.yml config loaded (342 ms)
+/Users/organic/dev/work/showcase/.build/checkouts/skip-foundation/Sources/SkipFoundation/Skip/skip.yml: note: SkipFoundation skip.yml config loaded (3 ms)
+note: skip.yml aggregate created (386 ms) for modules: ["SkipAndroidBridge", "SkipBridge", "SkipLib", "SkipUnit", "SkipFoundation"]
+/Users/organic/dev/work/showcase/.build/plugins/outputs/skip-bridge/SkipBridge/destination/skipstone/SkipBridge.skipcode.json: note: SkipBridge.skipcode.json codebase (63 KB) loaded (16 ms) for SkipBridge
+/Users/organic/dev/work/showcase/.build/plugins/outputs/skip-lib/SkipLib/destination/skipstone/SkipLib.skipcode.json: note: SkipLib.skipcode.json codebase (692 KB) loaded (632 ms) for SkipLib
+/Users/organic/dev/work/showcase/.build/plugins/outputs/skip-unit/SkipUnit/destination/skipstone/SkipUnit.skipcode.json: note: SkipUnit.skipcode.json codebase (24 KB) loaded (3 ms) for SkipUnit
+/Users/organic/dev/work/showcase/.build/plugins/outputs/skip-foundation/SkipFoundation/destination/skipstone/SkipFoundation.skipcode.json: note: SkipFoundation.skipcode.json codebase (1.5 MB) loaded (646 ms) for SkipFoundation
+/Users/organic/dev/work/showcase/.build/plugins/outputs/skip-android-bridge/SkipAndroidBridge/destination/skipstone/SkipAndroidBridge.skipcode.json: note: SkipAndroidBridge.skipcode.json (34 KB) codebase unchanged
+/Users/organic/dev/work/showcase/.build/plugins/outputs/skip-android-bridge/SkipAndroidBridge/destination/skipstone/SkipBridgeGenerated/AssetURLProtocol_Bridge.swift: note: SkipBridgeGenerated/AssetURLProtocol_Bridge.swift (Zero KB) skipbridge unchanged
+/Users/organic/dev/work/showcase/.build/plugins/outputs/skip-android-bridge/SkipAndroidBridge/destination/skipstone/SkipBridgeGenerated/AndroidStringInterpolation_Bridge.swift: note: SkipBridgeGenerated/AndroidStringInterpolation_Bridge.swift (Zero KB) skipbridge unchanged
+/Users/organic/dev/work/showcase/.build/plugins/outputs/skip-android-bridge/SkipAndroidBridge/destination/skipstone/SkipBridgeGenerated/DynamicContext_Bridge.swift: note: SkipBridgeGenerated/DynamicContext_Bridge.swift (Zero KB) skipbridge unchanged
+/Users/organic/dev/work/showcase/.build/plugins/outputs/skip-android-bridge/SkipAndroidBridge/destination/skipstone/SkipBridgeGenerated/AndroidLocalizedStringResource_Bridge.swift: note: SkipBridgeGenerated/AndroidLocalizedStringResource_Bridge.swift (Zero KB) skipbridge unchanged
+/Users/organic/dev/work/showcase/.build/plugins/outputs/skip-android-bridge/SkipAndroidBridge/destination/skipstone/SkipBridgeGenerated/DynamicAppCompatActivity_Bridge.swift: note: SkipBridgeGenerated/DynamicAppCompatActivity_Bridge.swift (Zero KB) skipbridge unchanged
+/Users/organic/dev/work/showcase/.build/plugins/outputs/skip-android-bridge/SkipAndroidBridge/destination/skipstone/SkipBridgeGenerated/AndroidUserDefaults_Bridge.swift: note: SkipBridgeGenerated/AndroidUserDefaults_Bridge.swift (11 KB) skipbridge unchanged
+/Users/organic/dev/work/showcase/.build/plugins/outputs/skip-android-bridge/SkipAndroidBridge/destination/skipstone/SkipBridgeGenerated/Observation_Bridge.swift: note: SkipBridgeGenerated/Observation_Bridge.swift (Zero KB) skipbridge unchanged
+/Users/organic/dev/work/showcase/.build/plugins/outputs/skip-android-bridge/SkipAndroidBridge/destination/skipstone/SkipBridgeGenerated/AndroidBundle_Bridge.swift: note: SkipBridgeGenerated/AndroidBundle_Bridge.swift (20 KB) skipbridge unchanged
+/Users/organic/dev/work/showcase/.build/plugins/outputs/skip-android-bridge/SkipAndroidBridge/destination/skipstone/SkipBridgeGenerated/ProcessInfo_Bridge.swift: note: SkipBridgeGenerated/ProcessInfo_Bridge.swift (Zero KB) skipbridge unchanged
+/Users/organic/dev/work/showcase/.build/plugins/outputs/skip-android-bridge/SkipAndroidBridge/destination/skipstone/SkipBridgeGenerated/ObservationModule_Bridge.swift: note: SkipBridgeGenerated/ObservationModule_Bridge.swift (Zero KB) skipbridge unchanged
+/Users/organic/dev/work/showcase/.build/plugins/outputs/skip-android-bridge/SkipAndroidBridge/destination/skipstone/SkipBridgeGenerated/AndroidBridgeBootstrap_Bridge.swift: note: SkipBridgeGenerated/AndroidBridgeBootstrap_Bridge.swift (5 KB) skipbridge unchanged
+/Users/organic/dev/work/showcase/.build/plugins/outputs/skip-android-bridge/SkipAndroidBridge/destination/skipstone/SkipBridgeGenerated/AnyDynamicObject_Support.swift: note: SkipBridgeGenerated/AnyDynamicObject_Support.swift (Zero KB) skipbridge unchanged
+/Users/organic/dev/work/showcase/.build/plugins/outputs/skip-android-bridge/SkipAndroidBridge/destination/skipstone/SkipBridgeGenerated/Bundle_Support.swift: note: SkipBridgeGenerated/Bundle_Support.swift (Zero KB) skipbridge unchanged
+/Users/organic/dev/work/showcase/.build/plugins/outputs/skip-android-bridge/SkipAndroidBridge/destination/skipstone/SkipBridgeGenerated/FoundationBridge_Support.swift: note: SkipBridgeGenerated/FoundationBridge_Support.swift (Zero KB) skipbridge unchanged
+/Users/organic/dev/work/showcase/.build/plugins/outputs/skip-android-bridge/SkipAndroidBridge/destination/skipstone/gradle/wrapper/gradle-wrapper.properties: note: gradle/wrapper/gradle-wrapper.properties (80 bytes) gradle wrapper unchanged
+/Users/organic/dev/work/showcase/.build/plugins/outputs/skip-android-bridge/SkipAndroidBridge/destination/skipstone/SkipAndroidBridge/proguard-rules.pro: note: SkipAndroidBridge/proguard-rules.pro (360 bytes) proguard unchanged
+/Users/organic/dev/work/showcase/.build/plugins/outputs/skip-android-bridge/SkipAndroidBridge/destination/skipstone/SkipAndroidBridge/build.gradle.kts: note: SkipAndroidBridge/build.gradle.kts (6 KB) gradle project unchanged
+/Users/organic/dev/work/showcase/.build/plugins/outputs/skip-android-bridge/SkipAndroidBridge/destination/skipstone/gradle.properties: note: gradle.properties (79 bytes) gradle config unchanged
+/Users/organic/dev/work/showcase/.build/plugins/outputs/skip-android-bridge/SkipAndroidBridge/destination/skipstone/settings.gradle.kts: note: settings.gradle.kts (3 KB) gradle settings unchanged
+/Users/organic/dev/work/showcase/.build/plugins/outputs/skip-android-bridge/SkipAndroidBridge/destination/skipstone/SkipAndroidBridge/src/main/kotlin/skip/android/bridge/AndroidBridgeBootstrap.kt: warning: removing stale output file: AndroidBridgeBootstrap.kt
+/Users/organic/dev/work/showcase/.build/plugins/outputs/skip-android-bridge/SkipAndroidBridge/destination/skipstone/SkipAndroidBridge/src/main/kotlin/skip/android/bridge/AndroidBundle.kt: warning: removing stale output file: AndroidBundle.kt
+/Users/organic/dev/work/showcase/.build/plugins/outputs/skip-android-bridge/SkipAndroidBridge/destination/skipstone/SkipAndroidBridge/src/main/kotlin/skip/android/bridge/AndroidUserDefaults.kt: warning: removing stale output file: AndroidUserDefaults.kt
+/Users/organic/dev/work/showcase/.build/plugins/outputs/skip-android-bridge/SkipAndroidBridge/destination/skipstone/SkipAndroidBridge/src/main/kotlin/skip/android/bridge/Observation.kt: warning: removing stale output file: Observation.kt
+/Users/organic/dev/work/showcase/.build/plugins/outputs/skip-android-bridge/SkipAndroidBridge/destination/skipstone/SkipAndroidBridge/src/main/kotlin/skip/android/bridge/ObservationModule.kt: warning: removing stale output file: ObservationModule.kt
+/Users/organic/dev/work/showcase/.build/plugins/outputs/skip-android-bridge/SkipAndroidBridge/destination/skipstone/SkipAndroidBridge/src/main/swift/CHANGELOG.md: warning: removing stale output file: CHANGELOG.md
+/Users/organic/dev/work/showcase/.build/plugins/outputs/skip-android-bridge/SkipAndroidBridge/destination/skipstone/SkipAndroidBridge/src/main/swift/LICENSE.LGPL: warning: removing stale output file: LICENSE.LGPL
+/Users/organic/dev/work/showcase/.build/plugins/outputs/skip-android-bridge/SkipAndroidBridge/destination/skipstone/SkipAndroidBridge/src/main/swift/Package.swift: warning: removing stale output file: Package.swift
+/Users/organic/dev/work/showcase/.build/plugins/outputs/skip-android-bridge/SkipAndroidBridge/destination/skipstone/SkipAndroidBridge/src/main/swift/Packages/skip-bridge: warning: removing stale output file: skip-bridge
+/Users/organic/dev/work/showcase/.build/plugins/outputs/skip-android-bridge/SkipAndroidBridge/destination/skipstone/SkipAndroidBridge/src/main/swift/Packages/skip-foundation: warning: removing stale output file: skip-foundation
+/Users/organic/dev/work/showcase/.build/plugins/outputs/skip-android-bridge/SkipAndroidBridge/destination/skipstone/SkipAndroidBridge/src/main/swift/Packages/skip-lib: warning: removing stale output file: skip-lib
+/Users/organic/dev/work/showcase/.build/plugins/outputs/skip-android-bridge/SkipAndroidBridge/destination/skipstone/SkipAndroidBridge/src/main/swift/Packages/skip-unit: warning: removing stale output file: skip-unit
+/Users/organic/dev/work/showcase/.build/plugins/outputs/skip-android-bridge/SkipAndroidBridge/destination/skipstone/SkipAndroidBridge/src/main/swift/Packages/swift-jni: warning: removing stale output file: swift-jni
+/Users/organic/dev/work/showcase/.build/plugins/outputs/skip-android-bridge/SkipAndroidBridge/destination/skipstone/SkipAndroidBridge/src/main/swift/README.md: warning: removing stale output file: README.md
+/Users/organic/dev/work/showcase/.build/plugins/outputs/skip-android-bridge/SkipAndroidBridge/destination/skipstone/SkipAndroidBridge/src/main/swift/Sources: warning: removing stale output file: Sources
+/Users/organic/dev/work/showcase/.build/plugins/outputs/skip-android-bridge/SkipAndroidBridge/destination/skipstone/SkipAndroidBridge/src/main/swift/Tests: warning: removing stale output file: Tests
+/Users/organic/dev/work/showcase/.build/plugins/outputs/skip-android-bridge/SkipAndroidBridge/destination/skipstone/.SkipAndroidBridge.sourcehash: note: .SkipAndroidBridge.sourcehash (1 KB) sourcehash unchanged
+[126/299] Skip SkipAndroidBridge
+note: Skip 1.8.11: skipstone plugin to: /Users/organic/dev/work/showcase/.build/plugins/outputs/skip-model/SkipModel/destination/skipstone/SkipModel/src/main at 17:59:51
+/Users/organic/dev/work/showcase/.build/checkouts/skip-model/Sources/SkipModel/Skip/skip.yml: note: loading skip.yml from /Users/organic/dev/work/showcase/.build/checkouts/skip-model/Sources/SkipModel/Skip/skip.yml
+/Users/organic/dev/work/showcase/.build/checkouts/skip-foundation/Sources/SkipFoundation/Skip/skip.yml: note: SkipFoundation skip.yml config loaded (3 ms)
+/Users/organic/dev/work/showcase/.build/checkouts/skip-lib/Sources/SkipLib/Skip/skip.yml: note: SkipLib skip.yml config loaded (3 ms)
+/Users/organic/dev/work/showcase/.build/checkouts/skip-unit/Sources/SkipUnit/Skip/skip.yml: note: SkipUnit skip.yml config loaded (145 ms)
+note: skip.yml aggregate created (261 ms) for modules: ["SkipModel", "SkipFoundation", "SkipLib", "SkipUnit"]
+/Users/organic/dev/work/showcase/.build/plugins/outputs/skip-foundation/SkipFoundation/destination/skipstone/SkipFoundation.skipcode.json: note: SkipFoundation.skipcode.json codebase (1.5 MB) loaded (1020 ms) for SkipFoundation
+/Users/organic/dev/work/showcase/.build/plugins/outputs/skip-lib/SkipLib/destination/skipstone/SkipLib.skipcode.json: note: SkipLib.skipcode.json codebase (692 KB) loaded (454 ms) for SkipLib
+/Users/organic/dev/work/showcase/.build/plugins/outputs/skip-unit/SkipUnit/destination/skipstone/SkipUnit.skipcode.json: note: SkipUnit.skipcode.json codebase (24 KB) loaded (2 ms) for SkipUnit
+/Users/organic/dev/work/showcase/.build/plugins/outputs/skip-model/SkipModel/destination/skipstone/SkipModel.skipcode.json: note: SkipModel.skipcode.json (38 KB) codebase unchanged
+/Users/organic/dev/work/showcase/.build/plugins/outputs/skip-model/SkipModel/destination/skipstone/SkipBridgeGenerated/StateTracking_Bridge.swift: note: SkipBridgeGenerated/StateTracking_Bridge.swift (Zero KB) skipbridge unchanged
+/Users/organic/dev/work/showcase/.build/plugins/outputs/skip-model/SkipModel/destination/skipstone/SkipBridgeGenerated/Publisher_Bridge.swift: note: SkipBridgeGenerated/Publisher_Bridge.swift (Zero KB) skipbridge unchanged
+/Users/organic/dev/work/showcase/.build/plugins/outputs/skip-model/SkipModel/destination/skipstone/SkipBridgeGenerated/SkipModel_Bridge.swift: note: SkipBridgeGenerated/SkipModel_Bridge.swift (Zero KB) skipbridge unchanged
+/Users/organic/dev/work/showcase/.build/plugins/outputs/skip-model/SkipModel/destination/skipstone/SkipBridgeGenerated/NotificationCenter_Bridge.swift: note: SkipBridgeGenerated/NotificationCenter_Bridge.swift (Zero KB) skipbridge unchanged
+/Users/organic/dev/work/showcase/.build/plugins/outputs/skip-model/SkipModel/destination/skipstone/SkipBridgeGenerated/Timer_Bridge.swift: note: SkipBridgeGenerated/Timer_Bridge.swift (Zero KB) skipbridge unchanged
+/Users/organic/dev/work/showcase/.build/plugins/outputs/skip-model/SkipModel/destination/skipstone/SkipBridgeGenerated/MutableStateBacking_Bridge.swift: note: SkipBridgeGenerated/MutableStateBacking_Bridge.swift (Zero KB) skipbridge unchanged
+/Users/organic/dev/work/showcase/.build/plugins/outputs/skip-model/SkipModel/destination/skipstone/SkipBridgeGenerated/Cancellable_Bridge.swift: note: SkipBridgeGenerated/Cancellable_Bridge.swift (Zero KB) skipbridge unchanged
+/Users/organic/dev/work/showcase/.build/plugins/outputs/skip-model/SkipModel/destination/skipstone/SkipBridgeGenerated/Observed_Bridge.swift: note: SkipBridgeGenerated/Observed_Bridge.swift (Zero KB) skipbridge unchanged
+/Users/organic/dev/work/showcase/.build/plugins/outputs/skip-model/SkipModel/destination/skipstone/SkipBridgeGenerated/Published_Bridge.swift: note: SkipBridgeGenerated/Published_Bridge.swift (Zero KB) skipbridge unchanged
+/Users/organic/dev/work/showcase/.build/plugins/outputs/skip-model/SkipModel/destination/skipstone/SkipBridgeGenerated/Observable_Bridge.swift: note: SkipBridgeGenerated/Observable_Bridge.swift (Zero KB) skipbridge unchanged
+/Users/organic/dev/work/showcase/.build/plugins/outputs/skip-model/SkipModel/destination/skipstone/SkipBridgeGenerated/AnyDynamicObject_Support.swift: note: SkipBridgeGenerated/AnyDynamicObject_Support.swift (Zero KB) skipbridge unchanged
+/Users/organic/dev/work/showcase/.build/plugins/outputs/skip-model/SkipModel/destination/skipstone/SkipBridgeGenerated/Bundle_Support.swift: note: SkipBridgeGenerated/Bundle_Support.swift (Zero KB) skipbridge unchanged
+/Users/organic/dev/work/showcase/.build/plugins/outputs/skip-model/SkipModel/destination/skipstone/SkipBridgeGenerated/FoundationBridge_Support.swift: note: SkipBridgeGenerated/FoundationBridge_Support.swift (Zero KB) skipbridge unchanged
+/Users/organic/dev/work/showcase/.build/plugins/outputs/skip-model/SkipModel/destination/skipstone/gradle/wrapper/gradle-wrapper.properties: note: gradle/wrapper/gradle-wrapper.properties (80 bytes) gradle wrapper unchanged
+/Users/organic/dev/work/showcase/.build/plugins/outputs/skip-model/SkipModel/destination/skipstone/SkipModel/proguard-rules.pro: note: SkipModel/proguard-rules.pro (351 bytes) proguard unchanged
+/Users/organic/dev/work/showcase/.build/plugins/outputs/skip-model/SkipModel/destination/skipstone/SkipModel/build.gradle.kts: note: SkipModel/build.gradle.kts (3 KB) gradle project unchanged
+/Users/organic/dev/work/showcase/.build/plugins/outputs/skip-model/SkipModel/destination/skipstone/gradle.properties: note: gradle.properties (79 bytes) gradle config unchanged
+/Users/organic/dev/work/showcase/.build/plugins/outputs/skip-model/SkipModel/destination/skipstone/settings.gradle.kts: note: settings.gradle.kts (4 KB) gradle settings unchanged
+/Users/organic/dev/work/showcase/.build/plugins/outputs/skip-model/SkipModel/destination/skipstone/SkipModel/src/main/kotlin/skip/model/Cancellable.kt: warning: removing stale output file: Cancellable.kt
+/Users/organic/dev/work/showcase/.build/plugins/outputs/skip-model/SkipModel/destination/skipstone/SkipModel/src/main/kotlin/skip/model/MutableStateBacking.kt: warning: removing stale output file: MutableStateBacking.kt
+/Users/organic/dev/work/showcase/.build/plugins/outputs/skip-model/SkipModel/destination/skipstone/SkipModel/src/main/kotlin/skip/model/NotificationCenter.kt: warning: removing stale output file: NotificationCenter.kt
+/Users/organic/dev/work/showcase/.build/plugins/outputs/skip-model/SkipModel/destination/skipstone/SkipModel/src/main/kotlin/skip/model/Observable.kt: warning: removing stale output file: Observable.kt
+/Users/organic/dev/work/showcase/.build/plugins/outputs/skip-model/SkipModel/destination/skipstone/SkipModel/src/main/kotlin/skip/model/Observed.kt: warning: removing stale output file: Observed.kt
+/Users/organic/dev/work/showcase/.build/plugins/outputs/skip-model/SkipModel/destination/skipstone/SkipModel/src/main/kotlin/skip/model/Published.kt: warning: removing stale output file: Published.kt
+/Users/organic/dev/work/showcase/.build/plugins/outputs/skip-model/SkipModel/destination/skipstone/SkipModel/src/main/kotlin/skip/model/Publisher.kt: warning: removing stale output file: Publisher.kt
+/Users/organic/dev/work/showcase/.build/plugins/outputs/skip-model/SkipModel/destination/skipstone/SkipModel/src/main/kotlin/skip/model/SkipModel.kt: warning: removing stale output file: SkipModel.kt
+/Users/organic/dev/work/showcase/.build/plugins/outputs/skip-model/SkipModel/destination/skipstone/SkipModel/src/main/kotlin/skip/model/StateTracking.kt: warning: removing stale output file: StateTracking.kt
+/Users/organic/dev/work/showcase/.build/plugins/outputs/skip-model/SkipModel/destination/skipstone/SkipModel/src/main/kotlin/skip/model/Timer.kt: warning: removing stale output file: Timer.kt
+/Users/organic/dev/work/showcase/.build/plugins/outputs/skip-model/SkipModel/destination/skipstone/.SkipModel.sourcehash: note: .SkipModel.sourcehash (1 KB) sourcehash unchanged
+[128/299] Skip SkipModel
+note: Skip 1.8.11: skipstone plugin to: /Users/organic/dev/work/showcase/.build/plugins/outputs/skip-supabase/SkipSupabaseCore/destination/skipstone/SkipSupabaseCore/src/main at 17:59:51
+/Users/organic/dev/work/showcase/.build/checkouts/skip-supabase/Sources/SkipSupabaseCore/Skip/skip.yml: note: loading skip.yml from /Users/organic/dev/work/showcase/.build/checkouts/skip-supabase/Sources/SkipSupabaseCore/Skip/skip.yml
+/Users/organic/dev/work/showcase/.build/checkouts/skip-foundation/Sources/SkipFoundation/Skip/skip.yml: note: SkipFoundation skip.yml config loaded (3 ms)
+/Users/organic/dev/work/showcase/.build/checkouts/skip-lib/Sources/SkipLib/Skip/skip.yml: note: SkipLib skip.yml config loaded (7 ms)
+/Users/organic/dev/work/showcase/.build/checkouts/skip-unit/Sources/SkipUnit/Skip/skip.yml: note: SkipUnit skip.yml config loaded (375 ms)
+note: skip.yml aggregate created (407 ms) for modules: ["SkipSupabaseCore", "SkipFoundation", "SkipLib", "SkipUnit"]
+/Users/organic/dev/work/showcase/.build/plugins/outputs/skip-foundation/SkipFoundation/destination/skipstone/SkipFoundation.skipcode.json: note: SkipFoundation.skipcode.json codebase (1.5 MB) loaded (1020 ms) for SkipFoundation
+/Users/organic/dev/work/showcase/.build/plugins/outputs/skip-lib/SkipLib/destination/skipstone/SkipLib.skipcode.json: note: SkipLib.skipcode.json codebase (692 KB) loaded (577 ms) for SkipLib
+/Users/organic/dev/work/showcase/.build/plugins/outputs/skip-unit/SkipUnit/destination/skipstone/SkipUnit.skipcode.json: note: SkipUnit.skipcode.json codebase (24 KB) loaded (5 ms) for SkipUnit
+/Users/organic/dev/work/showcase/.build/plugins/outputs/skip-supabase/SkipSupabaseCore/destination/skipstone/SkipSupabaseCore.skipcode.json: note: SkipSupabaseCore.skipcode.json (1 KB) codebase unchanged
+/Users/organic/dev/work/showcase/.build/plugins/outputs/skip-supabase/SkipSupabaseCore/destination/skipstone/SkipBridgeGenerated/SkipSupabaseCore_Bridge.swift: note: SkipBridgeGenerated/SkipSupabaseCore_Bridge.swift (Zero KB) skipbridge unchanged
+/Users/organic/dev/work/showcase/.build/plugins/outputs/skip-supabase/SkipSupabaseCore/destination/skipstone/SkipBridgeGenerated/AnyDynamicObject_Support.swift: note: SkipBridgeGenerated/AnyDynamicObject_Support.swift (Zero KB) skipbridge unchanged
+/Users/organic/dev/work/showcase/.build/plugins/outputs/skip-supabase/SkipSupabaseCore/destination/skipstone/SkipBridgeGenerated/Bundle_Support.swift: note: SkipBridgeGenerated/Bundle_Support.swift (Zero KB) skipbridge unchanged
+/Users/organic/dev/work/showcase/.build/plugins/outputs/skip-supabase/SkipSupabaseCore/destination/skipstone/SkipBridgeGenerated/FoundationBridge_Support.swift: note: SkipBridgeGenerated/FoundationBridge_Support.swift (Zero KB) skipbridge unchanged
+/Users/organic/dev/work/showcase/.build/plugins/outputs/skip-supabase/SkipSupabaseCore/destination/skipstone/gradle/wrapper/gradle-wrapper.properties: note: gradle/wrapper/gradle-wrapper.properties (80 bytes) gradle wrapper unchanged
+/Users/organic/dev/work/showcase/.build/plugins/outputs/skip-supabase/SkipSupabaseCore/destination/skipstone/SkipSupabaseCore/proguard-rules.pro: note: SkipSupabaseCore/proguard-rules.pro (359 bytes) proguard unchanged
+/Users/organic/dev/work/showcase/.build/plugins/outputs/skip-supabase/SkipSupabaseCore/destination/skipstone/SkipSupabaseCore/build.gradle.kts: note: SkipSupabaseCore/build.gradle.kts (3 KB) gradle project unchanged
+/Users/organic/dev/work/showcase/.build/plugins/outputs/skip-supabase/SkipSupabaseCore/destination/skipstone/gradle.properties: note: gradle.properties (79 bytes) gradle config unchanged
+/Users/organic/dev/work/showcase/.build/plugins/outputs/skip-supabase/SkipSupabaseCore/destination/skipstone/settings.gradle.kts: note: settings.gradle.kts (4 KB) gradle settings unchanged
+/Users/organic/dev/work/showcase/.build/plugins/outputs/skip-supabase/SkipSupabaseCore/destination/skipstone/SkipSupabaseCore/src/main/kotlin/skip/supabase/core/SkipSupabaseCore.kt: warning: removing stale output file: SkipSupabaseCore.kt
+/Users/organic/dev/work/showcase/.build/plugins/outputs/skip-supabase/SkipSupabaseCore/destination/skipstone/.SkipSupabaseCore.sourcehash: note: .SkipSupabaseCore.sourcehash (214 bytes) sourcehash unchanged
+[129/299] Skip SkipSupabaseCore
+[130/303] Copying .SkipModel.sourcehash
+[131/303] Write sources
+[132/303] Copying .SkipSupabaseCore.sourcehash
+[133/303] Write sources
+[135/301] Compiling Crypto MLKEM_wrapper.swift
+[136/301] Compiling Crypto XWing_boring.swift
+[137/301] Compiling IssueReporting WithExpectedIssue.swift
+[138/301] Compiling Crypto Insecure_HashFunctions.swift
+[139/301] Compiling Crypto MLKEM_boring.swift
+[146/301] Compiling Crypto KEM-Errors.swift
+[147/301] Compiling Crypto KEM.swift
+[150/301] Compiling IssueReporting Unimplemented.swift
+[153/302] Compiling SwiftJNI SwiftJNI.swift
+[154/302] Emitting module SwiftJNI
+[155/304] Write Objects.LinkFileList
+[157/304] Compiling IssueReporting WithIssueContext.swift
+[158/304] Emitting module IssueReporting
+note: Skip 1.8.11: skipstone plugin to: /Users/organic/dev/work/showcase/.build/plugins/outputs/skip-supabase/SkipSupabaseStorage/destination/skipstone/SkipSupabaseStorage/src/main at 17:59:54
+/Users/organic/dev/work/showcase/.build/checkouts/skip-supabase/Sources/SkipSupabaseStorage/Skip/skip.yml: note: loading skip.yml from /Users/organic/dev/work/showcase/.build/checkouts/skip-supabase/Sources/SkipSupabaseStorage/Skip/skip.yml
+/Users/organic/dev/work/showcase/.build/checkouts/skip-supabase/Sources/SkipSupabaseCore/Skip/skip.yml: note: SkipSupabaseCore skip.yml config loaded (4 ms)
+/Users/organic/dev/work/showcase/.build/checkouts/skip-foundation/Sources/SkipFoundation/Skip/skip.yml: note: SkipFoundation skip.yml config loaded (2 ms)
+/Users/organic/dev/work/showcase/.build/checkouts/skip-lib/Sources/SkipLib/Skip/skip.yml: note: SkipLib skip.yml config loaded (5 ms)
+/Users/organic/dev/work/showcase/.build/checkouts/skip-unit/Sources/SkipUnit/Skip/skip.yml: note: SkipUnit skip.yml config loaded (65 ms)
+note: skip.yml aggregate created (86 ms) for modules: ["SkipSupabaseStorage", "SkipSupabaseCore", "SkipFoundation", "SkipLib", "SkipUnit"]
+/Users/organic/dev/work/showcase/.build/plugins/outputs/skip-supabase/SkipSupabaseCore/destination/skipstone/SkipSupabaseCore.skipcode.json: note: SkipSupabaseCore.skipcode.json codebase (1 KB) loaded (5 ms) for SkipSupabaseCore
+/Users/organic/dev/work/showcase/.build/plugins/outputs/skip-foundation/SkipFoundation/destination/skipstone/SkipFoundation.skipcode.json: note: SkipFoundation.skipcode.json codebase (1.5 MB) loaded (548 ms) for SkipFoundation
+/Users/organic/dev/work/showcase/.build/plugins/outputs/skip-lib/SkipLib/destination/skipstone/SkipLib.skipcode.json: note: SkipLib.skipcode.json codebase (692 KB) loaded (468 ms) for SkipLib
+/Users/organic/dev/work/showcase/.build/plugins/outputs/skip-unit/SkipUnit/destination/skipstone/SkipUnit.skipcode.json: note: SkipUnit.skipcode.json codebase (24 KB) loaded (6 ms) for SkipUnit
+/Users/organic/dev/work/showcase/.build/plugins/outputs/skip-supabase/SkipSupabaseStorage/destination/skipstone/SkipSupabaseStorage.skipcode.json: note: SkipSupabaseStorage.skipcode.json (1 KB) codebase unchanged
+/Users/organic/dev/work/showcase/.build/plugins/outputs/skip-supabase/SkipSupabaseStorage/destination/skipstone/SkipBridgeGenerated/SkipSupabaseStorage_Bridge.swift: note: SkipBridgeGenerated/SkipSupabaseStorage_Bridge.swift (Zero KB) skipbridge unchanged
+/Users/organic/dev/work/showcase/.build/plugins/outputs/skip-supabase/SkipSupabaseStorage/destination/skipstone/SkipBridgeGenerated/AnyDynamicObject_Support.swift: note: SkipBridgeGenerated/AnyDynamicObject_Support.swift (Zero KB) skipbridge unchanged
+/Users/organic/dev/work/showcase/.build/plugins/outputs/skip-supabase/SkipSupabaseStorage/destination/skipstone/SkipBridgeGenerated/Bundle_Support.swift: note: SkipBridgeGenerated/Bundle_Support.swift (Zero KB) skipbridge unchanged
+/Users/organic/dev/work/showcase/.build/plugins/outputs/skip-supabase/SkipSupabaseStorage/destination/skipstone/SkipBridgeGenerated/FoundationBridge_Support.swift: note: SkipBridgeGenerated/FoundationBridge_Support.swift (Zero KB) skipbridge unchanged
+/Users/organic/dev/work/showcase/.build/plugins/outputs/skip-supabase/SkipSupabaseStorage/destination/skipstone/gradle/wrapper/gradle-wrapper.properties: note: gradle/wrapper/gradle-wrapper.properties (80 bytes) gradle wrapper unchanged
+/Users/organic/dev/work/showcase/.build/plugins/outputs/skip-supabase/SkipSupabaseStorage/destination/skipstone/SkipSupabaseStorage/proguard-rules.pro: note: SkipSupabaseStorage/proguard-rules.pro (362 bytes) proguard unchanged
+/Users/organic/dev/work/showcase/.build/plugins/outputs/skip-supabase/SkipSupabaseStorage/destination/skipstone/SkipSupabaseStorage/build.gradle.kts: note: SkipSupabaseStorage/build.gradle.kts (3 KB) gradle project unchanged
+/Users/organic/dev/work/showcase/.build/plugins/outputs/skip-supabase/SkipSupabaseStorage/destination/skipstone/gradle.properties: note: gradle.properties (79 bytes) gradle config unchanged
+/Users/organic/dev/work/showcase/.build/plugins/outputs/skip-supabase/SkipSupabaseStorage/destination/skipstone/settings.gradle.kts: note: settings.gradle.kts (4 KB) gradle settings unchanged
+/Users/organic/dev/work/showcase/.build/plugins/outputs/skip-supabase/SkipSupabaseStorage/destination/skipstone/SkipSupabaseStorage/src/main/kotlin/skip/supabase/storage/SkipSupabaseStorage.kt: warning: removing stale output file: SkipSupabaseStorage.kt
+/Users/organic/dev/work/showcase/.build/plugins/outputs/skip-supabase/SkipSupabaseStorage/destination/skipstone/.SkipSupabaseStorage.sourcehash: note: .SkipSupabaseStorage.sourcehash (217 bytes) sourcehash unchanged
+[160/305] Skip SkipSupabaseStorage
+[161/307] Write sources
+[162/307] Copying .SkipSupabaseStorage.sourcehash
+note: Skip 1.8.11: skipstone plugin to: /Users/organic/dev/work/showcase/.build/plugins/outputs/skip-supabase/SkipSupabaseFunctions/destination/skipstone/SkipSupabaseFunctions/src/main at 17:59:54
+/Users/organic/dev/work/showcase/.build/checkouts/skip-supabase/Sources/SkipSupabaseFunctions/Skip/skip.yml: note: loading skip.yml from /Users/organic/dev/work/showcase/.build/checkouts/skip-supabase/Sources/SkipSupabaseFunctions/Skip/skip.yml
+/Users/organic/dev/work/showcase/.build/checkouts/skip-supabase/Sources/SkipSupabaseCore/Skip/skip.yml: note: SkipSupabaseCore skip.yml config loaded (4 ms)
+/Users/organic/dev/work/showcase/.build/checkouts/skip-foundation/Sources/SkipFoundation/Skip/skip.yml: note: SkipFoundation skip.yml config loaded (2 ms)
+/Users/organic/dev/work/showcase/.build/checkouts/skip-lib/Sources/SkipLib/Skip/skip.yml: note: SkipLib skip.yml config loaded (1 ms)
+/Users/organic/dev/work/showcase/.build/checkouts/skip-unit/Sources/SkipUnit/Skip/skip.yml: note: SkipUnit skip.yml config loaded (35 ms)
+note: skip.yml aggregate created (55 ms) for modules: ["SkipSupabaseFunctions", "SkipSupabaseCore", "SkipFoundation", "SkipLib", "SkipUnit"]
+/Users/organic/dev/work/showcase/.build/plugins/outputs/skip-supabase/SkipSupabaseCore/destination/skipstone/SkipSupabaseCore.skipcode.json: note: SkipSupabaseCore.skipcode.json codebase (1 KB) loaded (3 ms) for SkipSupabaseCore
+/Users/organic/dev/work/showcase/.build/plugins/outputs/skip-foundation/SkipFoundation/destination/skipstone/SkipFoundation.skipcode.json: note: SkipFoundation.skipcode.json codebase (1.5 MB) loaded (508 ms) for SkipFoundation
+/Users/organic/dev/work/showcase/.build/plugins/outputs/skip-lib/SkipLib/destination/skipstone/SkipLib.skipcode.json: note: SkipLib.skipcode.json codebase (692 KB) loaded (358 ms) for SkipLib
+/Users/organic/dev/work/showcase/.build/plugins/outputs/skip-unit/SkipUnit/destination/skipstone/SkipUnit.skipcode.json: note: SkipUnit.skipcode.json codebase (24 KB) loaded (5 ms) for SkipUnit
+/Users/organic/dev/work/showcase/.build/plugins/outputs/skip-supabase/SkipSupabaseFunctions/destination/skipstone/SkipSupabaseFunctions.skipcode.json: note: SkipSupabaseFunctions.skipcode.json (1 KB) codebase unchanged
+/Users/organic/dev/work/showcase/.build/plugins/outputs/skip-supabase/SkipSupabaseFunctions/destination/skipstone/SkipBridgeGenerated/SkipSupabaseFunctions_Bridge.swift: note: SkipBridgeGenerated/SkipSupabaseFunctions_Bridge.swift (Zero KB) skipbridge unchanged
+/Users/organic/dev/work/showcase/.build/plugins/outputs/skip-supabase/SkipSupabaseFunctions/destination/skipstone/SkipBridgeGenerated/AnyDynamicObject_Support.swift: note: SkipBridgeGenerated/AnyDynamicObject_Support.swift (Zero KB) skipbridge unchanged
+/Users/organic/dev/work/showcase/.build/plugins/outputs/skip-supabase/SkipSupabaseFunctions/destination/skipstone/SkipBridgeGenerated/Bundle_Support.swift: note: SkipBridgeGenerated/Bundle_Support.swift (Zero KB) skipbridge unchanged
+/Users/organic/dev/work/showcase/.build/plugins/outputs/skip-supabase/SkipSupabaseFunctions/destination/skipstone/SkipBridgeGenerated/FoundationBridge_Support.swift: note: SkipBridgeGenerated/FoundationBridge_Support.swift (Zero KB) skipbridge unchanged
+/Users/organic/dev/work/showcase/.build/plugins/outputs/skip-supabase/SkipSupabaseFunctions/destination/skipstone/gradle/wrapper/gradle-wrapper.properties: note: gradle/wrapper/gradle-wrapper.properties (80 bytes) gradle wrapper unchanged
+/Users/organic/dev/work/showcase/.build/plugins/outputs/skip-supabase/SkipSupabaseFunctions/destination/skipstone/SkipSupabaseFunctions/proguard-rules.pro: note: SkipSupabaseFunctions/proguard-rules.pro (364 bytes) proguard unchanged
+/Users/organic/dev/work/showcase/.build/plugins/outputs/skip-supabase/SkipSupabaseFunctions/destination/skipstone/SkipSupabaseFunctions/build.gradle.kts: note: SkipSupabaseFunctions/build.gradle.kts (3 KB) gradle project unchanged
+/Users/organic/dev/work/showcase/.build/plugins/outputs/skip-supabase/SkipSupabaseFunctions/destination/skipstone/gradle.properties: note: gradle.properties (79 bytes) gradle config unchanged
+/Users/organic/dev/work/showcase/.build/plugins/outputs/skip-supabase/SkipSupabaseFunctions/destination/skipstone/settings.gradle.kts: note: settings.gradle.kts (4 KB) gradle settings unchanged
+/Users/organic/dev/work/showcase/.build/plugins/outputs/skip-supabase/SkipSupabaseFunctions/destination/skipstone/SkipSupabaseFunctions/src/main/kotlin/skip/supabase/functions/SkipSupabaseFunctions.kt: warning: removing stale output file: SkipSupabaseFunctions.kt
+/Users/organic/dev/work/showcase/.build/plugins/outputs/skip-supabase/SkipSupabaseFunctions/destination/skipstone/.SkipSupabaseFunctions.sourcehash: note: .SkipSupabaseFunctions.sourcehash (219 bytes) sourcehash unchanged
+[163/307] Skip SkipSupabaseFunctions
+[165/309] Copying .SkipSupabaseFunctions.sourcehash
+[166/309] Write sources
+note: Skip 1.8.11: skipstone plugin to: /Users/organic/dev/work/showcase/.build/plugins/outputs/skip-supabase/SkipSupabaseAuth/destination/skipstone/SkipSupabaseAuth/src/main at 17:59:54
+/Users/organic/dev/work/showcase/.build/checkouts/skip-supabase/Sources/SkipSupabaseAuth/Skip/skip.yml: note: loading skip.yml from /Users/organic/dev/work/showcase/.build/checkouts/skip-supabase/Sources/SkipSupabaseAuth/Skip/skip.yml
+/Users/organic/dev/work/showcase/.build/checkouts/skip-supabase/Sources/SkipSupabaseCore/Skip/skip.yml: note: SkipSupabaseCore skip.yml config loaded (3 ms)
+/Users/organic/dev/work/showcase/.build/checkouts/skip-foundation/Sources/SkipFoundation/Skip/skip.yml: note: SkipFoundation skip.yml config loaded (2 ms)
+/Users/organic/dev/work/showcase/.build/checkouts/skip-lib/Sources/SkipLib/Skip/skip.yml: note: SkipLib skip.yml config loaded (1 ms)
+/Users/organic/dev/work/showcase/.build/checkouts/skip-unit/Sources/SkipUnit/Skip/skip.yml: note: SkipUnit skip.yml config loaded (162 ms)
+note: skip.yml aggregate created (182 ms) for modules: ["SkipSupabaseAuth", "SkipSupabaseCore", "SkipFoundation", "SkipLib", "SkipUnit"]
+/Users/organic/dev/work/showcase/.build/plugins/outputs/skip-supabase/SkipSupabaseCore/destination/skipstone/SkipSupabaseCore.skipcode.json: note: SkipSupabaseCore.skipcode.json codebase (1 KB) loaded (5 ms) for SkipSupabaseCore
+/Users/organic/dev/work/showcase/.build/plugins/outputs/skip-foundation/SkipFoundation/destination/skipstone/SkipFoundation.skipcode.json: note: SkipFoundation.skipcode.json codebase (1.5 MB) loaded (582 ms) for SkipFoundation
+/Users/organic/dev/work/showcase/.build/plugins/outputs/skip-lib/SkipLib/destination/skipstone/SkipLib.skipcode.json: note: SkipLib.skipcode.json codebase (692 KB) loaded (371 ms) for SkipLib
+/Users/organic/dev/work/showcase/.build/plugins/outputs/skip-unit/SkipUnit/destination/skipstone/SkipUnit.skipcode.json: note: SkipUnit.skipcode.json codebase (24 KB) loaded (2 ms) for SkipUnit
+/Users/organic/dev/work/showcase/.build/plugins/outputs/skip-supabase/SkipSupabaseAuth/destination/skipstone/SkipSupabaseAuth.skipcode.json: note: SkipSupabaseAuth.skipcode.json (1 KB) codebase unchanged
+/Users/organic/dev/work/showcase/.build/plugins/outputs/skip-supabase/SkipSupabaseAuth/destination/skipstone/SkipBridgeGenerated/SkipSupabaseAuth_Bridge.swift: note: SkipBridgeGenerated/SkipSupabaseAuth_Bridge.swift (Zero KB) skipbridge unchanged
+/Users/organic/dev/work/showcase/.build/plugins/outputs/skip-supabase/SkipSupabaseAuth/destination/skipstone/SkipBridgeGenerated/AnyDynamicObject_Support.swift: note: SkipBridgeGenerated/AnyDynamicObject_Support.swift (Zero KB) skipbridge unchanged
+/Users/organic/dev/work/showcase/.build/plugins/outputs/skip-supabase/SkipSupabaseAuth/destination/skipstone/SkipBridgeGenerated/Bundle_Support.swift: note: SkipBridgeGenerated/Bundle_Support.swift (Zero KB) skipbridge unchanged
+/Users/organic/dev/work/showcase/.build/plugins/outputs/skip-supabase/SkipSupabaseAuth/destination/skipstone/SkipBridgeGenerated/FoundationBridge_Support.swift: note: SkipBridgeGenerated/FoundationBridge_Support.swift (Zero KB) skipbridge unchanged
+/Users/organic/dev/work/showcase/.build/plugins/outputs/skip-supabase/SkipSupabaseAuth/destination/skipstone/gradle/wrapper/gradle-wrapper.properties: note: gradle/wrapper/gradle-wrapper.properties (80 bytes) gradle wrapper unchanged
+/Users/organic/dev/work/showcase/.build/plugins/outputs/skip-supabase/SkipSupabaseAuth/destination/skipstone/SkipSupabaseAuth/proguard-rules.pro: note: SkipSupabaseAuth/proguard-rules.pro (359 bytes) proguard unchanged
+/Users/organic/dev/work/showcase/.build/plugins/outputs/skip-supabase/SkipSupabaseAuth/destination/skipstone/SkipSupabaseAuth/build.gradle.kts: note: SkipSupabaseAuth/build.gradle.kts (3 KB) gradle project unchanged
+/Users/organic/dev/work/showcase/.build/plugins/outputs/skip-supabase/SkipSupabaseAuth/destination/skipstone/gradle.properties: note: gradle.properties (79 bytes) gradle config unchanged
+/Users/organic/dev/work/showcase/.build/plugins/outputs/skip-supabase/SkipSupabaseAuth/destination/skipstone/settings.gradle.kts: note: settings.gradle.kts (4 KB) gradle settings unchanged
+/Users/organic/dev/work/showcase/.build/plugins/outputs/skip-supabase/SkipSupabaseAuth/destination/skipstone/SkipSupabaseAuth/src/main/kotlin/skip/supabase/auth/SkipSupabaseAuth.kt: warning: removing stale output file: SkipSupabaseAuth.kt
+/Users/organic/dev/work/showcase/.build/plugins/outputs/skip-supabase/SkipSupabaseAuth/destination/skipstone/.SkipSupabaseAuth.sourcehash: note: .SkipSupabaseAuth.sourcehash (214 bytes) sourcehash unchanged
+[167/308] Skip SkipSupabaseAuth
+[168/310] Write sources
+[169/310] Copying .SkipSupabaseAuth.sourcehash
+note: Skip 1.8.11: skipstone plugin to: /Users/organic/dev/work/showcase/.build/plugins/outputs/skip-supabase/SkipSupabasePostgREST/destination/skipstone/SkipSupabasePostgREST/src/main at 17:59:54
+/Users/organic/dev/work/showcase/.build/checkouts/skip-supabase/Sources/SkipSupabasePostgREST/Skip/skip.yml: note: loading skip.yml from /Users/organic/dev/work/showcase/.build/checkouts/skip-supabase/Sources/SkipSupabasePostgREST/Skip/skip.yml
+/Users/organic/dev/work/showcase/.build/checkouts/skip-supabase/Sources/SkipSupabaseCore/Skip/skip.yml: note: SkipSupabaseCore skip.yml config loaded (3 ms)
+/Users/organic/dev/work/showcase/.build/checkouts/skip-foundation/Sources/SkipFoundation/Skip/skip.yml: note: SkipFoundation skip.yml config loaded (2 ms)
+/Users/organic/dev/work/showcase/.build/checkouts/skip-lib/Sources/SkipLib/Skip/skip.yml: note: SkipLib skip.yml config loaded (1 ms)
+/Users/organic/dev/work/showcase/.build/checkouts/skip-unit/Sources/SkipUnit/Skip/skip.yml: note: SkipUnit skip.yml config loaded (84 ms)
+note: skip.yml aggregate created (107 ms) for modules: ["SkipSupabasePostgREST", "SkipSupabaseCore", "SkipFoundation", "SkipLib", "SkipUnit"]
+/Users/organic/dev/work/showcase/.build/plugins/outputs/skip-supabase/SkipSupabaseCore/destination/skipstone/SkipSupabaseCore.skipcode.json: note: SkipSupabaseCore.skipcode.json codebase (1 KB) loaded (3 ms) for SkipSupabaseCore
+/Users/organic/dev/work/showcase/.build/plugins/outputs/skip-foundation/SkipFoundation/destination/skipstone/SkipFoundation.skipcode.json: note: SkipFoundation.skipcode.json codebase (1.5 MB) loaded (685 ms) for SkipFoundation
+/Users/organic/dev/work/showcase/.build/plugins/outputs/skip-lib/SkipLib/destination/skipstone/SkipLib.skipcode.json: note: SkipLib.skipcode.json codebase (692 KB) loaded (469 ms) for SkipLib
+/Users/organic/dev/work/showcase/.build/plugins/outputs/skip-unit/SkipUnit/destination/skipstone/SkipUnit.skipcode.json: note: SkipUnit.skipcode.json codebase (24 KB) loaded (2 ms) for SkipUnit
+/Users/organic/dev/work/showcase/.build/plugins/outputs/skip-supabase/SkipSupabasePostgREST/destination/skipstone/SkipSupabasePostgREST.skipcode.json: note: SkipSupabasePostgREST.skipcode.json (1 KB) codebase unchanged
+/Users/organic/dev/work/showcase/.build/plugins/outputs/skip-supabase/SkipSupabasePostgREST/destination/skipstone/SkipBridgeGenerated/SkipSupabasePostgREST_Bridge.swift: note: SkipBridgeGenerated/SkipSupabasePostgREST_Bridge.swift (Zero KB) skipbridge unchanged
+/Users/organic/dev/work/showcase/.build/plugins/outputs/skip-supabase/SkipSupabasePostgREST/destination/skipstone/SkipBridgeGenerated/AnyDynamicObject_Support.swift: note: SkipBridgeGenerated/AnyDynamicObject_Support.swift (Zero KB) skipbridge unchanged
+/Users/organic/dev/work/showcase/.build/plugins/outputs/skip-supabase/SkipSupabasePostgREST/destination/skipstone/SkipBridgeGenerated/Bundle_Support.swift: note: SkipBridgeGenerated/Bundle_Support.swift (Zero KB) skipbridge unchanged
+/Users/organic/dev/work/showcase/.build/plugins/outputs/skip-supabase/SkipSupabasePostgREST/destination/skipstone/SkipBridgeGenerated/FoundationBridge_Support.swift: note: SkipBridgeGenerated/FoundationBridge_Support.swift (Zero KB) skipbridge unchanged
+/Users/organic/dev/work/showcase/.build/plugins/outputs/skip-supabase/SkipSupabasePostgREST/destination/skipstone/gradle/wrapper/gradle-wrapper.properties: note: gradle/wrapper/gradle-wrapper.properties (80 bytes) gradle wrapper unchanged
+/Users/organic/dev/work/showcase/.build/plugins/outputs/skip-supabase/SkipSupabasePostgREST/destination/skipstone/SkipSupabasePostgREST/proguard-rules.pro: note: SkipSupabasePostgREST/proguard-rules.pro (365 bytes) proguard unchanged
+/Users/organic/dev/work/showcase/.build/plugins/outputs/skip-supabase/SkipSupabasePostgREST/destination/skipstone/SkipSupabasePostgREST/build.gradle.kts: note: SkipSupabasePostgREST/build.gradle.kts (3 KB) gradle project unchanged
+/Users/organic/dev/work/showcase/.build/plugins/outputs/skip-supabase/SkipSupabasePostgREST/destination/skipstone/gradle.properties: note: gradle.properties (79 bytes) gradle config unchanged
+/Users/organic/dev/work/showcase/.build/plugins/outputs/skip-supabase/SkipSupabasePostgREST/destination/skipstone/settings.gradle.kts: note: settings.gradle.kts (4 KB) gradle settings unchanged
+/Users/organic/dev/work/showcase/.build/plugins/outputs/skip-supabase/SkipSupabasePostgREST/destination/skipstone/SkipSupabasePostgREST/src/main/kotlin/skip/supabase/postg/rest/SkipSupabasePostgREST.kt: warning: removing stale output file: SkipSupabasePostgREST.kt
+/Users/organic/dev/work/showcase/.build/plugins/outputs/skip-supabase/SkipSupabasePostgREST/destination/skipstone/.SkipSupabasePostgREST.sourcehash: note: .SkipSupabasePostgREST.sourcehash (219 bytes) sourcehash unchanged
+[170/310] Skip SkipSupabasePostgREST
+[171/312] Copying .SkipSupabasePostgREST.sourcehash
+[172/312] Write sources
+[173/312] Linking libSwiftJNI.so
+note: Skip 1.8.11: skipstone plugin to: /Users/organic/dev/work/showcase/.build/plugins/outputs/skip-supabase/SkipSupabaseRealtime/destination/skipstone/SkipSupabaseRealtime/src/main at 17:59:54
+/Users/organic/dev/work/showcase/.build/checkouts/skip-supabase/Sources/SkipSupabaseRealtime/Skip/skip.yml: note: loading skip.yml from /Users/organic/dev/work/showcase/.build/checkouts/skip-supabase/Sources/SkipSupabaseRealtime/Skip/skip.yml
+/Users/organic/dev/work/showcase/.build/checkouts/skip-supabase/Sources/SkipSupabaseCore/Skip/skip.yml: note: SkipSupabaseCore skip.yml config loaded (4 ms)
+/Users/organic/dev/work/showcase/.build/checkouts/skip-foundation/Sources/SkipFoundation/Skip/skip.yml: note: SkipFoundation skip.yml config loaded (4 ms)
+/Users/organic/dev/work/showcase/.build/checkouts/skip-lib/Sources/SkipLib/Skip/skip.yml: note: SkipLib skip.yml config loaded (4 ms)
+/Users/organic/dev/work/showcase/.build/checkouts/skip-unit/Sources/SkipUnit/Skip/skip.yml: note: SkipUnit skip.yml config loaded (104 ms)
+note: skip.yml aggregate created (169 ms) for modules: ["SkipSupabaseRealtime", "SkipSupabaseCore", "SkipFoundation", "SkipLib", "SkipUnit"]
+/Users/organic/dev/work/showcase/.build/plugins/outputs/skip-supabase/SkipSupabaseCore/destination/skipstone/SkipSupabaseCore.skipcode.json: note: SkipSupabaseCore.skipcode.json codebase (1 KB) loaded (5 ms) for SkipSupabaseCore
+/Users/organic/dev/work/showcase/.build/plugins/outputs/skip-foundation/SkipFoundation/destination/skipstone/SkipFoundation.skipcode.json: note: SkipFoundation.skipcode.json codebase (1.5 MB) loaded (714 ms) for SkipFoundation
+/Users/organic/dev/work/showcase/.build/plugins/outputs/skip-lib/SkipLib/destination/skipstone/SkipLib.skipcode.json: note: SkipLib.skipcode.json codebase (692 KB) loaded (939 ms) for SkipLib
+/Users/organic/dev/work/showcase/.build/plugins/outputs/skip-unit/SkipUnit/destination/skipstone/SkipUnit.skipcode.json: note: SkipUnit.skipcode.json codebase (24 KB) loaded (4 ms) for SkipUnit
+/Users/organic/dev/work/showcase/.build/plugins/outputs/skip-supabase/SkipSupabaseRealtime/destination/skipstone/SkipSupabaseRealtime.skipcode.json: note: SkipSupabaseRealtime.skipcode.json (1 KB) codebase unchanged
+/Users/organic/dev/work/showcase/.build/plugins/outputs/skip-supabase/SkipSupabaseRealtime/destination/skipstone/SkipBridgeGenerated/SkipSupabaseRealtime_Bridge.swift: note: SkipBridgeGenerated/SkipSupabaseRealtime_Bridge.swift (Zero KB) skipbridge unchanged
+/Users/organic/dev/work/showcase/.build/plugins/outputs/skip-supabase/SkipSupabaseRealtime/destination/skipstone/SkipBridgeGenerated/AnyDynamicObject_Support.swift: note: SkipBridgeGenerated/AnyDynamicObject_Support.swift (Zero KB) skipbridge unchanged
+/Users/organic/dev/work/showcase/.build/plugins/outputs/skip-supabase/SkipSupabaseRealtime/destination/skipstone/SkipBridgeGenerated/Bundle_Support.swift: note: SkipBridgeGenerated/Bundle_Support.swift (Zero KB) skipbridge unchanged
+/Users/organic/dev/work/showcase/.build/plugins/outputs/skip-supabase/SkipSupabaseRealtime/destination/skipstone/SkipBridgeGenerated/FoundationBridge_Support.swift: note: SkipBridgeGenerated/FoundationBridge_Support.swift (Zero KB) skipbridge unchanged
+/Users/organic/dev/work/showcase/.build/plugins/outputs/skip-supabase/SkipSupabaseRealtime/destination/skipstone/gradle/wrapper/gradle-wrapper.properties: note: gradle/wrapper/gradle-wrapper.properties (80 bytes) gradle wrapper unchanged
+/Users/organic/dev/work/showcase/.build/plugins/outputs/skip-supabase/SkipSupabaseRealtime/destination/skipstone/SkipSupabaseRealtime/proguard-rules.pro: note: SkipSupabaseRealtime/proguard-rules.pro (363 bytes) proguard unchanged
+/Users/organic/dev/work/showcase/.build/plugins/outputs/skip-supabase/SkipSupabaseRealtime/destination/skipstone/SkipSupabaseRealtime/build.gradle.kts: note: SkipSupabaseRealtime/build.gradle.kts (3 KB) gradle project unchanged
+/Users/organic/dev/work/showcase/.build/plugins/outputs/skip-supabase/SkipSupabaseRealtime/destination/skipstone/gradle.properties: note: gradle.properties (79 bytes) gradle config unchanged
+/Users/organic/dev/work/showcase/.build/plugins/outputs/skip-supabase/SkipSupabaseRealtime/destination/skipstone/settings.gradle.kts: note: settings.gradle.kts (4 KB) gradle settings unchanged
+/Users/organic/dev/work/showcase/.build/plugins/outputs/skip-supabase/SkipSupabaseRealtime/destination/skipstone/SkipSupabaseRealtime/src/main/kotlin/skip/supabase/realtime/SkipSupabaseRealtime.kt: warning: removing stale output file: SkipSupabaseRealtime.kt
+/Users/organic/dev/work/showcase/.build/plugins/outputs/skip-supabase/SkipSupabaseRealtime/destination/skipstone/.SkipSupabaseRealtime.sourcehash: note: .SkipSupabaseRealtime.sourcehash (218 bytes) sourcehash unchanged
+[174/312] Skip SkipSupabaseRealtime
+[175/314] Write sources
+[175/314] Copying .SkipSupabaseRealtime.sourcehash
+[177/317] Linking libSkipLib.so
+[179/348] Compiling Clocks Timer.swift
+<unknown>:0: error: missing required module 'CJNI'
+[180/348] Compiling XCTestDynamicOverlay Exports.swift
+[180/487] Linking libSkipBridge.so
+note: Skip 1.8.11: skipstone plugin to: /Users/organic/dev/work/showcase/.build/plugins/outputs/skip-supabase/SkipSupabase/destination/skipstone/SkipSupabase/src/main at 17:59:57
+/Users/organic/dev/work/showcase/.build/checkouts/skip-supabase/Sources/SkipSupabase/Skip/skip.yml: note: loading skip.yml from /Users/organic/dev/work/showcase/.build/checkouts/skip-supabase/Sources/SkipSupabase/Skip/skip.yml
+/Users/organic/dev/work/showcase/.build/checkouts/skip-supabase/Sources/SkipSupabaseAuth/Skip/skip.yml: note: SkipSupabaseAuth skip.yml config loaded (1 ms)
+/Users/organic/dev/work/showcase/.build/checkouts/skip-supabase/Sources/SkipSupabaseCore/Skip/skip.yml: note: SkipSupabaseCore skip.yml config loaded (3 ms)
+/Users/organic/dev/work/showcase/.build/checkouts/skip-foundation/Sources/SkipFoundation/Skip/skip.yml: note: SkipFoundation skip.yml config loaded (3 ms)
+/Users/organic/dev/work/showcase/.build/checkouts/skip-lib/Sources/SkipLib/Skip/skip.yml: note: SkipLib skip.yml config loaded (4 ms)
+/Users/organic/dev/work/showcase/.build/checkouts/skip-unit/Sources/SkipUnit/Skip/skip.yml: note: SkipUnit skip.yml config loaded (342 ms)
+/Users/organic/dev/work/showcase/.build/checkouts/skip-supabase/Sources/SkipSupabaseFunctions/Skip/skip.yml: note: SkipSupabaseFunctions skip.yml config loaded (2 ms)
+/Users/organic/dev/work/showcase/.build/checkouts/skip-supabase/Sources/SkipSupabasePostgREST/Skip/skip.yml: note: SkipSupabasePostgREST skip.yml config loaded (2 ms)
+/Users/organic/dev/work/showcase/.build/checkouts/skip-supabase/Sources/SkipSupabaseRealtime/Skip/skip.yml: note: SkipSupabaseRealtime skip.yml config loaded (1 ms)
+/Users/organic/dev/work/showcase/.build/checkouts/skip-supabase/Sources/SkipSupabaseStorage/Skip/skip.yml: note: SkipSupabaseStorage skip.yml config loaded (0 ms)
+note: skip.yml aggregate created (377 ms) for modules: ["SkipSupabase", "SkipSupabaseAuth", "SkipSupabaseCore", "SkipFoundation", "SkipLib", "SkipUnit", "SkipSupabaseFunctions", "SkipSupabasePostgREST", "SkipSupabaseRealtime", "SkipSupabaseStorage"]
+/Users/organic/dev/work/showcase/.build/plugins/outputs/skip-supabase/SkipSupabaseAuth/destination/skipstone/SkipSupabaseAuth.skipcode.json: note: SkipSupabaseAuth.skipcode.json codebase (1 KB) loaded (6 ms) for SkipSupabaseAuth
+/Users/organic/dev/work/showcase/.build/plugins/outputs/skip-supabase/SkipSupabaseCore/destination/skipstone/SkipSupabaseCore.skipcode.json: note: SkipSupabaseCore.skipcode.json codebase (1 KB) loaded (0 ms) for SkipSupabaseCore
+/Users/organic/dev/work/showcase/.build/plugins/outputs/skip-foundation/SkipFoundation/destination/skipstone/SkipFoundation.skipcode.json: note: SkipFoundation.skipcode.json codebase (1.5 MB) loaded (857 ms) for SkipFoundation
+/Users/organic/dev/work/showcase/.build/plugins/outputs/skip-lib/SkipLib/destination/skipstone/SkipLib.skipcode.json: note: SkipLib.skipcode.json codebase (692 KB) loaded (384 ms) for SkipLib
+/Users/organic/dev/work/showcase/.build/plugins/outputs/skip-unit/SkipUnit/destination/skipstone/SkipUnit.skipcode.json: note: SkipUnit.skipcode.json codebase (24 KB) loaded (1 ms) for SkipUnit
+/Users/organic/dev/work/showcase/.build/plugins/outputs/skip-supabase/SkipSupabaseFunctions/destination/skipstone/SkipSupabaseFunctions.skipcode.json: note: SkipSupabaseFunctions.skipcode.json codebase (1 KB) loaded (1 ms) for SkipSupabaseFunctions
+/Users/organic/dev/work/showcase/.build/plugins/outputs/skip-supabase/SkipSupabasePostgREST/destination/skipstone/SkipSupabasePostgREST.skipcode.json: note: SkipSupabasePostgREST.skipcode.json codebase (1 KB) loaded (0 ms) for SkipSupabasePostgREST
+/Users/organic/dev/work/showcase/.build/plugins/outputs/skip-supabase/SkipSupabaseRealtime/destination/skipstone/SkipSupabaseRealtime.skipcode.json: note: SkipSupabaseRealtime.skipcode.json codebase (1 KB) loaded (0 ms) for SkipSupabaseRealtime
+/Users/organic/dev/work/showcase/.build/plugins/outputs/skip-supabase/SkipSupabaseStorage/destination/skipstone/SkipSupabaseStorage.skipcode.json: note: SkipSupabaseStorage.skipcode.json codebase (1 KB) loaded (0 ms) for SkipSupabaseStorage
+/Users/organic/dev/work/showcase/.build/plugins/outputs/skip-supabase/SkipSupabase/destination/skipstone/SkipSupabase.skipcode.json: note: SkipSupabase.skipcode.json (136 KB) codebase unchanged
+/Users/organic/dev/work/showcase/.build/plugins/outputs/skip-supabase/SkipSupabase/destination/skipstone/SkipBridgeGenerated/SupabasePostgrest_Bridge.swift: note: SkipBridgeGenerated/SupabasePostgrest_Bridge.swift (Zero KB) skipbridge unchanged
+/Users/organic/dev/work/showcase/.build/plugins/outputs/skip-supabase/SkipSupabase/destination/skipstone/SkipBridgeGenerated/SupabaseAuth_Bridge.swift: note: SkipBridgeGenerated/SupabaseAuth_Bridge.swift (Zero KB) skipbridge unchanged
+/Users/organic/dev/work/showcase/.build/plugins/outputs/skip-supabase/SkipSupabase/destination/skipstone/SkipBridgeGenerated/SkipSupabase_Bridge.swift: note: SkipBridgeGenerated/SkipSupabase_Bridge.swift (Zero KB) skipbridge unchanged
+/Users/organic/dev/work/showcase/.build/plugins/outputs/skip-supabase/SkipSupabase/destination/skipstone/SkipBridgeGenerated/SupabaseStorage_Bridge.swift: note: SkipBridgeGenerated/SupabaseStorage_Bridge.swift (Zero KB) skipbridge unchanged
+/Users/organic/dev/work/showcase/.build/plugins/outputs/skip-supabase/SkipSupabase/destination/skipstone/SkipBridgeGenerated/AnyDynamicObject_Support.swift: note: SkipBridgeGenerated/AnyDynamicObject_Support.swift (Zero KB) skipbridge unchanged
+/Users/organic/dev/work/showcase/.build/plugins/outputs/skip-supabase/SkipSupabase/destination/skipstone/SkipBridgeGenerated/Bundle_Support.swift: note: SkipBridgeGenerated/Bundle_Support.swift (Zero KB) skipbridge unchanged
+/Users/organic/dev/work/showcase/.build/plugins/outputs/skip-supabase/SkipSupabase/destination/skipstone/SkipBridgeGenerated/FoundationBridge_Support.swift: note: SkipBridgeGenerated/FoundationBridge_Support.swift (Zero KB) skipbridge unchanged
+/Users/organic/dev/work/showcase/.build/plugins/outputs/skip-supabase/SkipSupabase/destination/skipstone/gradle/wrapper/gradle-wrapper.properties: note: gradle/wrapper/gradle-wrapper.properties (80 bytes) gradle wrapper unchanged
+/Users/organic/dev/work/showcase/.build/plugins/outputs/skip-supabase/SkipSupabase/destination/skipstone/SkipSupabase/proguard-rules.pro: note: SkipSupabase/proguard-rules.pro (354 bytes) proguard unchanged
+/Users/organic/dev/work/showcase/.build/plugins/outputs/skip-supabase/SkipSupabase/destination/skipstone/SkipSupabase/build.gradle.kts: note: SkipSupabase/build.gradle.kts (4 KB) gradle project unchanged
+/Users/organic/dev/work/showcase/.build/plugins/outputs/skip-supabase/SkipSupabase/destination/skipstone/gradle.properties: note: gradle.properties (79 bytes) gradle config unchanged
+/Users/organic/dev/work/showcase/.build/plugins/outputs/skip-supabase/SkipSupabase/destination/skipstone/settings.gradle.kts: note: settings.gradle.kts (4 KB) gradle settings unchanged
+/Users/organic/dev/work/showcase/.build/plugins/outputs/skip-supabase/SkipSupabase/destination/skipstone/SkipSupabase/src/main/kotlin/skip/supabase/SkipSupabase.kt: warning: removing stale output file: SkipSupabase.kt
+/Users/organic/dev/work/showcase/.build/plugins/outputs/skip-supabase/SkipSupabase/destination/skipstone/SkipSupabase/src/main/kotlin/skip/supabase/SupabaseAuth.kt: warning: removing stale output file: SupabaseAuth.kt
+/Users/organic/dev/work/showcase/.build/plugins/outputs/skip-supabase/SkipSupabase/destination/skipstone/SkipSupabase/src/main/kotlin/skip/supabase/SupabasePostgrest.kt: warning: removing stale output file: SupabasePostgrest.kt
+/Users/organic/dev/work/showcase/.build/plugins/outputs/skip-supabase/SkipSupabase/destination/skipstone/SkipSupabase/src/main/kotlin/skip/supabase/SupabaseStorage.kt: warning: removing stale output file: SupabaseStorage.kt
+/Users/organic/dev/work/showcase/.build/plugins/outputs/skip-supabase/SkipSupabase/destination/skipstone/.SkipSupabase.sourcehash: note: .SkipSupabase.sourcehash (482 bytes) sourcehash unchanged
+[181/488] Skip SkipSupabase
+[182/491] Copying .SkipSupabase.sourcehash
+[183/491] Emitting module SkipFoundation
+[184/491] Write sources
+[186/504] Compiling AndroidLogging AndroidLogging.swift
+[187/505] Compiling Clocks TestClock.swift
+<unknown>:0: error: missing required module 'CJNI'
+error: emit-module command failed with exit code 1 (use -v to see invocation)
+[188/514] Emitting module Clocks
+<unknown>:0: error: missing required module 'CJNI'
+[189/529] Compiling Clocks _AsyncTimerSequence.swift
+<unknown>:0: error: missing required module 'CJNI'
+[190/529] Compiling Clocks AnyClock.swift
+<unknown>:0: error: missing required module 'CJNI'
+[191/529] Compiling Clocks ImmediateClock.swift
+<unknown>:0: error: missing required module 'CJNI'
+[192/529] Compiling Clocks Lock.swift
+<unknown>:0: error: missing required module 'CJNI'
+[193/529] Compiling Clocks UnimplementedClock.swift
+<unknown>:0: error: missing required module 'CJNI'
+[194/529] Compiling Clocks SwiftUI.swift
+<unknown>:0: error: missing required module 'CJNI'
+note: Skip 1.8.11: skipstone plugin to: /Users/organic/dev/work/showcase/.build/plugins/outputs/skip-ui/SkipUI/destination/skipstone/SkipUI/src/main at 17:59:54
+/Users/organic/dev/work/showcase/.build/checkouts/skip-ui/Sources/SkipUI/Skip/skip.yml: note: loading skip.yml from /Users/organic/dev/work/showcase/.build/checkouts/skip-ui/Sources/SkipUI/Skip/skip.yml
+/Users/organic/dev/work/showcase/.build/checkouts/skip-model/Sources/SkipModel/Skip/skip.yml: note: SkipModel skip.yml config loaded (3 ms)
+/Users/organic/dev/work/showcase/.build/checkouts/skip-foundation/Sources/SkipFoundation/Skip/skip.yml: note: SkipFoundation skip.yml config loaded (3 ms)
+/Users/organic/dev/work/showcase/.build/checkouts/skip-lib/Sources/SkipLib/Skip/skip.yml: note: SkipLib skip.yml config loaded (1 ms)
+/Users/organic/dev/work/showcase/.build/checkouts/skip-unit/Sources/SkipUnit/Skip/skip.yml: note: SkipUnit skip.yml config loaded (175 ms)
+/Users/organic/dev/work/showcase/.build/checkouts/skip-bridge/Sources/SkipBridge/Skip/skip.yml: note: SkipBridge skip.yml config loaded (21 ms)
+note: skip.yml aggregate created (228 ms) for modules: ["SkipUI", "SkipModel", "SkipFoundation", "SkipLib", "SkipUnit", "SkipBridge"]
+/Users/organic/dev/work/showcase/.build/plugins/outputs/skip-model/SkipModel/destination/skipstone/SkipModel.skipcode.json: note: SkipModel.skipcode.json codebase (38 KB) loaded (6 ms) for SkipModel
+/Users/organic/dev/work/showcase/.build/plugins/outputs/skip-foundation/SkipFoundation/destination/skipstone/SkipFoundation.skipcode.json: note: SkipFoundation.skipcode.json codebase (1.5 MB) loaded (645 ms) for SkipFoundation
+/Users/organic/dev/work/showcase/.build/plugins/outputs/skip-lib/SkipLib/destination/skipstone/SkipLib.skipcode.json: note: SkipLib.skipcode.json codebase (692 KB) loaded (155 ms) for SkipLib
+/Users/organic/dev/work/showcase/.build/plugins/outputs/skip-unit/SkipUnit/destination/skipstone/SkipUnit.skipcode.json: note: SkipUnit.skipcode.json codebase (24 KB) loaded (4 ms) for SkipUnit
+/Users/organic/dev/work/showcase/.build/plugins/outputs/skip-bridge/SkipBridge/destination/skipstone/SkipBridge.skipcode.json: note: SkipBridge.skipcode.json codebase (63 KB) loaded (8 ms) for SkipBridge
+[194/529] Skip SkipUI
+[195/529] Compiling SkipFoundation LocalizedStringResource.swift
+[196/529] Compiling SkipFoundation Logger.swift
+[197/529] Compiling SkipFoundation Unicode.swift
+[198/529] Compiling SkipFoundation Unit.swift
+[199/529] Compiling SkipFoundation UnitAcceleration.swift
+[200/529] Compiling SkipFoundation UnitAngle.swift
+[201/529] Compiling SkipFoundation UnitArea.swift
+[202/529] Compiling SkipFoundation UnitConcentrationMass.swift
+[203/529] Compiling AndroidSystem MachPort.swift
+[204/529] Compiling AndroidSystem PlatformString.swift
+[205/529] Compiling AndroidSystem Constants.swift
+[206/529] Compiling AndroidSystem Exports.swift
+[207/529] Compiling AndroidSystem Mocking.swift
+[208/529] Compiling SkipFoundation FileManager.swift
+[209/529] Compiling SkipFoundation Formatter.swift
+[210/529] Compiling SkipFoundation HTTPURLResponse.swift
+[211/529] Emitting module AndroidLogging
+error: cancelled
+[212/529] Emitting module XCTestDynamicOverlay
+Error: Error terminated(code: 1) running command: /Users/organic/Library/Developer/Toolchains/swift-6.3.1-RELEASE.xctoolchain/usr/bin/swift build --swift-sdk aarch64-unknown-linux-android28 -Xswiftc -DSKIP_BRIDGE -Xswiftc -DTARGET_OS_ANDROID

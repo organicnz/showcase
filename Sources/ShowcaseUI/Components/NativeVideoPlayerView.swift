@@ -1,8 +1,9 @@
 import SwiftUI
-#if os(iOS) || os(macOS)
+#if (os(iOS) || os(macOS)) && !SKIP
 import AVKit
 #endif
 
+#if !SKIP
 #if os(iOS)
 public struct NativeVideoPlayerView: UIViewControllerRepresentable {
     public let player: AVPlayer?
@@ -49,3 +50,5 @@ public struct NativeVideoPlayerView: NSViewRepresentable {
     }
 }
 #endif
+#endif
+

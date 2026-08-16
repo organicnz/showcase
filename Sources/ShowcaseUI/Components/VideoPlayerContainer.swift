@@ -1,5 +1,5 @@
 import SwiftUI
-#if os(iOS) || os(macOS)
+#if (os(iOS) || os(macOS)) && !SKIP
 import AVKit
 #endif
 import SkipAV
@@ -25,12 +25,11 @@ public struct VideoPlayerContainer: View {
                 Rectangle()
                     .fill(Color.black)
                     .overlay {
-                        #if SKIP_BRIDGE || SKIP
+                        #if os(Android) || SKIP_BRIDGE || SKIP
                         SkipAV.VideoPlayer(player: player)
                         #elseif os(iOS) || os(macOS)
                         NativeVideoPlayerView(player: player, videoGravity: contentMode == .fill ? .resizeAspectFill : .resizeAspect)
                         #else
-                        // Fallback for other platforms
                         Color.black
                         #endif
                     }

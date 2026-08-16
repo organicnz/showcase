@@ -1,17 +1,18 @@
+import ShowcaseCore
+import ShowcaseUI
 import SwiftUI
 
 struct ScenarioGridView: View {
     enum LayoutStyle: String, CaseIterable {
         case grid = "Сетка"
         case list = "Список"
-        case masonry = "Мозаика"
     }
 
     @Environment(ViewModel.self) var viewModel: ViewModel
     #if !os(macOS)
     @Environment(\.horizontalSizeClass) private var horizontalSizeClass
     #endif
-    let animationNamespace: Namespace.ID
+    let animationNamespace: NamespaceID
     @State internal var isAnimating = false
     @State internal var layoutStyle: LayoutStyle = .grid
 
@@ -32,26 +33,26 @@ struct ScenarioGridView: View {
                 ScrollView {
                     VStack(spacing: 0) {
                         // Spacer for the status bar + navbar area
-                        Color.clear.frame(height: 100)
+                        Color.clear.frame(height: 80)
 
-                        VStack(spacing: isCompact ? 20 : 32) {
+                        VStack(spacing: isCompact ? 16 : 24) {
                             // Welcome Text
-                            VStack(spacing: 12) {
+                            VStack(spacing: 8) {
                                 Text("МЕЩЕРСКИЙ ПАРК")
-                                    .font(.labelCaps)
-                                    .tracking(4)
+                                    .font(.system(size: 10, weight: .semibold))
+                                    .tracking(3)
                                     .foregroundStyle(Color.terracotta)
 
                                 Text("Выберите сценарий\nобраза жизни")
-                                    .font(isCompact ? .displayMedium : .displayLarge)
+                                    .font(isCompact ? .displayMedium : .displayMedium)
                                     .foregroundStyle(.ink)
                                     .multilineTextAlignment(.center)
-                                    .lineSpacing(4)
+                                    .lineSpacing(2)
                             }
                         }
-                        .padding(.top, 24)
+                        .padding(.top, 16)
 
-                        LazyVStack(spacing: 0, pinnedViews: [.sectionHeaders]) {
+                        LazyVStack(spacing: 0) {
                             Section {
                                 VStack(spacing: isCompact ? 20 : 32) {
                                     // Scenario Layouts
@@ -71,13 +72,10 @@ struct ScenarioGridView: View {
                                             case .list:
                                                 listView
                                                     .transition(.opacity.combined(with: .scale(scale: 0.95)))
-                                            case .masonry:
-                                                masonryGrid
-                                                    .transition(.opacity.combined(with: .scale(scale: 0.95)))
                                             }
                                         }
                                     }
-                                    .animation(.spring(response: 0.4, dampingFraction: 0.8), value: layoutStyle)
+                                    .animation(.spring(response: 0.4, dampingFraction: 0.8, blendDuration: 0), value: layoutStyle)
                                 }
                                 .padding(.bottom, 40)
                                 .frame(maxWidth: .infinity)
@@ -91,24 +89,24 @@ struct ScenarioGridView: View {
                                     }
                                     .pickerStyle(.segmented)
                                     .frame(maxWidth: isCompact ? .infinity : 320)
-                                    .padding(.vertical, 12)
+                                    .padding(.vertical, 8)
                                     .padding(.horizontal, isCompact ? 16 : 24)
                                     .background(
                                         Capsule()
                                             .fill(.ultraThinMaterial)
-                                            .opacity(scrollOffset < -140 ? 0 : 1)
+                                            .opacity(scrollOffset < -100 ? 0 : 1)
                                     )
                                 }
-                                .padding(.top, 44) // Account for the status bar area when pinned
-                                .padding(.bottom, 20)
+                                .padding(.top, 12)
+                                .padding(.bottom, 12)
                                 .frame(maxWidth: .infinity)
                                 .background(
                                     Rectangle()
                                         .fill(.ultraThinMaterial)
-                                        .opacity(scrollOffset < -140 ? 1 : 0)
+                                        .opacity(scrollOffset < -100 ? 1 : 0)
                                         .ignoresSafeArea(edges: .top)
                                 )
-                                .animation(.easeInOut, value: scrollOffset < -140)
+                                .animation(.easeInOut, value: scrollOffset < -100)
                             }
                         }
                     }
@@ -119,13 +117,13 @@ struct ScenarioGridView: View {
                         }
                     )
                 }
-                .coordinateSpace(name: "scroll")
+                    #if !os(Android)
+                    .coordinateSpace(name: "scroll")
+                    #endif
                 .onPreferenceChange(ScrollOffsetPreferenceKey.self) { value in
                     scrollOffset = value
                 }
 
-                // Moving Logo Overlay
-                // headerLogo(width: outerGeo.size.width)
             }
             .ignoresSafeArea(edges: .top)
             .background(AmbientBackgroundView())
@@ -191,39 +189,24 @@ struct ScenarioGridView: View {
         .padding(.horizontal, 16)
     }
 
-    // MARK: - Pyramid Grid (iPad: 3+2 centered rows)
+    // MARK: - Pyramid Grid (iPad: 3-column LazyVGrid)
 
     @ViewBuilder
     private var pyramidGrid: some View {
         let scenarios = viewModel.scenarios
+        let columns = isCompact 
+            ? [GridItem(.flexible(), spacing: 16), GridItem(.flexible(), spacing: 16)]
+            : [GridItem(.flexible(), spacing: 24), GridItem(.flexible(), spacing: 24), GridItem(.flexible(), spacing: 24)]
 
-        VStack(spacing: 32) {
-            // Top row: up to 3 cards
-            let topRow = Array(scenarios.prefix(3))
-            HStack(spacing: 24) {
-                ForEach(topRow) { scenario in
-                    ScenarioCard(scenario: scenario, namespace: animationNamespace) {
-                        HapticManager.shared.impact(style: .medium)
-                        viewModel.selectScenario(scenario)
-                    }
+        LazyVGrid(columns: columns, spacing: isCompact ? 20 : 24) {
+            ForEach(scenarios) { scenario in
+                ScenarioCard(scenario: scenario, namespace: animationNamespace) {
+                    HapticManager.shared.impact(style: .medium)
+                    viewModel.selectScenario(scenario)
                 }
-            }
-
-            // Bottom row: remaining cards, centered
-            if scenarios.count > 3 {
-                let bottomRow = Array(scenarios.dropFirst(3))
-                HStack(spacing: 24) {
-                    ForEach(bottomRow) { scenario in
-                        ScenarioCard(scenario: scenario, namespace: animationNamespace) {
-                            HapticManager.shared.impact(style: .medium)
-                            viewModel.selectScenario(scenario)
-                        }
-                    }
-                }
-                .frame(maxWidth: .infinity)
             }
         }
-        .padding(.horizontal, 40)
+        .padding(.horizontal, isCompact ? 16 : 40)
     }
 
     // MARK: - List View
@@ -244,51 +227,6 @@ struct ScenarioGridView: View {
 
     // MARK: - Masonry Grid
 
-    private var masonryColumnCount: Int {
-        isCompact ? 2 : 2
-    }
-
-    private var masonryColumns: [[Scenario]] {
-        let scenarios = viewModel.scenarios
-        let columns = masonryColumnCount
-        var cols: [[Scenario]] = Array(repeating: [], count: columns)
-
-        // Simple masonry bucket allocation
-        for (index, scenario) in scenarios.enumerated() {
-            cols[index % columns].append(scenario)
-        }
-        return cols
-    }
-
-    @ViewBuilder
-    private var masonryGrid: some View {
-        let cols = masonryColumns
-        let spacing: CGFloat = isCompact ? 12 : 20
-
-        HStack(alignment: .top, spacing: spacing) {
-            ForEach(0..<cols.count, id: \.self) { colIndex in
-                VStack(spacing: spacing) {
-                    ForEach(cols[colIndex]) { scenario in
-                        ScenarioCard(scenario: scenario, namespace: animationNamespace) {
-                            HapticManager.shared.impact(style: .medium)
-                            viewModel.selectScenario(scenario)
-                        }
-                    }
-                }
-                // Offset the second column to create the masonry staggered look
-                .padding(.top, colIndex == 1 ? (isCompact ? 24 : 40) : 0)
-            }
-        }
-        .padding(.horizontal, isCompact ? 16 : 24)
-    }
-
-    /// Constrains the bottom row width to center it relative to the top row.
-    private func cardWidth(for bottomCount: Int, total topCount: Int) -> CGFloat {
-        // If fewer items in bottom, constrain to proportional width
-        guard topCount > 0, bottomCount < topCount else { return .infinity }
-        // This works as a rough heuristic; actual sizing is handled by flexible HStack
-        return .infinity
-    }
 }
 
 struct ScrollOffsetPreferenceKey: PreferenceKey {

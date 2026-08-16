@@ -1,3 +1,5 @@
+import ShowcaseCore
+import ShowcaseUI
 import SwiftUI
 
 /// A premium loading screen with a pulsing brand logo.
@@ -19,6 +21,7 @@ struct LoadingView: View {
     var body: some View {
         ZStack {
             // Ambient Shimmer Background
+            #if !os(Android)
             TimelineView(.animation) { timeline in
                 let time = timeline.date.timeIntervalSince(startDate)
                 let phase = sin(time * 0.5)
@@ -34,6 +37,9 @@ struct LoadingView: View {
                 )
                 .ignoresSafeArea()
             }
+            #else
+            Color.soft.ignoresSafeArea()
+            #endif
 
             VStack(spacing: 40) {
                 // Animated Jewel Logo
@@ -64,12 +70,12 @@ struct LoadingView: View {
                         .font(.labelCaps)
                         .foregroundStyle(.mid)
                         .opacity(textOpacity * 0.6)
-                        .contentTransition(.interpolate)
+                        
                 }
             }
         }
         .onAppear {
-            withAnimation(.spring(response: 1.5, dampingFraction: 0.8)) {
+            withAnimation(.spring(response: 1.5, dampingFraction: 0.8, blendDuration: 0)) {
                 isAnimate = true
             }
             withAnimation(.easeIn(duration: 1.2).delay(0.5)) {

@@ -1,13 +1,13 @@
 {
-  "originHash" : "ab165a3b97d570887694eb5e2ae3e9d7dde2592eaff03af0fcfad92e372dde16",
+  "originHash" : "84d14fda7066974dd1f9c0848c158b6c77fc149d55e5ceeba63eaf4e117b7e9f",
   "pins" : [
     {
       "identity" : "skip",
       "kind" : "remoteSourceControl",
       "location" : "https://source.skip.tools/skip.git",
       "state" : {
-        "revision" : "f15d7c3639c423a60be70c4ee201beabd725c7d3",
-        "version" : "1.8.9"
+        "revision" : "b1e1ecaa28596643799457261fbeca94283be71d",
+        "version" : "1.9.2"
       }
     },
     {
@@ -24,8 +24,8 @@
       "kind" : "remoteSourceControl",
       "location" : "https://source.skip.tools/skip-av.git",
       "state" : {
-        "revision" : "7be7602e4970b5844127fe1b5b35902ce65843d6",
-        "version" : "0.7.0"
+        "revision" : "7c44621f6cdc009872384b7c4fad8205e82bf136",
+        "version" : "0.7.1"
       }
     },
     {
@@ -60,8 +60,8 @@
       "kind" : "remoteSourceControl",
       "location" : "https://source.skip.tools/skip-fuse-ui.git",
       "state" : {
-        "revision" : "7513dcc91c9c90572a2bba8659c420b48ee07ea8",
-        "version" : "1.14.5"
+        "revision" : "0a5659e1010e30b3211bf1efd0965501b63f83b0",
+        "version" : "1.16.0"
       }
     },
     {
@@ -78,8 +78,8 @@
       "kind" : "remoteSourceControl",
       "location" : "https://source.skip.tools/skip-model.git",
       "state" : {
-        "revision" : "1f6ae8b6c9ce37a31c83444314ea527399e8636a",
-        "version" : "1.7.3"
+        "revision" : "119d266a295f0c2156fe58cd23325bad0ee115c8",
+        "version" : "1.7.4"
       }
     },
     {
@@ -96,8 +96,8 @@
       "kind" : "remoteSourceControl",
       "location" : "https://source.skip.tools/skip-ui.git",
       "state" : {
-        "revision" : "71d6296eeefce819b88f2a93f5d1a477d6722742",
-        "version" : "1.52.0"
+        "revision" : "32a56569e5a991bebcf38750fb519eaf7a8e141b",
+        "version" : "1.55.0"
       }
     },
     {
@@ -105,8 +105,8 @@
       "kind" : "remoteSourceControl",
       "location" : "https://source.skip.tools/skip-unit.git",
       "state" : {
-        "revision" : "920adff2065224ad592745a4cc028e9c2df137d4",
-        "version" : "1.6.1"
+        "revision" : "c89af47fd645e04db863e938ade39f91e1bb62b8",
+        "version" : "1.7.0"
       }
     },
     {
@@ -114,8 +114,8 @@
       "kind" : "remoteSourceControl",
       "location" : "https://github.com/supabase/supabase-swift.git",
       "state" : {
-        "revision" : "06ae7b34ec21406cbd3e643bee7a8a54206fa8f5",
-        "version" : "2.44.1"
+        "revision" : "dd29b624b9ceea87612d0b00457e1400f7d22c2e",
+        "version" : "2.46.0"
       }
     },
     {

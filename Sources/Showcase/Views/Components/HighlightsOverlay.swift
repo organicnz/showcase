@@ -1,3 +1,5 @@
+import ShowcaseCore
+import ShowcaseUI
 import SwiftUI
 
 struct HighlightsOverlay: View {
@@ -16,7 +18,9 @@ struct HighlightsOverlay: View {
                 if isVisible {
                     Text(highlights[currentIndex].uppercased())
                         .font(.system(size: 14, weight: .bold, design: .monospaced))
+                        #if !os(Android)
                         .kerning(4)
+                        #endif
                         .foregroundStyle(.white)
                         .padding(.horizontal, 24)
                         .padding(.vertical, 12)
@@ -39,6 +43,7 @@ struct HighlightsOverlay: View {
         }
     }
     
+    @MainActor
     private func startCycling() {
         guard !highlights.isEmpty else { return }
         isVisible = true

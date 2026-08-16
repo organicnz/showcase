@@ -1,4 +1,7 @@
 import Foundation
+#if canImport(SwiftUI)
+import SwiftUI
+#endif
 
 // MARK: - Scenario
 
@@ -176,9 +179,24 @@ public struct UserSettings: Codable, Sendable, Equatable {
     }
 }
 
+public enum AppTheme: String, CaseIterable, Codable, Sendable {
+    case system
+    case light
+    case dark
+    
+    #if canImport(SwiftUI)
+    public var colorScheme: ColorScheme? {
+        switch self {
+        case .system: return nil
+        case .light: return .light
+        case .dark: return .dark
+        }
+    }
+    #endif
+}
+
 // MARK: - Load State
 
-/// Represents the loading state of async data operations.
 public enum LoadState: Sendable {
     case idle
     case loading
@@ -202,4 +220,66 @@ public enum ContentMode: String, CaseIterable, Codable, Sendable {
     case overview = "Обзор"
     case photo = "Фото"
     case video = "Видео"
+}
+
+// MARK: - Playback State
+
+public enum PlaybackState: Sendable {
+    case idle
+    case playing(video: Video, queue: [Video], index: Int)
+    case paused(video: Video, queue: [Video], index: Int)
+    
+    public var currentVideo: Video? {
+        switch self {
+        case .idle: return nil
+        case .playing(let video, _, _), .paused(let video, _, _): return video
+        }
+    }
+    
+    public var hasNext: Bool {
+        switch self {
+        case .idle: return false
+        case .playing(_, let queue, let index), .paused(_, let queue, let index):
+            return index < queue.count - 1
+        }
+    }
+}
+// MARK: - Workflow State
+
+public struct WorkflowState: Identifiable, Codable, Sendable {
+    public let id: UUID
+    public var workflowName: String
+    public var currentStepIndex: Int
+    public var completedSteps: [String]
+    public var status: Status
+    public var updatedAt: Date
+
+    public enum Status: String, Codable, Sendable {
+        case pending, running, completed, failed
+    }
+
+    public init(
+        id: UUID = UUID(),
+        workflowName: String,
+        currentStepIndex: Int = 0,
+        completedSteps: [String] = [],
+        status: Status = .pending,
+        updatedAt: Date = Date()
+    ) {
+        self.id = id
+        self.workflowName = workflowName
+        self.currentStepIndex = currentStepIndex
+        self.completedSteps = completedSteps
+        self.status = status
+        self.updatedAt = updatedAt
+    }
+
+    enum CodingKeys: String, CodingKey {
+        case id
+        case workflowName = "workflow_name"
+        case currentStepIndex = "current_step_index"
+        case completedSteps = "completed_steps"
+        case status
+        case updatedAt = "updated_at"
+    }
 }

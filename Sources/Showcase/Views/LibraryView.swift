@@ -1,10 +1,27 @@
+import ShowcaseCore
+import ShowcaseUI
 import SwiftUI
 
 struct LibraryView: View {
     @Environment(ViewModel.self) var viewModel: ViewModel
     @State internal var showVideoPlayer = false
     @State internal var searchText = ""
+    #if !os(macOS) && !os(Android)
+    @Environment(\.horizontalSizeClass) private var horizontalSizeClass
+    #endif
+    
+    private var isCompact: Bool {
+        #if os(macOS) || os(Android)
+        return false
+        #else
+        return horizontalSizeClass == .compact
+        #endif
+    }
+    #if os(Android)
+    @SkipNamespace internal var animationNamespace
+    #else
     @Namespace internal var animationNamespace
+    #endif
 
     var filteredScenarios: [Scenario] {
         if searchText.isEmpty {
@@ -27,7 +44,7 @@ struct LibraryView: View {
                 if viewModel.hasVideos {
                     ScrollView {
                         VStack(alignment: .leading, spacing: 32) {
-                            ForEach(filteredScenarios) { scenario in
+                            ForEach(filteredScenarios, id: \.id) { scenario in
                                 let videos = viewModel.videosForScenario(scenario)
                                 let photos = viewModel.photos[scenario.id] ?? []
                                 
@@ -62,7 +79,8 @@ struct LibraryView: View {
                                                     .padding(.horizontal, 20)
                                                 
                                                 // Video Grid
-                                                LazyVGrid(columns: [GridItem(.adaptive(minimum: 160), spacing: 16)], spacing: 16) {
+                                                let videoCols = isCompact ? [GridItem(.flexible()), GridItem(.flexible())] : [GridItem(.flexible()), GridItem(.flexible()), GridItem(.flexible()), GridItem(.flexible())]
+                                                LazyVGrid(columns: videoCols, spacing: 16) {
                                                     ForEach(videos) { video in
                                                         VideoCard(video: video) {
                                                             viewModel.playVideo(video)
@@ -83,7 +101,8 @@ struct LibraryView: View {
                                                     .padding(.horizontal, 20)
                                                 
                                                 // Photo Grid
-                                                LazyVGrid(columns: [GridItem(.adaptive(minimum: 160), spacing: 16)], spacing: 16) {
+                                                let photoCols = isCompact ? [GridItem(.flexible()), GridItem(.flexible())] : [GridItem(.flexible()), GridItem(.flexible()), GridItem(.flexible()), GridItem(.flexible())]
+                                                LazyVGrid(columns: photoCols, spacing: 16) {
                                                     ForEach(photos) { photo in
                                                         MediaThumbnail(photo: photo, namespace: animationNamespace) {
                                                             if let idx = photos.firstIndex(where: { $0.id == photo.id }) {

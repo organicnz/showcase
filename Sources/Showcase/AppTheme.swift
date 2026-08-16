@@ -1,3 +1,5 @@
+import ShowcaseCore
+import ShowcaseUI
 import SwiftUI
 
 /// User-selectable appearance theme, persisted via `@AppStorage`.

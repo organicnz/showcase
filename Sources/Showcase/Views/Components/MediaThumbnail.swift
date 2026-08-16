@@ -1,12 +1,15 @@
+import ShowcaseCore
+import ShowcaseUI
 import SwiftUI
 #if canImport(AVFoundation)
 import AVFoundation
 #endif
+import SkipAV
 
 struct MediaThumbnail: View {
     var video: Video?
     var photo: Photo?
-    var namespace: Namespace.ID
+    var namespace: NamespaceID
     let action: () -> Void
 
     @Environment(ViewModel.self) var viewModel: ViewModel
@@ -35,7 +38,7 @@ struct MediaThumbnail: View {
                     .stroke(Color.glassStroke, lineWidth: 0.5)
             )
             .scaleEffect(isPressed ? 0.98 : 1.0)
-            .animation(.spring(response: 0.3, dampingFraction: 0.7), value: isPressed)
+            .animation(.spring(response: 0.3, dampingFraction: 0.7, blendDuration: 0), value: isPressed)
         }
         .buttonStyle(PlainButtonStyle())
         .onLongPressGesture(minimumDuration: .infinity, maximumDistance: .infinity, pressing: { pressing in

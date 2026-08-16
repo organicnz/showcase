@@ -38,6 +38,7 @@ public struct VideoCard: View {
                 
                 Spacer()
             }
+            .frame(height: 100)
             .padding(LiquidGlassTheme.Spacing.md)
             .background(
                 RoundedRectangle(cornerRadius: LiquidGlassTheme.CornerRadius.medium)
