@@ -56,20 +56,40 @@ public enum AWE {
     
     /// The execution engine for workflows.
     /// Isolated to an actor to ensure thread-safe state management during execution.
+    ///
+    /// - Note: DB persistence is **opt-in** (`persist: false` by default).
+    ///   The read-only "Initial Load" workflow runs on every app launch —
+    ///   persisting its state to `workflow_states` on every launch costs
+    ///   1 SELECT + N UPSERTs per device per launch for zero user value and
+    ///   was a measurable source of Disk IO / WAL bloat (each launch inserted
+    ///   a new row because the workflow id is random per launch).
+    ///   Only pass `persist: true` for long-running *write* workflows that
+    ///   genuinely need crash-resume.
     public actor Runner {
         private var activeWorkflows: [UUID: WorkflowState] = [:]
-        
+
         public init() {}
-        
+
         /// Executes a workflow step-by-step.
         ///
         /// - Parameters:
         ///   - workflow: The workflow to execute.
-        ///   - progress: An optional closure to track progress updates.
-        public func execute(_ workflow: Workflow, onProgress: (@Sendable (WorkflowState) -> Void)? = nil) async throws {
-            // Check for existing state to resume
-            let existingState = try? await SupabaseManager.shared.fetchWorkflowState(name: workflow.name)
-            
+        ///   - persist: When `true`, load/persist state in Supabase
+        ///     `workflow_states` for crash-resume. Defaults to `false`
+        ///     (in-memory only — no DB IO).
+        ///   - onProgress: An optional closure to track progress updates.
+        public func execute(
+            _ workflow: Workflow,
+            persist: Bool = false,
+            onProgress: (@Sendable (WorkflowState) -> Void)? = nil
+        ) async throws {
+            // Only touch the database when crash-resume is actually needed.
+            let existingState: WorkflowState? = if persist {
+                try? await SupabaseManager.shared.fetchWorkflowState(name: workflow.name)
+            } else {
+                nil
+            }
+
             var state = existingState ?? WorkflowState(
                 id: workflow.id,
                 workflowName: workflow.name,
@@ -78,46 +98,61 @@ public enum AWE {
                 status: .running,
                 updatedAt: Date()
             )
-            
+
             state.status = .running
             activeWorkflows[workflow.id] = state
+            // Evict on scope exit (success or throw): entries are keyed by a
+            // per-run UUID, so without this the dictionary grows by one entry
+            // per execution for the lifetime of the process.
+            defer { activeWorkflows.removeValue(forKey: workflow.id) }
             onProgress?(state)
-            
-            let startIndex = state.currentStepIndex
-            
+
+            // Resume from persisted position only when persistence is on;
+            // otherwise always start from step 0 (fresh in-memory state).
+            let startIndex = persist ? state.currentStepIndex : 0
+
             for index in startIndex..<workflow.steps.count {
                 let step = workflow.steps[index]
                 state.currentStepIndex = index
                 state.updatedAt = Date()
-                
-                // Persist state to Supabase
-                try? await SupabaseManager.shared.updateWorkflowState(state)
+
+                // Persist state to Supabase only when opted in.
+                if persist {
+                    try? await SupabaseManager.shared.updateWorkflowState(state)
+                }
                 onProgress?(state)
-                
+
                 let result = try await executeStepWithRetries(step)
-                
+
                 switch result {
                 case .success:
                     state.completedSteps.append(step.id)
                 case .failure(let error):
                     state.status = .failed
                     state.updatedAt = Date()
-                    try? await SupabaseManager.shared.updateWorkflowState(state)
+                    if persist {
+                        try? await SupabaseManager.shared.updateWorkflowState(state)
+                    }
                     onProgress?(state)
                     throw error
                 case .retry(let reason):
                     state.status = .failed
                     state.updatedAt = Date()
-                    try? await SupabaseManager.shared.updateWorkflowState(state)
+                    if persist {
+                        try? await SupabaseManager.shared.updateWorkflowState(state)
+                    }
                     onProgress?(state)
                     throw NSError(domain: "AWE", code: 1, userInfo: [NSLocalizedDescriptionKey: "Retry limit exhausted: \(reason)"])
                 }
             }
-            
+
             state.status = .completed
             state.updatedAt = Date()
-            try? await SupabaseManager.shared.updateWorkflowState(state)
-            activeWorkflows[workflow.id] = state
+            if persist {
+                try? await SupabaseManager.shared.updateWorkflowState(state)
+            }
+            // NOTE: no activeWorkflows write here — the dictionary is
+            // write-only bookkeeping and defer evicts the entry on exit.
             onProgress?(state)
         }
         

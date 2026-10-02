@@ -26,8 +26,18 @@ jobs:
           DB_USER: postgres
         run: |
           mkdir -p backups
-          pg_dump -h $DB_HOST -U $DB_USER -d postgres -F p \
-            > backups/backup_$(date +%Y%m%d).sql
+          # --schema=public: skip auth/storage/realtime schemas (the bulk of
+          # Disk IO on a full dump). -F c: compressed custom format, smaller
+          # and faster to restore than plain SQL.
+          pg_dump -h $DB_HOST -U $DB_USER -d postgres -F c --schema=public \
+            --exclude-table=public.workflow_states \
+            -f backups/backup_$(date +%Y%m%d).dump
+          # Retention: keep last 7 dumps, delete older ones (unbounded git
+          # history of daily dumps grows Disk IO + repo size forever).
+          # 2>/dev/null: no dumps yet on a fresh repo must not print noise.
+          # NOTE: workflow_states is ephemeral runtime state — restoring it
+          # is meaningless, so it is excluded from backups entirely.
+          ls -1t backups/backup_*.dump 2>/dev/null | tail -n +8 | xargs -r rm --
 
       - name: Commit backup
         run: |

@@ -24,3 +24,6 @@ xcodebuild*.log
 Package.resolved
 **/fastlane/apikey.json
 **/fastlane/report.xml
+
+# Supabase CLI local link state (no secrets, machine-specific)
+supabase/.temp/

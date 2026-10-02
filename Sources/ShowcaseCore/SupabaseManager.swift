@@ -204,6 +204,8 @@ public actor SupabaseManager {
     }
 
     /// Fetches all active videos across all scenarios.
+    /// Prefer this over per-scenario `fetchVideos(for:)` when loading the
+    /// whole catalogue: 1 query instead of N (one per scenario).
     public func fetchAllVideos() async throws -> [Video] {
         try await withRetry {
             let videos: [Video] = try await client.from("videos")
@@ -213,6 +215,20 @@ public actor SupabaseManager {
                 .execute()
                 .value
             return videos
+        }
+    }
+
+    /// Fetches all active photos across all scenarios in a single query.
+    /// Batch counterpart to `fetchPhotos(for:)` — same N+1 rationale as videos.
+    public func fetchAllPhotos() async throws -> [Photo] {
+        try await withRetry {
+            let photos: [Photo] = try await client.from("photos")
+                .select()
+                .eq("active", value: true)
+                .order("order_index", ascending: true)
+                .execute()
+                .value
+            return photos
         }
     }
 
@@ -246,14 +262,21 @@ public actor SupabaseManager {
     }
 
     /// Performs a comprehensive health check across all Supabase services.
+    ///
+    /// - Note: intentionally lightweight. A previous version called
+    ///   `storage.listBuckets()`, which scans the `storage` schema on every
+    ///   Settings open / manual sync — pure overhead for a health dot.
+    ///   Storage health is now inferred from a cheap PostgREST probe on the
+    ///   `videos` table (same project, same network path as real media reads)
+    ///   with zero storage-schema IO.
     public func checkSystemHealth() async -> SystemHealth {
         let start = Date()
-        
+
         // Parallel checks for maximum efficiency
         async let authCheck: Bool = {
             return (try? await client.auth.session) != nil || true // Auth is up even if no session
         }()
-        
+
         async let dbCheck: Bool = {
             struct HealthCheckItem: Decodable { let id: UUID }
             do {
@@ -268,10 +291,17 @@ public actor SupabaseManager {
                 return false
             }
         }()
-        
+
         async let storageCheck: Bool = {
+            struct StorageProbeItem: Decodable { let id: UUID }
             do {
-                _ = try await client.storage.listBuckets()
+                // Cheap PostgREST probe: proves the API + database path that
+                // every media read depends on, without touching storage schema.
+                let _: [StorageProbeItem] = try await client.from("videos")
+                    .select("id")
+                    .limit(1)
+                    .execute()
+                    .value
                 return true
             } catch {
                 return false

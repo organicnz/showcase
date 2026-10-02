@@ -143,9 +143,11 @@ import SkipFuse
         }
 
         let workflow = createLoadWorkflow()
-        
+
         do {
-            try await workflowRunner.execute(workflow) { [weak self] state in
+            // persist: false — read-only catalogue load must not write to
+            // `workflow_states` (see AWE.Runner docs). In-memory only.
+            try await workflowRunner.execute(workflow, persist: false) { [weak self] state in
                 Task { @MainActor in
                     self?.updateLoadProgress(state)
                 }
@@ -162,12 +164,19 @@ import SkipFuse
         }
     }
     
+    private static let loadStepLabels = [
+        "Загрузка сценариев",
+        "Синхронизация медиа",
+        "Оптимизация кэша",
+    ]
+
     private func updateLoadProgress(_ state: AWE.WorkflowState) {
-        let steps = createLoadWorkflow().steps
-        if state.currentStepIndex < steps.count {
-            let currentStep = steps[state.currentStepIndex]
-            self.currentWorkflowProgress = currentStep.label
-            logger.debug("AWE Progress: \(currentStep.label) (\(state.currentStepIndex + 1)/3)")
+        // NOTE: labels live here (not in createLoadWorkflow) as the single
+        // source of truth for progress text — keep the two in the same order.
+        if state.currentStepIndex < Self.loadStepLabels.count {
+            let label = Self.loadStepLabels[state.currentStepIndex]
+            self.currentWorkflowProgress = label
+            logger.debug("AWE Progress: \(label) (\(state.currentStepIndex + 1)/\(Self.loadStepLabels.count))")
         }
     }
 
@@ -183,30 +192,35 @@ import SkipFuse
             },
             AWE.Step(id: "fetch_media", label: "Синхронизация медиа") { [weak self] in
                 guard let self = self else { return .success }
-                
-                // Get scenarios from MainActor
-                let currentScenarios = await MainActor.run { self.scenarios }
-                
-                await withTaskGroup(of: (UUID, [Video], [Photo]).self) { group in
-                    for scenario in currentScenarios {
-                        group.addTask {
-                            do {
-                                async let vids = SupabaseManager.shared.fetchVideos(for: scenario.id)
-                                async let phs = SupabaseManager.shared.fetchPhotos(for: scenario.id)
-                                return (scenario.id, try await vids, try await phs)
-                            } catch {
-                                logger.error("AWE: Failed to load media for \(scenario.slug): \(error)")
-                                return (scenario.id, [], [])
-                            }
-                        }
-                    }
 
-                    for await (scenarioId, vids, phs) in group {
-                        await MainActor.run {
-                            self.videos[scenarioId] = vids
-                            self.photos[scenarioId] = phs
+                // Batched fetch: 2 queries total instead of 2*N (one videos +
+                // one photos query per scenario). Each PostgREST round-trip is
+                // Disk IO + WAL + connection overhead on a tiny shared
+                // instance — with 5 scenarios the old TaskGroup issued 10
+                // queries per app launch; now it issues 2.
+                // Group client-side by scenario_id.
+                do {
+                    async let allVideos = SupabaseManager.shared.fetchAllVideos()
+                    async let allPhotos = SupabaseManager.shared.fetchAllPhotos()
+                    let (videos, photos) = try await (allVideos, allPhotos)
+
+                    let videosByScenario = Dictionary(grouping: videos, by: \.scenarioId)
+                    let photosByScenario = Dictionary(grouping: photos, by: \.scenarioId)
+
+                    // Get scenarios from MainActor
+                    let currentScenarios = await MainActor.run { self.scenarios }
+
+                    await MainActor.run {
+                        for scenario in currentScenarios {
+                            self.videos[scenario.id] = videosByScenario[scenario.id] ?? []
+                            self.photos[scenario.id] = photosByScenario[scenario.id] ?? []
                         }
                     }
+                } catch {
+                    // Intentional: keep the last good cache on failure (kiosk
+                    // must stay presentable offline) instead of clearing it.
+                    // loadState still resolves to .loaded below.
+                    logger.error("AWE: Failed to batch-load media: \(error)")
                 }
                 return .success
             },
