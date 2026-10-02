@@ -20,23 +20,18 @@ jobs:
 
   build-android:
     name: Build Android (SKIP)
-    runs-on: ubuntu-latest
+    # Skip transpilation (swift→Kotlin via skipstone) needs the macOS
+    # toolchain; the skip cask ships no Linux binary, so Ubuntu cannot run
+    # `skip plugin --prebuild`. Canonical Skip CI builds Android on macos.
+    runs-on: macos-latest
     steps:
       - uses: actions/checkout@v4
-      - name: Set up JDK 17
+      - name: Set up JDK
         uses: actions/setup-java@v4
         with:
           java-version: '21'
           distribution: 'temurin'
-      - name: Setup Android SDK
-        uses: android-actions/setup-android@v3
-        with:
-          # The 'tools' metapackage was removed from the SDK repository;
-          # pin cmdline-tools explicitly so sdkmanager accepts licenses.
-          packages: 'platform-tools cmdline-tools;latest'
       - name: Install Skip CLI
-        # settings.gradle.kts calls `skip plugin --prebuild` via /bin/sh;
-        # without the CLI on PATH it fails with exit 127.
         run: brew install skiptools/skip/skip
       - name: Build with Gradle
         run: |

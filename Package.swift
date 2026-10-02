@@ -6,11 +6,10 @@ let package = Package(
     name: "showcase",
     defaultLocalization: "ru",
     // macOS floor: SwiftPM defaults unspecified platforms to macOS 10.13,
-    // but every Skip dependency (skipstone, SkipFuseUI, SkipSupabase,
-    // SkipAV, SkipFoundation) requires macOS 13+. Without this floor both
-    // local `swift build` and the CI `swift test` fail with "requires
-    // macos 13.0" on every target.
-    platforms: [.iOS(.v26), .macOS(.v13)],
+    // but Skip dependencies require macOS 13+ and the code uses
+    // @Observable/Observation which requires macOS 14+. Without this floor
+    // both local `swift build` and the CI `swift test` fail.
+    platforms: [.iOS(.v26), .macOS(.v14)],
     products: [
         .library(name: "ShowcaseCore", targets: ["ShowcaseCore"]),
         .library(name: "ShowcaseUI", targets: ["ShowcaseUI"]),
