@@ -13,7 +13,8 @@ jobs:
     steps:
       - uses: actions/checkout@v4
       - name: Select Xcode
-        run: sudo xcode-select -s /Applications/Xcode_26.app
+        # macos-15 image ships Xcode 26.0.1-26.3; there is no Xcode_26.app alias.
+        run: sudo xcode-select -s /Applications/Xcode_26.3.app
       - name: Build and Test
         run: swift test
 
@@ -29,6 +30,10 @@ jobs:
           distribution: 'temurin'
       - name: Setup Android SDK
         uses: android-actions/setup-android@v3
+        with:
+          # The 'tools' metapackage was removed from the SDK repository;
+          # pin cmdline-tools explicitly so sdkmanager accepts licenses.
+          packages: 'platform-tools cmdline-tools;latest'
       - name: Build with Gradle
         run: |
           if [ -d "Android" ]; then
