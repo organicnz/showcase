@@ -16,7 +16,10 @@ jobs:
         # macos-15 image ships Xcode 26.0.1-26.3; there is no Xcode_26.app alias.
         run: sudo xcode-select -s /Applications/Xcode_26.3.app
       - name: Build and Test
-        run: swift test
+        # swift test on a macOS runner defaults to building for the host
+        # (macOS), where iOS-only UIKit modifiers fail. Build for an iOS
+        # simulator destination instead.
+        run: swift test -destination 'platform=iOS Simulator,name=iPhone 17 Pro'
 
   build-android:
     name: Build Android (SKIP)
@@ -33,6 +36,10 @@ jobs:
           distribution: 'temurin'
       - name: Install Skip CLI
         run: brew install skiptools/skip/skip
+      - name: Install Swift Android SDK
+        # swift→Kotlin transpilation compiles Swift for Android and needs
+        # the Swift Android SDK (persisted in the runner's SwiftPM dir).
+        run: skip android sdk install
       - name: Build with Gradle
         run: |
           if [ -d "Android" ]; then
