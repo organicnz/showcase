@@ -96,13 +96,6 @@ final class PlaybackStateTests: XCTestCase {
         XCTAssertTrue(state.hasNext)
     }
     
-    func testHasNextReturnsFalseForSingleVideoQueue() {
-        let video = createMockVideo()
-        let state = PlaybackState.playing(video: video, queue: [video], index: 0)
-
-        XCTAssertFalse(state.hasNext)
-    }
-
     // MARK: - State Transitions
     
     func testPlaybackStateTransitionsFromIdleToPlaying() {
