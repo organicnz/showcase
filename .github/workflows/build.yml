@@ -62,11 +62,13 @@ jobs:
           path: |
             ~/Library/org.swift.swiftpm/swift-sdks
             ~/.gradle
-          key: android-toolchain-${{ runner.os }}-${{ hashFiles('Package.resolved') }}
+          key: android-toolchain-${{ runner.os }}-sdk6.3.2-${{ hashFiles('Package.resolved') }}
       - name: Install Swift Android SDK
-        # Without this the Gradle task fails with:
-        #   No SDKs were installed at .../org.swift.swiftpm/swift-sdks
-        run: skip android sdk install
+        # Version must be pinned. Unpinned, the installer resolves to 6.4.0 and
+        # fails with "Swift 6.4.0 does not exist at URL
+        # .../swift-6.4-RELEASE-osx.pkg" -- there is no 6.4 release .pkg for
+        # macOS. 6.3.2 is the version Skip's own installer docs use.
+        run: skip android sdk install --version 6.3.2
       - name: Build with Gradle
         working-directory: Android
         run: ./gradlew assembleDebug --stacktrace
