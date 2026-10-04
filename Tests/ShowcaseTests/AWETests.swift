@@ -1,5 +1,5 @@
 import XCTest
-@testable import Showcase
+@testable import ShowcaseCore
 
 final class AWETests: XCTestCase {
     

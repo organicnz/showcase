@@ -70,9 +70,13 @@ let package = Package(
             dependencies: ["ShowcaseCore"]
         ),
 
+        // AWE lives in ShowcaseCore, so these tests bind to ShowcaseCore rather
+        // than the Showcase app module. Binding to the app target would drag
+        // every iOS-only view into the host build, and `swift test` cannot
+        // target a simulator, so the suite would fail to compile on macOS.
         .testTarget(
             name: "ShowcaseTests",
-            dependencies: ["Showcase"]
+            dependencies: ["ShowcaseCore"]
         ),
 
         .testTarget(
