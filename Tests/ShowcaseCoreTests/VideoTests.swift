@@ -47,8 +47,11 @@ final class VideoTests: XCTestCase {
     
     func testVideoIsHashable() {
         let scenarioId = UUID()
-        let video1 = Video(id: UUID(), scenarioId: scenarioId, storagePath: "test.mp4")
-        let video2 = Video(id: video1.id, scenarioId: scenarioId, storagePath: "test.mp4")
+        // createdAt participates in Hashable synthesis and defaults to Date(),
+        // which differs per instance, so pin it to build genuinely equal values.
+        let createdAt = Date(timeIntervalSince1970: 1_700_000_000)
+        let video1 = Video(id: UUID(), scenarioId: scenarioId, storagePath: "test.mp4", createdAt: createdAt)
+        let video2 = Video(id: video1.id, scenarioId: scenarioId, storagePath: "test.mp4", createdAt: createdAt)
         
         XCTAssertEqual(video1, video2)
         
