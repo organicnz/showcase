@@ -39,21 +39,34 @@ jobs:
         # success. They are declared now, and this job makes them load-bearing.
         run: swift test
 
-  # The Android build requires the full Skip transpilation toolchain
-  # (skip CLI + matching Swift Android SDK). Those artifacts move fast and
-  # currently 404 in CI, so this job is disabled until the toolchain pins
-  # stabilize. Android release APKs are built locally via `skip export`.
-  # build-android:
-  #   name: Build Android (SKIP)
-  #   runs-on: macos-latest
-  #   steps:
-  #     - uses: actions/checkout@v4
-  #     - name: Set up JDK
-  #       uses: actions/setup-java@v4
-  #       with:
-  #         java-version: '21'
-  #         distribution: 'temurin'
-  #     - name: Install Skip CLI
-  #       run: brew install skiptools/skip/skip
-  #     - name: Build with Gradle
-  #       run: cd Android && ./gradlew assembleDebug
+  build-android:
+    name: Build Android (SKIP)
+    runs-on: macos-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Select Xcode
+        run: sudo xcode-select -s /Applications/Xcode_26.3.app
+      - name: Set up JDK
+        uses: actions/setup-java@v4
+        with:
+          java-version: '21'
+          distribution: 'temurin'
+      - name: Install Skip CLI
+        run: brew install skiptools/skip/skip
+      - name: Cache Swift Android SDK and Gradle
+        # The SDK is a large download and `skip android sdk install` was the
+        # step this job was missing, not a broken artifact. Cached because a
+        # cold Android build runs ~5-6 minutes.
+        uses: actions/cache@v4
+        with:
+          path: |
+            ~/Library/org.swift.swiftpm/swift-sdks
+            ~/.gradle
+          key: android-toolchain-${{ runner.os }}-${{ hashFiles('Package.resolved') }}
+      - name: Install Swift Android SDK
+        # Without this the Gradle task fails with:
+        #   No SDKs were installed at .../org.swift.swiftpm/swift-sdks
+        run: skip android sdk install
+      - name: Build with Gradle
+        working-directory: Android
+        run: ./gradlew assembleDebug --stacktrace
