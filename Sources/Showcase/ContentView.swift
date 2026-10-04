@@ -58,8 +58,10 @@ struct ContentView: View {
                                     }
                                     #endif
                                 }
+                                #if !os(macOS)
                                 .toolbar(.visible, for: .navigationBar)
                                 .toolbarBackground(.hidden, for: .navigationBar)
+                                #endif
                         }
                         
                         if viewModel.isShowingDetail {
