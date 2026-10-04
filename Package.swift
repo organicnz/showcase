@@ -62,5 +62,22 @@ let package = Package(
             resources: [.process("Resources")],
             plugins: [.plugin(name: "skipstone", package: "skip")]
         ),
+
+        // Test targets. These were present on disk but never declared, so
+        // `swift test` had nothing to run and CI silently compiled zero tests.
+        .testTarget(
+            name: "ShowcaseCoreTests",
+            dependencies: ["ShowcaseCore"]
+        ),
+
+        .testTarget(
+            name: "ShowcaseTests",
+            dependencies: ["Showcase"]
+        ),
+
+        .testTarget(
+            name: "ShowcaseUITests",
+            dependencies: ["ShowcaseUI"]
+        ),
     ]
 )

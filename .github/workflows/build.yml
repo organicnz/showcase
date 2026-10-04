@@ -14,13 +14,30 @@ jobs:
       - uses: actions/checkout@v4
       - name: Select Xcode
         # macos-15 image ships Xcode 26.0.1-26.3; there is no Xcode_26.app alias.
+        # This toolchain (Swift 6.3) matters: under Swift 6.4 SwiftPM promotes
+        # the Skip package-identity conflict to a hard "linked as a static
+        # library ... duplication of library code" error, so the build is
+        # pinned to the last known-good toolchain.
         run: sudo xcode-select -s /Applications/Xcode_26.3.app
-      - name: Build and Test
+      - name: Build ShowcaseCore
         # swift test cannot target an iOS simulator (no -destination flag);
         # and building for the host macOS fails on iOS-only UIKit modifiers.
         # Compile-check the pure SwiftPM library instead; device coverage is
         # provided by Xcode Cloud (TestFlight) and xcodebuild schemes.
         run: swift build --target ShowcaseCore
+
+  test:
+    name: Unit tests
+    runs-on: macos-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Select Xcode
+        run: sudo xcode-select -s /Applications/Xcode_26.3.app
+      - name: Run test suite
+        # The three test targets were present on disk but never declared in
+        # Package.swift, so this previously compiled zero tests and reported
+        # success. They are declared now, and this job makes them load-bearing.
+        run: swift test
 
   # The Android build requires the full Skip transpilation toolchain
   # (skip CLI + matching Swift Android SDK). Those artifacts move fast and
