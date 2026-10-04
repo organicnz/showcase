@@ -98,6 +98,11 @@ public actor SupabaseManager {
     // MARK: - Retry Logic
 
     /// Executes an async operation with exponential backoff retries.
+    ///
+    /// `@discardableResult` because the Void-returning call sites (the upserts)
+    /// invoke this purely for its retry-and-throw behaviour and have no use for
+    /// the result, which otherwise warns at every such call site.
+    @discardableResult
     private func withRetry<T>(maxAttempts: Int = 3, operation: () async throws -> T) async throws -> T {
         var attempt = 0
         while true {

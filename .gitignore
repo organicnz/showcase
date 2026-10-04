@@ -21,9 +21,18 @@ xcodebuild*.log
 .idea/
 *.ipa
 *.dSYM
-Package.resolved
 **/fastlane/apikey.json
 **/fastlane/report.xml
+
+# Build logs captured at the repo root during local debugging
+/build_*.log
+/build_*.txt
+
+# Package.resolved is deliberately NOT ignored. Xcode Cloud does not resolve
+# dependencies in the cloud, so the lockfile must be committed and symlinked
+# into project.xcworkspace/xcshareddata/swiftpm/ for the cloud build to pick up
+# exact dependency versions. Ignoring it here meant a regenerated lockfile
+# would be silently untracked.
 
 # Supabase CLI local link state (no secrets, machine-specific)
 supabase/.temp/
