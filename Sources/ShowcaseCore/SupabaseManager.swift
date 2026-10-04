@@ -236,11 +236,16 @@ public actor SupabaseManager {
 
     /// Generates a public CDN URL for a video file. This is a pure computation — no isolation needed.
     nonisolated public func getPublicVideoURL(for path: String) -> URL? {
+        // An empty path would otherwise yield a well-formed URL pointing at the
+        // bucket root, which fails at playback time rather than here. Matches
+        // the guard the thumbnail helpers already apply.
+        guard !path.isEmpty else { return nil }
         return try? client.storage.from(Self.videoBucket).getPublicURL(path: path)
     }
 
     /// Generates a public CDN URL for an image file.
     nonisolated public func getPublicImageURL(for path: String) -> URL? {
+        guard !path.isEmpty else { return nil }
         return try? client.storage.from(Self.imageBucket).getPublicURL(path: path)
     }
     

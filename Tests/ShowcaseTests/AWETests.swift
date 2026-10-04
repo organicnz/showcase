@@ -1,6 +1,27 @@
 import XCTest
 @testable import ShowcaseCore
 
+/// Thread-safe counter for observing how many times the runner invokes a step
+/// or reports progress. `AWE.Step.action` and `Runner.execute(onProgress:)` are
+/// both `@Sendable`, so a captured `var` is not legal under strict concurrency —
+/// the counter has to be a shared reference.
+private final class Counter: @unchecked Sendable {
+    private let lock = NSLock()
+    private var _value = 0
+
+    var value: Int {
+        lock.lock()
+        defer { lock.unlock() }
+        return _value
+    }
+
+    func increment() {
+        lock.lock()
+        defer { lock.unlock() }
+        _value += 1
+    }
+}
+
 final class AWETests: XCTestCase {
     
     /// Verifies that a simple 3-step workflow completes successfully.
@@ -13,23 +34,23 @@ final class AWETests: XCTestCase {
         
         let workflow = AWE.Workflow(name: "Test Success", steps: [step1, step2, step3])
         
-        var progressCount = 0
-        try await runner.execute(workflow) { state in
-            progressCount += 1
+        let progressCount = Counter()
+        try await runner.execute(workflow) { _ in
+            progressCount.increment()
         }
         
         // Progress should be reported for each step start, plus initial and final states
-        XCTAssertGreaterThan(progressCount, 3)
+        XCTAssertGreaterThan(progressCount.value, 3)
     }
     
     /// Verifies that the retry logic works as expected.
     func testRetryLogic() async throws {
         let runner = AWE.Runner()
-        var attempts = 0
+        let attempts = Counter()
         
         let retryStep = AWE.Step(id: "retry_step", label: "Retry Step", retryLimit: 2) {
-            attempts += 1
-            if attempts < 3 {
+            attempts.increment()
+            if attempts.value < 3 {
                 return .retry(reason: "Simulated failure")
             }
             return .success
@@ -41,16 +62,16 @@ final class AWETests: XCTestCase {
         // but since we hardcoded it in AWE, this test might take ~3-4 seconds.
         try await runner.execute(workflow)
         
-        XCTAssertEqual(attempts, 3, "Step should have been attempted 3 times (1 initial + 2 retries)")
+        XCTAssertEqual(attempts.value, 3, "Step should have been attempted 3 times (1 initial + 2 retries)")
     }
     
     /// Verifies that retries are exhausted and an error is thrown.
     func testRetryExhaustion() async throws {
         let runner = AWE.Runner()
-        var attempts = 0
+        let attempts = Counter()
         
         let failingStep = AWE.Step(id: "fail_step", label: "Failing Step", retryLimit: 1) {
-            attempts += 1
+            attempts.increment()
             return .retry(reason: "Persistent failure")
         }
         
@@ -60,7 +81,7 @@ final class AWETests: XCTestCase {
             try await runner.execute(workflow)
             XCTFail("Workflow should have failed")
         } catch {
-            XCTAssertEqual(attempts, 2, "Should have attempted twice (initial + 1 retry)")
+            XCTAssertEqual(attempts.value, 2, "Should have attempted twice (initial + 1 retry)")
         }
     }
     

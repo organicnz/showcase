@@ -3,17 +3,17 @@ import XCTest
 
 final class VideoTests: XCTestCase {
     
-    // MARK: - videoURL Computed Property Tests
+    // MARK: - Storage URL Tests
     
-    func testVideoURLConstructsValidURL() {
+    func testVideoURLConstructsValidURL() throws {
         let video = Video(
             scenarioId: UUID(),
             storagePath: "videos/family/video1.mp4"
         )
         
-        XCTAssertNotNil(video.videoURL)
-        XCTAssertTrue(video.videoURL?.absoluteString.contains("storage/v1/object/public") ?? false)
-        XCTAssertTrue(video.videoURL?.absoluteString.contains("videos/family/video1.mp4") ?? false)
+        let url = try XCTUnwrap(SupabaseManager.shared.getPublicVideoURL(for: video.storagePath))
+        XCTAssertTrue(url.absoluteString.contains("storage/v1/object/public"))
+        XCTAssertTrue(url.absoluteString.contains("videos/family/video1.mp4"))
     }
     
     func testVideoURLReturnsNilForEmptyStoragePath() {
@@ -22,18 +22,18 @@ final class VideoTests: XCTestCase {
             storagePath: ""
         )
         
-        XCTAssertNil(video.videoURL)
+        XCTAssertNil(SupabaseManager.shared.getPublicVideoURL(for: video.storagePath))
     }
     
-    func testVideoURLIncludesStoragePath() {
+    func testVideoURLIncludesStoragePath() throws {
         let storagePath = "videos/wellness/meditation.mp4"
         let video = Video(
             scenarioId: UUID(),
             storagePath: storagePath
         )
         
-        XCTAssertNotNil(video.videoURL)
-        XCTAssertTrue(video.videoURL?.absoluteString.hasSuffix(storagePath) ?? false)
+        let url = try XCTUnwrap(SupabaseManager.shared.getPublicVideoURL(for: video.storagePath))
+        XCTAssertTrue(url.absoluteString.hasSuffix(storagePath))
     }
     
     // MARK: - Model Conformance Tests
