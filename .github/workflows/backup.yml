@@ -8,11 +8,30 @@ name: Supabase Backup
 permissions:
   contents: write
 
+# Never let two backup runs push to main at once; a manual dispatch racing the
+# nightly schedule would fail the second push with a non-fast-forward.
+concurrency:
+  group: supabase-backup
+  cancel-in-progress: false
+
 jobs:
   backup:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
+
+      - name: Verify credentials are configured
+        env:
+          DB_PASSWORD: ${{ secrets.SUPABASE_DB_PASSWORD }}
+        run: |
+          if [ -z "$DB_PASSWORD" ]; then
+            echo "::error::Secret SUPABASE_DB_PASSWORD is not set for this repo."
+            echo "Add it with: gh secret set SUPABASE_DB_PASSWORD"
+            echo "The value is the database password from the Supabase dashboard"
+            echo "(Project Settings -> Database -> Reset database password), NOT"
+            echo "the anon or service_role key."
+            exit 1
+          fi
 
       - name: Install PostgreSQL client
         run: |
@@ -22,21 +41,32 @@ jobs:
       - name: Dump Supabase DB
         env:
           PGPASSWORD: ${{ secrets.SUPABASE_DB_PASSWORD }}
-          DB_HOST: db.smyfjmdjzfwdehynwfep.supabase.co
-          DB_USER: postgres
+          # Supabase direct connections (db.<ref>.supabase.co) are IPv6-only:
+          # the hostname has AAAA records and no A record. GitHub-hosted
+          # ubuntu-latest runners have no IPv6 route, so connecting there fails
+          # with "Network is unreachable" before authentication is even
+          # attempted. The Supavisor pooler is IPv4 and is reachable from CI.
+          # Host and user are derived from supabase/.temp/pooler-url. The
+          # project ref is not a secret; only the password is.
+          DB_HOST: aws-1-eu-central-1.pooler.supabase.com
+          DB_PORT: "5432"
+          DB_USER: postgres.smyfjmdjzfwdehynwfep
+          DB_NAME: postgres
         run: |
           mkdir -p backups
           # --schema=public: skip auth/storage/realtime schemas (the bulk of
           # Disk IO on a full dump). -F c: compressed custom format, smaller
           # and faster to restore than plain SQL.
-          pg_dump -h $DB_HOST -U $DB_USER -d postgres -F c --schema=public \
-            --exclude-table=public.workflow_states \
-            -f backups/backup_$(date +%Y%m%d).dump
+          #
+          # NOTE: workflow_states is ephemeral runtime state — restoring it is
+          # meaningless, so it is excluded from backups entirely.
+          pg_dump -h "$DB_HOST" -p "$DB_PORT" -U "$DB_USER" -d "$DB_NAME" \
+            -F c --schema=public --exclude-table=public.workflow_states \
+            --no-owner --no-privileges \
+            -f "backups/backup_$(date -u +%Y%m%d).dump"
           # Retention: keep last 7 dumps, delete older ones (unbounded git
           # history of daily dumps grows Disk IO + repo size forever).
           # 2>/dev/null: no dumps yet on a fresh repo must not print noise.
-          # NOTE: workflow_states is ephemeral runtime state — restoring it
-          # is meaningless, so it is excluded from backups entirely.
           ls -1t backups/backup_*.dump 2>/dev/null | tail -n +8 | xargs -r rm --
 
       - name: Commit backup
@@ -47,12 +77,18 @@ jobs:
           if git diff --staged --quiet; then
             echo "No changes to commit"
           else
-            git commit -m "backup: $(date +%Y-%m-%d)"
-            git push
+            git commit -m "backup: $(date -u +%Y-%m-%d)"
+            for attempt in 1 2 3; do
+              if git push; then exit 0; fi
+              echo "Push attempt $attempt failed; rebasing onto origin/main and retrying."
+              git pull --rebase origin main
+            done
+            echo "::error::Could not push backup after 3 attempts."
+            exit 1
           fi
 
       - name: Notify on failure
         if: failure()
         run: |
-          echo "::error::Backup pipeline failed on $(date +%Y-%m-%d). \
+          echo "::error::Backup pipeline failed on $(date -u +%Y-%m-%d). \
           Check workflow logs for details."
