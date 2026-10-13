@@ -91,4 +91,4 @@ WHERE storage_path NOT LIKE 'http%';
 
 See full documentation:
 - `docs/STORAGE_FOLDER_STRUCTURE.md`
-- `scripts/organize_storage_folders.md`
+- `docs/guides/ORGANIZE_STORAGE_FOLDERS.md`

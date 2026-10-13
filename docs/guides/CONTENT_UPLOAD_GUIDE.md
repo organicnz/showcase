@@ -103,11 +103,11 @@ supabase link --project-ref smyfjmdjzfwdehynwfep
 supabase storage upload videos/family/01_playground.mp4 ./videos/family/01_playground.mp4
 ```
 
-### Method 3: MCP Tools (Via Kiro)
+### Method 3: Automated Bash Scripts
 
-Ask Kiro to upload files using MCP Supabase tools:
-```
-Upload the video file family/01_playground.mp4 to the videos bucket
+Use the project's upload script in `scripts/`:
+```bash
+./scripts/upload_videos.sh --file ./videos/family/01_playground.mp4 --prefix family/
 ```
 
 ## 📝 Add Video Metadata to Database

@@ -101,7 +101,7 @@ This migration includes:
    - Validation rules
    - Migration guide for existing files
 
-2. **organize_storage_folders.md** (`scripts/organize_storage_folders.md`)
+2. **ORGANIZE_STORAGE_FOLDERS.md** (`docs/guides/ORGANIZE_STORAGE_FOLDERS.md`)
    - Step-by-step guide to organize existing files
    - Three implementation options (Manual, CLI, API)
    - Database update queries
@@ -206,7 +206,8 @@ curl -I https://smyfjmdjzfwdehynwfep.supabase.co/storage/v1/object/public/videos
 
 1. `supabase/migrations/20260429000000_configure_storage_folders.sql` - Database migration
 2. `docs/STORAGE_FOLDER_STRUCTURE.md` - Comprehensive documentation
-3. `scripts/organize_storage_folders.md` - Organization guide
+3. `docs/guides/ORGANIZE_STORAGE_FOLDERS.md` - Organization guide
+   *(а также исполняемый bash-скрипт `scripts/organize_storage_folders.sh`)*
 4. `docs/TASK_1.2_COMPLETION_SUMMARY.md` - This summary
 
 ## Technical Notes

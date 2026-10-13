@@ -327,19 +327,17 @@ WHERE slug = 'investor';
 
 ## 📞 Support Contacts
 
-### Technical Issues
-- **Developer:** Тарлан Исаев
-- **Email:** [developer email]
-- **Phone:** [developer phone]
-
-### Content Updates
-- **PM:** Женя Южакова
-- **Design:** Женя Миловидов
-
-### Client
-- **Contact:** Логинов Артём Михайлович
+### Client / Заказчик
 - **Company:** ООО «СПК-М»
-- **INN:** 112104547785
+- **General Director:** Егоров Сергей Васильевич
+- **OGRN:** 1217700506154
+- **INN:** 7708399522
+
+### Team / Команда
+- **Launch, Content & Sales / Запуск, продвижение, контент и продажи:** Артём Михайлович Логинов
+- **PM:** Евгения Южакова
+- **Design/Dev / Дизайн/разработка:** Евгений Миловидов (UI/UX)
+- **Design/Dev / Дизайн/разработка:** Тарлан Исаев (Swift / iOS)
 
 ## 🔐 Security Notes
 

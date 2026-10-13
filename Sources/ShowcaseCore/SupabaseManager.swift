@@ -17,12 +17,18 @@ public actor SupabaseManager {
     // Read from Info.plist (injected via xcconfig/Skip.env)
     private static var supabaseURL: String {
         let url = Bundle.main.object(forInfoDictionaryKey: "SUPABASE_URL") as? String ?? ""
-        return (url.isEmpty || url.contains("$(")) ? "https://smyfjmdjzfwdehynwfep.supabase.co" : url
+        if !url.isEmpty && !url.contains("$(") {
+            return url
+        }
+        return ProcessInfo.processInfo.environment["SUPABASE_URL"] ?? "https://placeholder-project.supabase.co"
     }
     
     private static var supabaseKey: String {
         let key = Bundle.main.object(forInfoDictionaryKey: "SUPABASE_ANON_KEY") as? String ?? ""
-        return (key.isEmpty || key.contains("$(")) ? "sb_publishable_36vglboOi9AkwTwCw_BqMg_uWQE8NV_" : key
+        if !key.isEmpty && !key.contains("$(") {
+            return key
+        }
+        return ProcessInfo.processInfo.environment["SUPABASE_ANON_KEY"] ?? "placeholder-anon-key"
     }
     
     private static let videoBucket = "videos"

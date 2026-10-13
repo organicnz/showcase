@@ -1,224 +1,371 @@
-# Meshchersky Park Showcase App
+# Meshchersky Park Showcase App · Мультимедийная платформа
 
-A premium tablet-controlled presentation app for the Meshchersky Park residential complex sales office in Moscow.
-
-## 🎯 Project Overview
-
-**Purpose:** Sales managers use a tablet to select life scenario profiles, which trigger curated video content on a large display screen during client meetings.
-
-**Client:** ООО «СПК-М» (Логинов Артём Михайлович)  
-**Developer:** Тарлан Исаев  
-**Design:** Женя Миловидов  
-**PM:** Женя Южакова
-
-## 🛠 Tech Stack
-
-- **iOS/iPadOS:** Swift 6.3.1, SwiftUI, @Observable, strict concurrency
-- **Android:** SKIP 1.0+ (Swift → Kotlin/Jetpack Compose transpilation)
-- **Backend:** Supabase (PostgreSQL + Storage)
-- **CI/CD:** GitHub Actions (automated daily backups)
-- **Deployment:** TestFlight (iOS) + APK sideload (Android)
-
-## 📱 App Structure
-
-### Screens
-1. **Main Screen** (`/`) - Grid of 5 life scenario cards
-2. **Library** (`/library`) - Full video catalog grouped by scenario
-3. **Video Player** (`/player`) - Fullscreen playback on external display
-4. **Settings** - App info and mirroring status
-
-### Life Scenarios
-1. **Family with children** - School, playground, safety, community
-2. **Wellness & silence** - Spa, forest walks, no city noise
-3. **Guests & hotel** - Hotel room booking instead of guest suite
-4. **Investor** - Liquidity, limited supply, unique location
-5. **Architecture & space** - Materials, light, panoramic glazing
-
-## 🗄 Database Schema
-
-```sql
--- Scenarios table
-CREATE TABLE scenarios (
-  id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
-  title TEXT NOT NULL,
-  slug TEXT UNIQUE NOT NULL,
-  order_index INT DEFAULT 0,
-  active BOOLEAN DEFAULT TRUE,
-  created_at TIMESTAMPTZ DEFAULT NOW()
-);
-
--- Videos table
-CREATE TABLE videos (
-  id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
-  scenario_id UUID REFERENCES scenarios(id) ON DELETE CASCADE,
-  title TEXT,
-  storage_path TEXT NOT NULL,
-  duration_sec INT,
-  order_index INT DEFAULT 0,
-  active BOOLEAN DEFAULT TRUE,
-  created_at TIMESTAMPTZ DEFAULT NOW()
-);
-```
-
-## 🚀 Getting Started
-
-### Prerequisites
-- Xcode 16+ (for iOS development)
-- Swift 6.3.1+
-- Android Studio (for Android testing)
-- SKIP CLI tools
-
-### Environment Setup
-
-1. Copy environment variables:
-```bash
-cp .env.example .env.local
-```
-
-2. Configure Supabase credentials in `.env.local`:
-```
-NEXT_PUBLIC_SUPABASE_URL=https://smyfjmdjzfwdehynwfep.supabase.co
-NEXT_PUBLIC_SUPABASE_ANON_KEY=sb_publishable_36vglboOi9AkwTwCw_BqMg_uWQE8NV_
-```
-
-### Build & Run
-
-#### iOS/macOS
-```bash
-# Build the project
-swift build
-
-# Open in Xcode
-open Package.swift
-
-# Run on iOS Simulator or device
-```
-
-#### Android
-```bash
-cd Android
-./gradlew assembleDebug
-```
-
-## 📦 Project Structure
-
-```
-├── Sources/
-│   ├── ShowcaseCore/               # Business logic, models, services
-│   │   ├── Models.swift            # Data models (Scenario, Video, WorkflowState)
-│   │   ├── SupabaseManager.swift  # Supabase client & API calls
-│   │   ├── ViewModel.swift         # Observable state management
-│   │   ├── AWE.swift               # Antigravity Workflow Engine
-│   │   ├── AudioManager.swift      # Immersive Audio Engine
-│   │   └── ThemeTokens.swift       # Shared design tokens
-│   ├── ShowcaseUI/                 # UI components and screens
-│   │   ├── Screens/                # MainScreen, LibraryScreen, PlayerScreen
-│   │   ├── Components/             # ScenarioCard, VideoCard, etc.
-│   │   └── Theme/                  # ShowcaseTheme (Liquid Glass)
-│   └── ShowcaseApp/                # App entry point
-│       └── ShowcaseApp.swift       # @main App struct
-├── Android/                        # Android project (SKIP generated)
-├── Darwin/                         # iOS/macOS specific files
-├── supabase/
-│   └── migrations/                 # DB schema migrations
-├── .github/workflows/
-│   ├── backup.yml                  # Daily database backup
-│   └── build.yml                   # CI/CD build & test
-├── AGENTS.md                       # Project overview for AI agents
-├── README.md                       # Project overview for humans
-└── Package.swift                   # Swift package definition
-```
-
-## 🎨 Design Language
-
-**Liquid Glass (iOS/iPadOS 26)**
-- Frosted glass effects with subtle gradients
-- Premium golden accents
-- Smooth animations and transitions
-- Minimalist, luxury aesthetic
-
-## 📊 Current Status
-
-### ✅ Completed (Milestone 1 & 2)
-- [x] Modular Swift package structure (ShowcaseCore, ShowcaseUI)
-- [x] Supabase backend setup (database + storage)
-- [x] Database schema with RLS policies
-- [x] **AWE (Antigravity Workflow Engine)** with Supabase persistence
-- [x] **Immersive Audio Engine** with local caching and cross-fade
-- [x] 5 life scenarios seeded in database
-- [x] SwiftUI screens with Liquid Glass design language
-- [x] Observable state management with @Observable
-- [x] GitHub Actions backup & build workflows
-- [x] Android project structure with SKIP integration
-
-### 🔄 In Progress (Milestone 2)
-- [ ] Upload video content (20-25 videos, max 30 sec each)
-- [ ] Test video playback on iOS/iPadOS
-- [ ] Test Android build and video playback
-- [ ] External display mirroring (AirPlay/Cast)
-- [ ] UI polish and animations
-
-### ⏳ Planned (Milestone 3)
-- [ ] QA testing on physical devices
-- [ ] TestFlight deployment
-- [ ] Android APK build for sideload
-- [ ] On-site installation in Moscow sales office
-- [ ] Staff training and handoff
-
-## 🎥 Content Requirements
-
-- **Total videos:** 20-25 (4-5 per scenario)
-- **Duration:** Max 30 seconds each
-- **Format:** MP4, MOV, or WebM
-- **Storage:** Supabase Storage bucket `videos`
-- **Naming convention:** `{scenario_slug}/{order_index}_{title}.mp4`
-
-## 🔐 Security
-
-- **RLS enabled** on all tables
-- **Public read-only** access for active scenarios/videos
-- **Storage policies** for public video access
-- **No authentication** required for end users (sales office only)
-- **Admin access** via Supabase Dashboard
-
-## 📅 Timeline
-
-- **Deadline:** End of May 2026 (sales office opening)
-- **Month 1:** Architecture + backend + screens ✅
-- **Month 2:** Content + testing + deployment 🔄
-- **Month 3:** Warranty support
-
-## 💰 Budget
-
-| Phase | Amount |
-|-------|--------|
-| Invoice #1 (iteration 1 + onboarding) | 175,000 ₽ |
-| Invoice #2 (iteration 2) | 125,000 ₽ |
-| **Development Total** | **300,000 ₽** |
-| Design (separate) | 300,000 ₽ |
-| **Project Total** | **600,000 ₽** |
-
-## 🔗 Links
-
-- **Supabase Project:** https://smyfjmdjzfwdehynwfep.supabase.co
-- **Supabase Dashboard:** https://supabase.com/dashboard/project/smyfjmdjzfwdehynwfep
-- **SKIP Documentation:** https://skip.tools
-
-## 📝 Notes
-
-- App runs in kiosk mode in sales office (always-on)
-- No App Store submission needed (TestFlight + APK sideload)
-- Stable internet connection available in office
-- Wireless screen mirroring only (no HDMI)
-- Content updates are rare (handled via Supabase Dashboard)
-
-## 🤝 Support
-
-For issues or questions, contact:
-- **Developer:** Тарлан Исаев (ИНН 761900751270)
-- **PM:** Женя Южакова
-- **Client:** Логинов Артём Михайлович (ИП, ИНН 112104547785)
+> **Интерактивный презентационный комплекс для офиса продаж премиального жилого комплекса «Мещерский парк» (Москва).**  
+> Планшетное приложение для управления показом видеосценариев на большом демонстрационном экране во время клиентских встреч. Концепция: «Тихая роскошь» (Quiet Luxury), отсутствие навязчивых продаж, акцент на эстетике и приватности.
 
 ---
 
-Built with ❤️ using Swift 6.3.1, SwiftUI, and SKIP
+## 📌 Паспорт проекта
+
+| Параметр | Значение |
+|---|---|
+| **Заказчик** | ООО «СПК-М» (Генеральный директор Егоров Сергей Васильевич, ОГРН 1217700506154, ИНН 7708399522) |
+| **Запуск, продвижение, контент и продажи** | Артём Михайлович Логинов |
+| **PM** | Евгения Южакова |
+| **Дизайн/разработка** | Евгений Миловидов (UI/UX) |
+| **Дизайн/разработка** | Тарлан Исаев (Swift / iOS) |
+| **Целевые платформы** | iPadOS 26+ (основная), Android 12+ / Jetpack Compose (вторичная через SKIP 1.0+) |
+| **Внешний дисплей** | Беспроводная трансляция (AirPlay / Cast на ТВ офиса продаж) |
+| **Бэкенд & Инфраструктура** | Supabase (PostgreSQL 17.6 + S3 Storage CDN + Edge Functions) |
+
+---
+
+## 📋 Статус реализации мультимедийной платформы (9 направлений)
+
+В рамках актирования первого этапа и юридической фиксации (п. 3.4 и 13.3 Договора) компоненты программной платформы реализованы следующим образом:
+
+| № | Направление работ | Статус | Техническая реализация и компоненты |
+|---|---|:---:|---|
+| **1** | **UX-структура и UI-дизайн** | ✅ Выполнено | Полный путь менеджера: Главный экран (`MainScreen`), Видеотека (`LibraryScreen`), Плеер (`PlayerScreen`), Настройки. Адаптивная сетка под экраны iPad 11" и 13". |
+| **2** | **Минимальная дизайн-система** | ✅ Выполнено | Дизайн-система «Liquid Glass» (iOS/iPadOS 26). Токены типографики (`Typography.swift`), золотые акценты, глубина, компоненты `ScenarioCard`, `VideoCard`, `PlaybackControls`. |
+| **3** | **Эффекты и переходы** | ✅ Выполнено | Аппаратные микро-анимации размытия и свечения, стейт-машина переходов AWE, аудио-crossfade 2.5 сек в Immersive Audio Engine. |
+| **4** | **Архитектура и техническая сборка** | ✅ Выполнено | Модульный Swift Package (`ShowcaseCore`, `ShowcaseUI`, `ShowcaseApp`). Строгий параллелизм Swift 6.3 (Strict Concurrency, Actor isolation), реактивное состояние `@Observable`, транспиляция SKIP (Android). |
+| **5** | **Разработка интерфейса приложения** | ✅ Выполнено | Нативный SwiftUI, движок AVPlayer с независимым контроллером на планшете и полноэкранной трансляцией видеопотока на внешний дисплей. |
+| **6** | **Подключение библиотеки контента** | ✅ Выполнено | Сервисный слой `VideoService` и `SupabaseClient` с кэшированием (`URLCache`), предзагрузкой (`prefetch`) и повторными попытками. Поддержка 5 сценариев. *(Финальные видео ждут загрузки Заказчиком согласно п. 3.4)*. |
+| **7** | **Простая CMS / admin-часть** | ✅ Выполнено | Supabase Dashboard + схемы таблиц `scenarios`, `videos`, `photos` + Storage CDN + руководство администратора [`CMS_GUIDE_RU.md`](docs/guides/CMS_GUIDE_RU.md). |
+| **8** | **Тестирование и сборка** | ✅ Выполнено | Модульные тесты моделей и движка AWE (`AWETests.swift`), автоматический конвейер сборки в GitHub Actions (`build.yml`). |
+| **9** | **Деплой / публикация** | ✅ Выполнено | Сборка TestFlight для iPadOS, сборка APK для Android, автоматический ежедневный бэкап базы данных (`backup.yml`). |
+
+---
+
+## 🌿 Жизненные сценарии (Контентная модель)
+
+Презентация строится вокруг 5 жизненных профилей, ориентированных на разные категории резидентов:
+
+| ID | Сценарий | Целевая аудитория и нарратив | Ключевые акценты | SF Symbol |
+|---|---|---|---|---|
+| **01** | **Семья с детьми** | Семейные пары с детьми дошкольного и школьного возраста | Закрытый двор без машин, школы и детские сады в шаговой доступности, безопасные игровые площадки, комьюнити. | `figure.2.and.child.holdinghands` |
+| **02** | **Велнес и тишина** | Покупатели, ищущие уединения, баланса и восстановления | Приватный спа-комплекс, термальные зоны, утренние пробежки по лесным тропам Мещерского парка, чистый воздух, тишина. | `leaf.fill` |
+| **03** | **Гости и отель** | Деловые резиденты, ценящие сервис и частые встречи гостей | Консьерж-сервис 24/7, бронирование гостиничных люксов для гостей вместо выделенной гостевой комнаты, приватный паркинг. | `building.columns.fill` |
+| **04** | **Инвестор** | Частные инвесторы и предприниматели | Ограниченное предложение лесного премиума в Москве, высокая ликвидность, стабильный рост капитализации, арендный потенциал. | `chart.line.uptrend.xyaxis` |
+| **05** | **Архитектура и пространство** | Ценители дизайна, архитектуры и натуральных материалов | Панорамное остекление в пол, потолки 3.6 м, натуральный камень и дерево, бесшовное слияние архитектуры с лесным массивом. | `cube.transparent` |
+
+---
+
+## 🏗️ Архитектура системы
+
+```
+┌────────────────────────────────────────────────────────────────────────┐
+│                        SUPABASE ОБЛАЧНЫЙ СЕРВЕР                        │
+│                                                                        │
+│   PostgreSQL 17.6             S3 Storage (CDN)         Auth / Security │
+│   ├── scenarios               ├── videos/ (H.265)      └── RLS-политики│
+│   ├── videos                  ├── photos/              (публичное чтение│
+│   ├── photos                  └── assets/audio/ (m4a)   для планшета)  │
+│   └── workflow_states                                                  │
+│                                                                        │
+│   GitHub Actions CI/CD                                                 │
+│   └── Ежедневный pg_dump бэкап (02:00 UTC)                             │
+└───────────────────────────────────┬────────────────────────────────────┘
+                                    │ PostgREST / Supabase Swift SDK
+                                    │ (Actor-isolated SupabaseManager)
+                     ┌──────────────┴──────────────┐
+                     │                             │
+          ┌──────────▼──────────┐       ┌──────────▼──────────┐
+          │    iOS / iPadOS     │       │     Android App     │
+          │    Swift 6.3.1      │ SKIP  │   Jetpack Compose   │
+          │      SwiftUI        │──────►│     Android 12+     │
+          │   @Observable State │       │   (Sideload APK)    │
+          │ Liquid Glass Theme  │       │                     │
+          └──────────┬──────────┘       └──────────┬──────────┘
+                     │                             │
+                     └──────────────┬──────────────┘
+                                    │ Беспроводная трансляция
+                                    │ (AirPlay / Google Cast)
+                           ┌────────▼────────┐
+                           │    ЭКРАН ТВ     │
+                           │  Стена офиса    │
+                           │   4K Стриминг   │
+                           └─────────────────┘
+```
+
+### Модульная структура Swift Package
+
+```
+ShowcaseApp (SPM Package)
+├── Sources/
+│   ├── ShowcaseCore/                   # Бизнес-логика, сервисы и акторы
+│   │   ├── Models.swift                # Sendable модели (Scenario, Video, Photo, WorkflowState)
+│   │   ├── SupabaseManager.swift      # Потокобезопасный актор SupabaseClient + retry
+│   │   ├── ViewModel.swift             # MainViewModel и PlayerViewModel (@Observable)
+│   │   ├── AWE.swift                   # Antigravity Workflow Engine (стейт-машина)
+│   │   ├── AudioManager.swift          # Immersive Audio Engine (cross-fade 2.5 сек)
+│   │   ├── VideoService.swift          # Актор выборки и кэширования видео
+│   │   └── ThemeTokens.swift           # Дизайн-токены цветов и отступов
+│   ├── ShowcaseUI/                     # Графический интерфейс SwiftUI
+│   │   ├── Screens/
+│   │   │   ├── MainScreen.swift        # Сетка карточек жизненных сценариев
+│   │   │   ├── LibraryScreen.swift     # Каталог видеотеки с фильтрацией
+│   │   │   └── PlayerScreen.swift      # Полноэкранный плеер с оверлеем контроллеров
+│   │   ├── Components/
+│   │   │   ├── ScenarioCard.swift      # Карточка сценария с эффектом Liquid Glass
+│   │   │   ├── VideoCard.swift         # Превью видео с хронометражем и чипами
+│   │   │   ├── PlaybackControls.swift  # Кнопки Play/Pause/Next и скраббер
+│   │   │   └── ServiceStateView.swift  # Обработка состояний Loading / Error / Empty
+│   │   └── Theme/
+│   │       ├── LiquidGlassTheme.swift  # Материалы стекла, размытие, золотой градиент
+│   │       └── Typography.swift        # Иерархия шрифтов Display / Title / Body
+│   └── ShowcaseApp/                    # Точка входа приложения
+│       └── ShowcaseApp.swift           # @main App структура и инициализация
+├── Android/                            # Конфигурация SKIP и Gradle для Android
+├── Darwin/                             # Конфигурационные файлы .xcconfig
+├── Tests/                              # Модульные тесты
+│   └── ShowcaseCoreTests/              # Тестирование моделей и движка AWE
+├── docs/                               # Полная документация проекта и материалы сдачи
+│   ├── technical/                      # Архитектура, деплой, технический отчет к Акту
+│   ├── guides/                         # Инструкции администратора CMS и видеомонтажа
+│   ├── design/                         # Дизайн-система Liquid Glass и UX
+│   └── screenshots/                    # Высококачественные скриншоты работы интерфейса
+└── supabase/
+    ├── dumps/                          # Консолидированные SQL-дампы схемы и сидов
+    ├── migrations/                     # Исторические миграции базы данных
+    └── functions/                      # Серверные Edge Functions
+```
+
+---
+
+## ⚙️ Движки ядра (Core Engines Deep Dive)
+
+### 1. Antigravity Workflow Engine (AWE)
+Внутренний отказоустойчивый движок исполнения сценариев презентации:
+* **Декларативность:** Сценарии описываются через последовательность изолированных шагов `AWE.Step` с собственными лимитами повторов (`retryLimit`).
+* **Акторная изоляция:** `AWE.Runner` изолирован в актор, гарантируя отсутствие гонок данных при асинхронном переключении сцен.
+* **Персистентность стейта:** Состояние текущего воркфлоу опционально фиксируется в таблице `workflow_states` в Supabase, что позволяет мгновенно восстанавливать сценарий в случае непредвиденной перезагрузки планшета.
+
+### 2. Immersive Audio Engine
+Звуковая система, формирующая атмосферу «Тихой роскоши»:
+* **Кросс-фейд (2.5 сек):** При переключении сценариев на планшете аудиодорожка не обрывается резко, а плавно затухает с одновременным нарастанием громкости нового трека.
+* **Бесшовный бесконечный цикл:** Поддержка зацикливания фоновых звуков природы и леса (`numberOfLoops = -1`).
+* **Кэширование и буферизация:** Аудиофайлы кэшируются локально, исключая сетевые паузы.
+* **Энергосбережение:** Аудиосессия настроена на категорию `.ambient`, останавливается при сворачивании приложения.
+
+### 3. Видеодвижок и управление экраном
+* **Декупленный интерфейс:** Во время демонстрации видео на большом ТВ-экране (AirPlay / Cast) планшет менеджера остается интерактивным пультом управления: отображает оверлей с ключевыми тезисами (`highlights`), таймлайн, кнопку перехода к следующему ролику и быстрый возврат к выбору сценариев.
+* **Автопроигрывание очереди:** При завершении текущего видеоролика плеер автоматически переходит к следующему видео внутри выбранного сценария.
+
+---
+
+## 🗄️ База данных и бэкенд (Supabase)
+
+### Структура таблиц
+
+#### 1. `scenarios` (Сценарии продаж)
+| Колонка | Тип | Ограничение | Описание |
+|---|---|---|---|
+| `id` | `UUID` | PRIMARY KEY | Уникальный идентификатор |
+| `title` | `TEXT` | NOT NULL | Название сценария (напр. «Семья с детьми») |
+| `slug` | `TEXT` | UNIQUE, NOT NULL | Системный слаг (`family`, `wellness` и т.д.) |
+| `description` | `TEXT` | NULLABLE | Описание для карточки на планшете |
+| `icon_name` | `TEXT` | NULLABLE | Название системной иконки SF Symbol |
+| `image_path` | `TEXT` | NULLABLE | Путь к обложке сценария в Storage |
+| `ambient_audio_path`| `TEXT` | NULLABLE | Путь к фоновому аудиофайлу (`assets/audio/`) |
+| `order_index` | `INTEGER` | DEFAULT 0 | Индекс сортировки на главном экране |
+| `active` | `BOOLEAN` | DEFAULT TRUE | Флаг видимости сценария в приложении |
+| `created_at` | `TIMESTAMPTZ`| DEFAULT NOW() | Время создания |
+
+#### 2. `videos` (Каталог видеоматериалов)
+| Колонка | Тип | Ограничение | Описание |
+|---|---|---|---|
+| `id` | `UUID` | PRIMARY KEY | Уникальный идентификатор |
+| `scenario_id` | `UUID` | REFERENCES scenarios(id) ON DELETE CASCADE | Привязка к сценарию |
+| `title` | `TEXT` | NULLABLE | Заголовок видеоролика |
+| `subtitle` | `TEXT` | NULLABLE | Подзаголовок |
+| `storage_path` | `TEXT` | NOT NULL | Путь к файлу в бакете `videos` (напр. `family/01_morning.mp4`) |
+| `thumbnail_path`| `TEXT` | NULLABLE | Превью-кадр видео |
+| `duration_sec` | `INTEGER` | NULLABLE | Хронометраж ролика в секундах (макс. 30с) |
+| `order_index` | `INTEGER` | DEFAULT 0 | Очередность воспроизведения внутри сценария |
+| `active` | `BOOLEAN` | DEFAULT TRUE | Флаг активности |
+| `highlights` | `JSONB` | DEFAULT '[]' | Массив текстовых тезисов для оверлея на экране |
+| `created_at` | `TIMESTAMPTZ`| DEFAULT NOW() | Время добавления |
+
+#### 3. `photos` (Архитектурная галерея и рендеры)
+| Колонка | Тип | Ограничение | Описание |
+|---|---|---|---|
+| `id` | `UUID` | PRIMARY KEY | Уникальный идентификатор |
+| `scenario_id` | `UUID` | REFERENCES scenarios(id) ON DELETE CASCADE | Привязка к сценарию |
+| `title` | `TEXT` | NULLABLE | Название рендера / фотографии |
+| `storage_path` | `TEXT` | NOT NULL | Путь к файлу в бакете `photos` |
+| `order_index` | `INTEGER` | DEFAULT 0 | Порядок отображения |
+| `active` | `BOOLEAN` | DEFAULT TRUE | Флаг активности |
+
+#### 4. `workflow_states` (Состояния AWE Engine)
+| Колонка | Тип | Ограничение | Описание |
+|---|---|---|---|
+| `id` | `UUID` | PRIMARY KEY | Уникальный идентификатор сессии |
+| `workflow_name` | `TEXT` | NOT NULL | Название сценария презентации |
+| `current_step_index`| `INTEGER` | DEFAULT 0 | Текущий активный шаг воркфлоу |
+| `completed_steps`| `TEXT[]` | DEFAULT '{}' | Список завершенных шагов |
+| `status` | `TEXT` | DEFAULT 'pending' | Статус (`pending`, `running`, `completed`, `failed`) |
+| `updated_at` | `TIMESTAMPTZ`| DEFAULT NOW() | Время обновления состояния |
+
+#### 5. `user_settings` (Настройки планшетов)
+| Колонка | Тип | Ограничение | Описание |
+|---|---|---|---|
+| `user_id` | `UUID` | PRIMARY KEY | Идентификатор профиля |
+| `settings` | `JSONB` | DEFAULT '{}' | Конфигурация отображения, кэша и устройств |
+| `updated_at` | `TIMESTAMPTZ`| DEFAULT NOW() | Время обновления |
+
+### Безопасность и оптимизация (RLS & Disk I/O)
+1. **Row Level Security (RLS):** Включена на всех таблицах. Планшеты офиса продаж работают в публичном режиме чтения только активных записей (`active = true`). Модификация данных разрешена только аутентифицированным администраторам через Supabase Dashboard.
+2. **Оптимизация Disk I/O:** Реализована специализированная миграция `fix_disk_io.sql`, устранившая избыточную репликацию realtime и WAL-блоат:
+   - Добавлены составные индексы `(active, order_index)` и `(scenario_id, active, order_index)`.
+   - Таблицы исключены из `supabase_realtime` публикации (так как приложение использует эффективный PostgREST batching с локальным кэшем).
+   - Создано безопасное SQL-представление `videos_with_cdn_urls` с атрибутом `security_invoker = true`.
+3. **Валидация путей хранилища:** Триггер `validate_video_storage_path` гарантирует, что пути к видео начинаются строго с валидной папки сценария (`family/`, `wellness/`, `guests/`, `investor/`, `architecture/`).
+
+---
+
+## 🎬 Технические требования к медиаматериалам (Спецификация)
+
+Для сохранения максимальной плавности и визуального совершенства при трансляции на 4K-дисплей видеоматериалы должны строго отвечать следующим требованиям:
+
+### Видеоролики (Рендеры)
+* **Кодек:** H.265 (HEVC) — обеспечивает высокое качество при минимальном размере файла.
+* **Битрейт:** `< 5 Mbps` (VBR, 1 проход).
+* **Разрешение:** 4K UHD (3840×2160) или Full HD (1920×1080).
+* **Частота кадров:** 30 fps или 60 fps.
+* **Хронометраж:** строго до 30 секунд на один ролик.
+* **Контейнер:** MP4 (быстрый старт `moov atom at start of file`).
+* **Структура хранения в Storage:** бакет `videos`, папка `{scenario_slug}/{order_index}_{title}.mp4`.
+
+### Аудиодорожки
+* **Формат:** AAC / M4A (стерео, 44.1 / 48 kHz, битрейт 192 kbps).
+* **Бесшовность:** треки должны быть заранее подготовлены для бесшовного зацикливания (seamless loop).
+* **Структура хранения в Storage:** бакет `assets`, папка `audio/{scenario_slug}_ambient.m4a`.
+
+---
+
+## ⚖️ Юридический контекст сдачи (Этап № 1)
+
+1. **Применение п. 3.4 Договора (Вынужденная работа без материалов Заказчика):**
+   * Программное обеспечение разработано в парадигме **Data-Agnostic** (полная независимость программного ядра от конкретного видеоконтента) и протестировано на демонстрационном мокап-наборе данных.
+   * Задержка Заказчика с утверждением 3D-рендеров и видео не препятствует сдаче программной части и не является дефектом ПО. Контент загружается в любой момент через готовую CMS без правок исходного кода.
+2. **Применение п. 13.3 Договора (Взаиморасчеты и закрытие аванса):**
+   * Объем фактически выполненных работ по созданию ПО, базы данных и инфраструктуры составляет **100% первого этапа (50% от общей цены договора)**.
+   * К Промежуточному Акту сдачи-приемки прикладывается официальный [Технический отчет](docs/technical/TECHNICAL_REPORT.md) со ссылкой на официальный репозиторий проекта со всеми исходными кодами, схемами и документацией.
+   * В случае отсутствия мотивированных письменных возражений в установленный договором срок работы признаются принятыми Заказчиком в одностороннем порядке (ст. 720, 753 ГК РФ).
+
+---
+
+## 📦 Пакет результатов сдачи (Deliverables в едином репозитории)
+
+Все материалы, исходные коды и артефакты сдачи Этапа № 1 полностью размещены непосредственно в данном Git-репозитории:
+
+```
+docs/
+├── technical/
+│   ├── TECHNICAL_REPORT.md             # Официальный технический отчет о разработке ПО (к Акту)
+│   ├── ARD.md                          # Архитектурное описание системы
+│   ├── DEPLOYMENT.md                   # Руководство по развертыванию и CI/CD
+│   └── STATUS.md                       # Технический статус готовности модулей
+├── guides/
+│   ├── CMS_GUIDE_RU.md                 # Руководство администратора Supabase CMS
+│   └── CONTENT_UPLOAD_GUIDE.md         # Регламент подготовки медиаконтента
+├── design/
+│   └── UI_UX.md                        # Спецификация интерфейса Liquid Glass
+└── screenshots/                        # Доказательства работы интерфейса (iPad Pro 2064x2752)
+    ├── 01_main_screen_scenarios_grid.png   # Сетка сценариев
+    ├── 02_scenario_cards_liquid_glass.png  # Карточки сценариев Liquid Glass
+    ├── 03_navigation_and_header.png        # Навигация и заголовок
+    └── 04_full_tablet_interface.png        # Полный интерфейс планшета
+supabase/
+├── dumps/                              # База данных и дампы схемы
+│   ├── schema_dump_latest.sql          # Полный официальный DDL-дамп PostgreSQL
+│   └── seed_data.sql                   # Начальные сценарии и тестовые записи
+├── migrations/                         # SQL-миграции базы данных
+└── functions/
+    └── daily-cleanup/                  # Edge Functions очистки и обслуживания
+```
+
+---
+
+## 🛡️ Протокол верификации и фиксации результатов передачи
+
+В целях обеспечения доказательственной базы факта надлежащего и своевременного оказания услуг Исполнителем сформирован протокол цифровой фиксации:
+1. **GitHub репозиторий:** Фиксация снимка состояния кодовой базы на дату составления Акта (коммиты, ветка `main`, все исходные коды, документация и скриншоты в едином репозитории).
+2. **Инфраструктура Supabase:** Фиксация развернутых таблиц (`scenarios`, `videos`, `photos`, `workflow_states`), бакетов объектного хранилища и активных RLS-политик.
+3. **Фиксация коммита:** Хэш коммита в системе контроля версий фиксируется в сопроводительном письме и Акте сдачи-приемки как неизменяемый идентификатор сдаваемой версии.
+4. **Управление секретами (Zero Exposed Secrets):** Открытые ключи полностью исключены из репозитория. Секреты изолированы на трех уровнях: GitHub Secrets (CI/CD), Supabase Edge Secrets (серверные функции) и Supabase Vault (шифрование в PostgreSQL).
+
+---
+
+## 🚀 Локальный запуск и эксплуатация
+
+### Системные требования
+* macOS 15+ Sequoia
+* Xcode 16+ (Swift 6.3.1 toolchain)
+* Установленный SKIP CLI (для кроссплатформенной транспиляции)
+* Доступ к сети интернет для загрузки зависимостей SPM
+
+### Запуск приложения на iPad (Симулятор или устройство):
+```bash
+# 1. Открыть рабочее пространство Xcode
+open Project.xcworkspace
+
+# 2. В селекторе схем выбрать Showcase
+# 3. Выбрать симулятор (например, iPad Pro 11-inch или 13-inch)
+# 4. Нажать ⌘R (Build & Run)
+```
+
+### Сборка Android (через SKIP):
+```bash
+cd Android
+./gradlew assembleDebug
+# Результирующий APK: Android/app/build/outputs/apk/debug/app-debug.apk
+```
+
+### Развертывание и восстановление базы данных Supabase:
+```bash
+# Накат консолидированной схемы DDL
+psql $SUPABASE_DB_URL < supabase/dumps/schema_dump_latest.sql
+
+# Накат базовых сценариев и тестовых видеозаписей
+psql $SUPABASE_DB_URL < supabase/dumps/seed_data.sql
+```
+
+---
+
+## 💰 Бюджет и этапы проекта
+
+| Этап | Содержание | Сумма | Статус |
+|---|---|---|:---:|
+| **Инвойс № 1** | Архитектура, разработка ПО (iOS/Android), CMS, инфраструктура, онбординг | 175 000 ₽ | **Выполнено (предъявлено к приемке)** |
+| **Инвойс № 2** | Загрузка контента, финальное QA, внедрение в офисе продаж Москвы | 125 000 ₽ | В процессе |
+| **Итого разработка** | Полный программно-аппаратный комплекс | **300 000 ₽** | |
+| **Дизайн** | UI/UX, эффекты Liquid Glass, 3D-материалы (отдельный договор) | 300 000 ₽ | В процессе |
+| **ИТОГО ПО ПРОЕКТУ** | Комплексная поставка мультимедийной платформы | **600 000 ₽** | |
+
+---
+
+## 🤝 Стороны и реквизиты проекта
+
+### 👥 Команда проекта (Исполнитель)
+* **Запуск, продвижение, контент и продажи:** Артём Михайлович Логинов
+* **PM:** Евгения Южакова
+* **Дизайн/разработка:** Евгений Миловидов (UI/UX)
+* **Дизайн/разработка:** Тарлан Исаев (Swift / iOS)
+
+### 🏢 Заказчик
+* **Полное наименование:** Общество с Ограниченной Ответственностью «СПК-М»
+* **Сокращенное наименование:** ООО «СПК-М»
+* **Генеральный директор:** Егоров Сергей Васильевич
+* **Почтовый / Юридический адрес:** 129090, г. Москва, вн. тер. г. Муниципальный округ Красносельский, ул. Большая Спасская, д. 8, этаж 1, помещение/офис 51/1T
+* **ОГРН:** 1217700506154
+* **ИНН:** 7708399522
+* **КПП:** 770801001
+* **Банковские реквизиты:**
+  * **Расчетный счет:** `40702810238000206262`
+  * **Банк:** ПАО СБЕРБАНК
+  * **Корреспондентский счет:** `30101810400000000225`
+  * **БИК:** `044525225`
+

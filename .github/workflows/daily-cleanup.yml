@@ -1,0 +1,40 @@
+name: Daily Supabase Cleanup
+on:
+  schedule:
+    - cron: '0 2 * * *'  # daily at 02:00 UTC
+  workflow_dispatch: {}
+
+permissions:
+  contents: write
+
+jobs:
+  cleanup:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Trigger daily cleanup edge function
+        env:
+          SUPABASE_FUNCTIONS_URL: ${{ secrets.SUPABASE_FUNCTIONS_URL }}
+          SUPABASE_SERVICE_ROLE_KEY: ${{ secrets.SUPABASE_SERVICE_ROLE_KEY }}
+        run: |
+          if [ -z "$SUPABASE_FUNCTIONS_URL" ]; then
+            echo "::warning::Secret SUPABASE_FUNCTIONS_URL is not set, skipping"
+            exit 0
+          fi
+
+          if [ -z "$SUPABASE_SERVICE_ROLE_KEY" ]; then
+            echo "::warning::Secret SUPABASE_SERVICE_ROLE_KEY is not set, skipping"
+            exit 0
+          fi
+
+          echo "Triggering cleanup function..."
+          HTTP_CODE=$(curl -s -o /dev/null -w "%{http_code}" \
+            -X POST "$SUPABASE_FUNCTIONS_URL" \
+            -H "Authorization: Bearer $SUPABASE_SERVICE_ROLE_KEY" \
+            -H "Content-Type: application/json" \
+            -d '{}' 2>/dev/null || echo "000")
+
+          if [ "$HTTP_CODE" -ge 200 ] && [ "$HTTP_CODE" -lt 300 ]; then
+            echo "✅ Cleanup function triggered successfully (HTTP $HTTP_CODE)"
+          else
+            echo "⚠️ Function trigger returned HTTP $HTTP_CODE"
+          fi

@@ -1,6 +1,7 @@
 # Project Status Report
 **Date:** April 25, 2026  
-**Project:** Meshchersky Park Showcase App
+**Project:** Meshchersky Park Showcase App  
+**Owner:** Тарлан Исаев
 
 ## 🎯 Executive Summary
 
@@ -187,10 +188,11 @@ VALUES (
 
 ## 📞 Key Contacts
 
-- **Developer:** Тарлан Исаев (ИНН 761900751270)
-- **PM:** Женя Южакова
-- **Design:** Женя Миловидов
-- **Client:** Логинов Артём Михайлович (ИП, ИНН 112104547785)
+- **Client / Заказчик:** ООО «СПК-М» (Генеральный директор Егоров Сергей Васильевич, ОГРН 1217700506154, ИНН 7708399522)
+- **Launch, Content & Sales / Запуск, продвижение, контент и продажи:** Артём Михайлович Логинов
+- **PM:** Евгения Южакова
+- **Design/Dev / Дизайн/разработка:** Евгений Миловидов (UI/UX)
+- **Design/Dev / Дизайн/разработка:** Тарлан Исаев (Swift / iOS)
 
 ## 📅 Timeline to Launch
 
@@ -208,4 +210,4 @@ VALUES (
 ---
 
 **Next Update:** May 2, 2026  
-**Prepared by:** Kiro AI Assistant
+**Prepared by:** Тарлан Исаев
